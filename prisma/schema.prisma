@@ -1,0 +1,137 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum AccountStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+enum ProfileCompletionStatus {
+  INCOMPLETE
+  COMPLETE
+}
+
+enum VerificationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  NEEDS_FOLLOW_UP
+}
+
+model User {
+  id               String               @id @default(cuid())
+  name             String?
+  email            String?              @unique
+  emailVerified    DateTime?
+  image            String?
+  role             Role                 @default(USER)
+  accountStatus    AccountStatus        @default(ACTIVE)
+  accounts         Account[]
+  sessions         Session[]
+  profile          MatrimonialProfile?
+  auditLogs        AuditLog[]           @relation("ActorUser")
+  assignedRequests VerificationRequest[] @relation("AdminRequests")
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String? @db.Text
+  access_token       String? @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String? @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  id         String   @id @default(cuid())
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model MatrimonialProfile {
+  id                      String                  @id @default(cuid())
+  userId                  String                  @unique
+  user                    User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fullName                String
+  gender                  String
+  dateOfBirth             DateTime
+  maritalStatus           String
+  phoneNumber             String
+  city                    String
+  areaOrLocality          String
+  state                   String
+  country                 String
+  latitude                Float?
+  longitude               Float?
+  education               String
+  occupation              String
+  annualIncomeRange       String
+  familyInfo              String                  // Semi-structured text / basic info
+  bio                     String
+  themeColor              String                  @default("hsl(150, 45%, 18%)") // Default emerald
+  verificationStatus      VerificationStatus      @default(PENDING)
+  profileCompletionStatus ProfileCompletionStatus @default(INCOMPLETE)
+  adminApprovalStatus     String                  @default("PENDING") // PENDING, APPROVED, REJECTED
+  hasPaid                 Boolean                 @default(false)
+  verificationRequests    VerificationRequest[]
+  createdAt               DateTime                @default(now())
+  updatedAt               DateTime                @updatedAt
+}
+
+model VerificationRequest {
+  id              String             @id @default(cuid())
+  profileId       String
+  profile         MatrimonialProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  status          VerificationStatus @default(PENDING)
+  assignedAdminId String?
+  assignedAdmin   User?              @relation("AdminRequests", fields: [assignedAdminId], references: [id], onDelete: SetNull)
+  notes           String?            // Internal phone call notes
+  verifiedAt      DateTime?
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+}
+
+model AuditLog {
+  id          String   @id @default(cuid())
+  actorUserId String?
+  actorUser   User?    @relation("ActorUser", fields: [actorUserId], references: [id], onDelete: SetNull)
+  action      String   // e.g. "VERIFICATION_STATUS_CHANGE"
+  targetType  String   // e.g. "MatrimonialProfile"
+  targetId    String?
+  metadata    String?  // Safe stringified JSON metadata
+  createdAt   DateTime @default(now())
+}

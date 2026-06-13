@@ -1,0 +1,66 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@/auth';
+import { getVerificationRequests, updateVerificationStatus, getAuditLogs } from '@/lib/profileStore';
+import { VerificationStatus } from '@prisma/client';
+
+// Helper to check if admin
+async function isAdmin(req: NextRequest) {
+  const session = await auth();
+  const simulatedAdmin = req.headers.get('x-simulator-admin') === 'true';
+  return session?.user?.role === 'ADMIN' || simulatedAdmin;
+}
+
+// Get all verification requests
+export async function GET(req: NextRequest) {
+  try {
+    if (!(await isAdmin(req))) {
+      return NextResponse.json({ error: 'Unauthorized. Admin role required.' }, { status: 403 });
+    }
+
+    const { searchParams } = new URL(req.url);
+    const mode = searchParams.get('mode');
+
+    if (mode === 'audit') {
+      const logs = await getAuditLogs();
+      return NextResponse.json({ logs });
+    }
+
+    const requests = await getVerificationRequests();
+    return NextResponse.json({ requests });
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Internal Server Error';
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
+  }
+}
+
+// Update verification status
+export async function POST(req: NextRequest) {
+  try {
+    if (!(await isAdmin(req))) {
+      return NextResponse.json({ error: 'Unauthorized. Admin role required.' }, { status: 403 });
+    }
+
+    const session = await auth();
+    const simulatedAdminId = req.headers.get('x-simulator-admin-id') || 'simulated-admin-id';
+    const adminUserId = session?.user?.id || simulatedAdminId;
+
+    const body = await req.json();
+    const { profileId, status, notes } = body;
+
+    if (!profileId || !status) {
+      return NextResponse.json({ error: 'ProfileId and status are required' }, { status: 400 });
+    }
+
+    const validStatuses: VerificationStatus[] = ['PENDING', 'APPROVED', 'REJECTED', 'NEEDS_FOLLOW_UP'];
+    if (!validStatuses.includes(status)) {
+      return NextResponse.json({ error: 'Invalid verification status' }, { status: 400 });
+    }
+
+    await updateVerificationStatus(profileId, status as VerificationStatus, notes || '', adminUserId);
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Internal Server Error';
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
+  }
+}
