@@ -112,6 +112,11 @@
   scrollbar-color: var(--gold-accent) transparent;
 }
 
+img, video {
+  max-width: 100%;
+  height: auto;
+}
+
 body {
   font-family: var(--font-sans);
   background-color: var(--cream-bg);
@@ -123,6 +128,7 @@ body {
   -webkit-font-smoothing: antialiased;
   background-image: radial-gradient(rgba(181, 145, 76, 0.08) 1.5px, transparent 1.5px);
   background-size: 32px 32px;
+  overflow-x: hidden;
 }
 
 a {
@@ -1417,10 +1423,17 @@ input[type="checkbox"] {
   border-radius: 4px;
 }
 
-/* Styled admin tables */
+/* Admin Table Responsive Wrapper */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 .admin-view-area table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 600px; /* Ensure table doesn't squash too much */
 }
 
 .admin-view-area th {
@@ -1431,6 +1444,7 @@ input[type="checkbox"] {
   letter-spacing: 0.8px;
   border-bottom: 2px solid var(--border-color);
   color: var(--gold-dark);
+  text-align: left;
 }
 
 .admin-view-area td {
@@ -1446,5 +1460,183 @@ input[type="checkbox"] {
 
 .admin-view-area tbody tr:hover {
   background-color: hsla(42, 55%, 90%, 0.15);
+}
+
+.modal-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  font-size: 13.5px;
+}
+
+/* Flex and Grid min-width reset to prevent overflow */
+.grid-3 > *, .grid-4 > *, .search-panel-grid > *, .timeline-grid > *, .admin-grid > * {
+  min-width: 0;
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 1200px) {
+  .hero-title {
+    font-size: 48px;
+  }
+}
+
+@media (max-width: 991px) {
+  .hero-split {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 60px 0 40px 0;
+    gap: 40px;
+    min-height: auto;
+  }
+  .hero-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .hero-subtitle {
+    justify-content: center;
+  }
+  .hero-subtitle::after {
+    display: none;
+  }
+  .hero-visual-container {
+    height: 380px;
+    margin-top: 20px;
+  }
+  .hero-visual-frame {
+    width: 100%;
+  }
+  .timeline-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .timeline-line {
+    display: none;
+  }
+  .safety-wrapper {
+    grid-template-columns: 1fr;
+    padding: 28px;
+  }
+  .admin-grid {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+  section {
+    padding: 80px 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+  }
+  .nav-menu {
+    display: none;
+  }
+  .search-panel {
+    padding: 20px;
+    margin-top: -20px;
+  }
+  .search-panel-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .search-panel-grid > button {
+    width: 100%;
+  }
+  .header {
+    top: 0px; /* Adjust if demo bar wraps on mobile */
+  }
+  .hero-title {
+    font-size: 38px;
+  }
+  .section-header h2 {
+    font-size: 32px;
+  }
+  .grid-3, .grid-4 {
+    grid-template-columns: 1fr;
+  }
+  .admin-nav-list {
+    border-right: none;
+    border-bottom: 1px solid var(--gold-accent);
+    display: flex;
+    overflow-x: auto;
+    padding: 16px;
+    gap: 8px;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+  .admin-nav-link {
+    margin-bottom: 0;
+    flex: 0 0 auto;
+  }
+  .admin-view-area {
+    padding: 24px 16px;
+  }
+  .modal-overlay {
+    padding: 10px;
+  }
+  .modal-content {
+    max-height: 95vh;
+  }
+  .modal-header {
+    padding: 16px 20px;
+  }
+  .modal-body {
+    padding: 20px;
+  }
+  .demo-bar {
+    justify-content: center;
+    padding: 8px 16px;
+  }
+  .demo-bar-controls {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+  .footer {
+    padding: 60px 0 30px 0;
+  }
+  .trust-strip {
+    flex-direction: column;
+    gap: 24px;
+    align-items: center;
+    text-align: center;
+  }
+  .timeline-container {
+    margin-top: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-details-grid {
+    grid-template-columns: 1fr;
+  }
+  .hero-title {
+    font-size: 32px;
+  }
+  .hero-description {
+    font-size: 15px;
+  }
+  .btn {
+    padding: 10px 20px;
+    width: 100%;
+    justify-content: center;
+  }
+  .tabs-container {
+    gap: 8px;
+  }
+  .tab-btn {
+    padding: 8px 16px;
+    font-size: 12.5px;
+  }
+  .pkg-card {
+    padding: 32px 20px;
+  }
+  .pkg-price {
+    font-size: 32px;
+  }
 }
 

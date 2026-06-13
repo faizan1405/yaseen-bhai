@@ -2154,7 +2154,7 @@ export default function Home() {
                   </div>
                 )}
 
-                <div style={{ backgroundColor: 'var(--white)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border-color)', overflowX: 'auto' }}>
+                <div className="table-responsive" style={{ backgroundColor: 'var(--white)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
                   <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '500px' }}>
                     <thead>
                       <tr style={{ borderBottom: '2px solid var(--border-color)', height: '40px', fontSize: '13px', textTransform: 'uppercase', color: 'var(--gold-dark)' }}>
@@ -2225,7 +2225,7 @@ export default function Home() {
                   Premium Package Purchases
                 </h1>
 
-                <div style={{ backgroundColor: 'var(--white)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border-color)', overflowX: 'auto' }}>
+                <div className="table-responsive" style={{ backgroundColor: 'var(--white)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
                   <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '800px' }}>
                     <thead>
                       <tr style={{ borderBottom: '2px solid var(--border-color)', height: '40px', fontSize: '13px', textTransform: 'uppercase', color: 'var(--gold-dark)' }}>
@@ -2344,7 +2344,7 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div style={{ backgroundColor: 'var(--white)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border-color)', overflowX: 'auto' }}>
+                <div className="table-responsive" style={{ backgroundColor: 'var(--white)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
                   <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '600px' }}>
                     <thead>
                       <tr style={{ borderBottom: '2px solid var(--border-color)', height: '40px', fontSize: '13px', textTransform: 'uppercase', color: 'var(--gold-dark)' }}>
@@ -2541,7 +2541,7 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', fontSize: '13.5px' }}>
+                <div className="modal-details-grid">
                   <div style={{ gridColumn: 'span 2', borderTop: '1px solid var(--border-color)', paddingTop: '12px' }}>
                     <strong>Personal Bio</strong>
                     <p style={{ color: 'var(--text-dark)', marginTop: '4px', lineHeight: '1.6' }}>
