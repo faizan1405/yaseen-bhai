@@ -95,6 +95,7 @@ const MOCK_PROFILES_DB: Array<{
   noCastePreference: boolean;
   noMaslakPreference: boolean;
   willingToRelocate: boolean;
+  category?: string | null;
 }> = [
   {
     id: '60d5ecb86f67a213e4b7b261',
@@ -134,6 +135,7 @@ const MOCK_PROFILES_DB: Array<{
     noCastePreference: false,
     noMaslakPreference: false,
     willingToRelocate: true,
+    category: 'high_profile',
   },
   {
     id: '60d5ecb86f67a213e4b7b262',
@@ -173,6 +175,7 @@ const MOCK_PROFILES_DB: Array<{
     noCastePreference: false,
     noMaslakPreference: false,
     willingToRelocate: false,
+    category: 'second_marriage',
   },
   {
     id: '60d5ecb86f67a213e4b7b263',
@@ -212,6 +215,7 @@ const MOCK_PROFILES_DB: Array<{
     noCastePreference: true,
     noMaslakPreference: true,
     willingToRelocate: true,
+    category: 'good_profile',
   }
 ];
 
@@ -413,20 +417,26 @@ export async function upsertProfile(
     noCastePreference?: boolean;
     noMaslakPreference?: boolean;
     willingToRelocate?: boolean;
+    category?: string | null;
   }
 ) {
   const isDb = await testDbConnection();
   if (isDb) {
     try {
       const dbUserId = getValidObjectId(userId);
+      const { category, ...rest } = data;
+      const cleanCategory = category === null ? 'normal' : category;
+      
       return await prisma.matrimonialProfile.upsert({
         where: { userId: dbUserId },
         update: {
-          ...data,
+          ...rest,
+          ...(cleanCategory !== undefined ? { category: cleanCategory } : {}),
           profileCompletionStatus: 'COMPLETE' as ProfileCompletionStatus,
         },
         create: {
-          ...data,
+          ...rest,
+          category: cleanCategory || 'normal',
           userId: dbUserId,
           profileCompletionStatus: 'COMPLETE' as ProfileCompletionStatus,
           verificationStatus: 'PENDING' as VerificationStatus,
@@ -484,6 +494,7 @@ export async function upsertProfile(
     noCastePreference: data.noCastePreference ?? false,
     noMaslakPreference: data.noMaslakPreference ?? false,
     willingToRelocate: data.willingToRelocate ?? false,
+    category: data.category ?? 'normal',
   };
 
   if (existingIndex > -1 && globalStore.inMemoryProfiles) {
@@ -719,7 +730,7 @@ export async function createPackagePurchase(data: {
     profileId: dbProfileId,
     paymentStatus: 'PENDING' as PaymentStatus,
     accessStatus: 'ACTIVE',
-    eligibilityStatus: data.packageType === 'HIGH_PROFILE' ? ('PENDING' as ApprovalStatus) : ('APPROVED' as ApprovalStatus),
+    eligibilityStatus: data.packageType === 'high_profile_package' ? ('PENDING' as ApprovalStatus) : ('APPROVED' as ApprovalStatus),
     marriageConfirmation: 'PENDING',
     successFeePaymentStatus: 'PENDING' as PaymentStatus,
     razorpayPaymentId: null,
@@ -774,11 +785,11 @@ export async function verifyPackagePurchase(orderId: string, paymentId: string) 
         data: {
           paymentStatus: 'PAID' as PaymentStatus,
           razorpayPaymentId: paymentId,
-          expiryDate: purchase.packageType === 'STANDARD' ? expiryDate : null,
+          expiryDate: purchase.packageType === 'monthly_membership' ? expiryDate : null,
         },
       });
 
-      if (purchase.packageType === 'STANDARD') {
+      if (purchase.packageType === 'monthly_membership') {
         await prisma.matrimonialProfile.update({
           where: { id: purchase.profileId },
           data: { hasPaid: true },
@@ -812,10 +823,10 @@ export async function verifyPackagePurchase(orderId: string, paymentId: string) 
   if (purchase) {
     purchase.paymentStatus = 'PAID' as PaymentStatus;
     purchase.razorpayPaymentId = paymentId;
-    purchase.expiryDate = purchase.packageType === 'STANDARD' ? expiryDate : null;
+    purchase.expiryDate = purchase.packageType === 'monthly_membership' ? expiryDate : null;
     purchase.updatedAt = new Date();
 
-    if (purchase.packageType === 'STANDARD') {
+    if (purchase.packageType === 'monthly_membership') {
       const profile = globalStore.inMemoryProfiles?.find((p) => p.id === purchase.profileId);
       if (profile) {
         profile.hasPaid = true;

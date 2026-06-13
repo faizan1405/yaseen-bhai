@@ -373,7 +373,7 @@ export const SimulatorProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
             const verifyData = await verifyRes.json();
             if (verifyData.success) {
-              if (packageType === 'STANDARD') {
+              if (packageType === 'monthly_membership') {
                 setHasPaid300(true);
               }
               setSimulatedPackages((prev) => Array.from(new Set([...prev, packageType])));

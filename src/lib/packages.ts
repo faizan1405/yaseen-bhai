@@ -1,4 +1,4 @@
-export type PackageType = 'STANDARD' | 'CURATED' | 'SECOND_MARRIAGE' | 'HIGH_PROFILE';
+export type PackageType = 'monthly_membership' | 'good_profile_package' | 'second_marriage_package' | 'high_profile_package';
 
 export interface PackageDefinition {
   type: PackageType;
@@ -12,64 +12,64 @@ export interface PackageDefinition {
 }
 
 export const PREMIUM_PACKAGES: Record<PackageType, PackageDefinition> = {
-  STANDARD: {
-    type: 'STANDARD',
-    name: 'Standard Monthly',
+  monthly_membership: {
+    type: 'monthly_membership',
+    name: 'Monthly Membership',
     basePrice: 300,
     gstRate: 0.18,
     totalAmount: 354,
     billingType: 'MONTHLY',
     successFeeAmount: 0,
     benefits: [
-      'View unblurred profile photos',
-      'Expose call-verified phone numbers',
-      'Search and filter matches',
+      'View unblurred normal profiles',
+      'Expose basic phone numbers',
+      'Search and filter directory',
       'Direct candidate contacts'
     ]
   },
-  CURATED: {
-    type: 'CURATED',
-    name: 'Curated Matches',
+  good_profile_package: {
+    type: 'good_profile_package',
+    name: 'Good Profile Package',
     basePrice: 5500,
     gstRate: 0.18,
     totalAmount: 6490,
     billingType: 'ONE_TIME',
     successFeeAmount: 21000,
     benefits: [
-      'Custom personal matchmaking',
+      'For handsome & beautiful profile matches',
+      'Access to attractive/good-looking profiles',
       'Leads provided until marriage',
-      'Separate dashboard support',
-      'Success Fee: ₹21,000'
+      'Success Fee: ₹21,000 after marriage confirmation'
     ]
   },
-  SECOND_MARRIAGE: {
-    type: 'SECOND_MARRIAGE',
-    name: 'Second-Marriage',
+  second_marriage_package: {
+    type: 'second_marriage_package',
+    name: 'Second Marriage Package',
     basePrice: 11000,
     gstRate: 0.18,
     totalAmount: 12980,
     billingType: 'ONE_TIME',
     successFeeAmount: 0,
     benefits: [
-      'Private segregated directory',
-      'Specially customized match leads',
-      '1-on-1 advisor calls',
-      'No Success Fee'
+      'For second marriage matches',
+      'Dedicated matchmaking access',
+      'Leads provided until marriage',
+      'No extra after-marriage fee'
     ]
   },
-  HIGH_PROFILE: {
-    type: 'HIGH_PROFILE',
-    name: 'High-Profile',
+  high_profile_package: {
+    type: 'high_profile_package',
+    name: 'High Profile Package',
     basePrice: 21000,
     gstRate: 0.18,
     totalAmount: 24780,
     billingType: 'ONE_TIME',
     successFeeAmount: 25000,
     benefits: [
-      'For Doctors, Masters & Ultra-affluent',
-      'Exclusive private group',
-      'Dedicated personal matchmaker',
-      'Success Fee: ₹25,000'
+      'For candidates earning ₹10 lakh+ annually',
+      'Doctors, engineers, professionals & premium families',
+      'Leads provided until marriage',
+      'Success Fee: ₹25,000 after marriage confirmation'
     ]
   }
 };

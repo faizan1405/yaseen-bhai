@@ -21,38 +21,49 @@ export const ProfileDetails: React.FC = () => {
 
   if (!selectedProfileForDetails) return null;
 
-  const isSecMarriage = selectedProfileForDetails.maritalStatus !== 'Single';
+  const profileCat = (selectedProfileForDetails as any).category || '';
+  
+  const isSecMarriage = selectedProfileForDetails.maritalStatus !== 'Single' || profileCat === 'second_marriage';
   const isHighProf = 
+    profileCat === 'high_profile' ||
     selectedProfileForDetails.occupation.toLowerCase().includes('doctor') ||
     selectedProfileForDetails.occupation.toLowerCase().includes('engineer') ||
     selectedProfileForDetails.occupation.toLowerCase().includes('business') ||
     selectedProfileForDetails.annualIncomeRange.includes('₹10 LPA') ||
     selectedProfileForDetails.annualIncomeRange.includes('₹15 LPA') ||
     selectedProfileForDetails.annualIncomeRange.includes('Above');
+  
+  const isGoodProfile = profileCat === 'good_profile';
 
-  const hasSecMarriageAccess = simulatedPackages.includes('SECOND_MARRIAGE');
-  const hasHighProfAccess = simulatedPackages.includes('HIGH_PROFILE') && simulatedHighProfileApproved;
+  const hasPaidMonthly = hasPaid300 || simulatedPackages.includes('monthly_membership');
+  const hasSecMarriageAccess = simulatedPackages.includes('second_marriage_package');
+  const hasHighProfAccess = simulatedPackages.includes('high_profile_package') && simulatedHighProfileApproved;
+  const hasGoodProfileAccess = simulatedPackages.includes('good_profile_package');
 
   let modalBlur = !isLoggedIn;
   let modalLockReason = '';
-  let modalUnlockText = 'Unlock Standard (₹300)';
+  let modalUnlockText = 'Unlock Monthly Membership (₹300)';
 
   if (!isLoggedIn) {
     modalBlur = true;
     modalLockReason = 'Log in using your secure account to view photos and contact';
     modalUnlockText = 'Log In';
+  } else if (!hasPaidMonthly) {
+    modalBlur = true;
+    modalLockReason = 'Activate monthly membership (₹300) to view normal matrimonial profiles.';
+    modalUnlockText = 'Unlock Monthly Membership (₹300)';
+  } else if (isGoodProfile && !hasGoodProfileAccess) {
+    modalBlur = true;
+    modalLockReason = 'Buy Good Profile Package for ₹5,500 to view these profiles.';
+    modalUnlockText = 'Buy Good Profile Package (₹5,500)';
   } else if (isSecMarriage && !hasSecMarriageAccess) {
     modalBlur = true;
-    modalLockReason = 'Second-Marriage Candidate. Access requires Second-Marriage package.';
-    modalUnlockText = 'Unlock Second-Marriage (₹11,000)';
+    modalLockReason = 'Second-Marriage Candidate. Access requires Second Marriage Package.';
+    modalUnlockText = 'Unlock Second Marriage (₹11,000)';
   } else if (isHighProf && !hasHighProfAccess) {
     modalBlur = true;
-    modalLockReason = 'High-Profile Match. Requires High-Profile package & Admin eligibility approval.';
-    modalUnlockText = 'Unlock High-Profile (₹21,000)';
-  } else if (!hasPaid300 && !simulatedPackages.includes('STANDARD')) {
-    modalBlur = true;
-    modalLockReason = 'Activate standard membership to view photos and contact';
-    modalUnlockText = 'Unlock Standard (₹300)';
+    modalLockReason = 'High-Profile Match. Requires High Profile package & Admin eligibility approval.';
+    modalUnlockText = 'Unlock High Profile (₹21,000)';
   }
 
   const handleUnlockClick = () => {

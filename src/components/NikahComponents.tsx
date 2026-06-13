@@ -190,8 +190,11 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
   getProfileImage,
   getThemeClass
 }) => {
-  const isSecMarriage = profile.maritalStatus !== 'Single';
+  const profileCat = (profile as any).category || '';
+
+  const isSecMarriage = profile.maritalStatus !== 'Single' || profileCat === 'second_marriage';
   const isHighProf = 
+    profileCat === 'high_profile' ||
     profile.occupation.toLowerCase().includes('doctor') ||
     profile.occupation.toLowerCase().includes('engineer') ||
     profile.occupation.toLowerCase().includes('business') ||
@@ -199,29 +202,37 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
     profile.annualIncomeRange.includes('₹15 LPA') ||
     profile.annualIncomeRange.includes('Above');
 
-  const hasSecMarriageAccess = simulatedPackages.includes('SECOND_MARRIAGE');
-  const hasHighProfAccess = simulatedPackages.includes('HIGH_PROFILE') && simulatedHighProfileApproved;
+  const isGoodProfile = profileCat === 'good_profile';
+
+  const hasPaidMonthly = hasPaid300 || simulatedPackages.includes('monthly_membership');
+  const hasSecMarriageAccess = simulatedPackages.includes('second_marriage_package');
+  const hasHighProfAccess = simulatedPackages.includes('high_profile_package') && simulatedHighProfileApproved;
+  const hasGoodProfileAccess = simulatedPackages.includes('good_profile_package');
 
   let shouldBlur = !isLoggedIn;
   let lockReason = '';
-  let unlockText = 'Unlock Standard (₹300)';
+  let unlockText = 'Unlock Monthly Membership (₹300)';
 
   if (!isLoggedIn) {
     shouldBlur = true;
     lockReason = 'Log in to view wedding profile photos and contact details';
     unlockText = 'Log In';
+  } else if (!hasPaidMonthly) {
+    shouldBlur = true;
+    lockReason = 'Activate monthly membership (₹300) to view normal profiles.';
+    unlockText = 'Unlock Monthly (₹300)';
+  } else if (isGoodProfile && !hasGoodProfileAccess) {
+    shouldBlur = true;
+    lockReason = 'Good Profile Candidate. Buy Good Profile Package for ₹5,500 to view.';
+    unlockText = 'Buy Good Profile Package (₹5,500)';
   } else if (isSecMarriage && !hasSecMarriageAccess) {
     shouldBlur = true;
-    lockReason = 'Second-Marriage Candidate. Unlock with Second-Marriage Package.';
-    unlockText = 'Unlock Second-Marriage (₹11,000)';
+    lockReason = 'Second-Marriage Candidate. Unlock with Second Marriage Package.';
+    unlockText = 'Unlock Second Marriage (₹11,000)';
   } else if (isHighProf && !hasHighProfAccess) {
     shouldBlur = true;
-    lockReason = 'High-Profile Candidate. Requires package and admin verification approval.';
-    unlockText = 'Unlock High-Profile (₹21,000)';
-  } else if (!hasPaid300 && !simulatedPackages.includes('STANDARD')) {
-    shouldBlur = true;
-    lockReason = 'Activate standard monthly membership to view photos & contact info.';
-    unlockText = 'Unlock Standard (₹300)';
+    lockReason = 'High-Profile Candidate. Requires High Profile Package and approval.';
+    unlockText = 'Unlock High Profile (₹21,000)';
   }
 
   const themeClass = getThemeClass(profile.themeColor);
@@ -257,6 +268,11 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
         gap: '6px'
       }}>
         {profile.verificationStatus === 'APPROVED' && <VerifiedBadge />}
+        {isGoodProfile && (
+          <span className="card-badge" style={{ backgroundColor: '#059669', color: '#fff', fontSize: '11px', fontWeight: 'bold', padding: '4px 10px', borderRadius: '20px' }}>
+            💖 Good Profile
+          </span>
+        )}
         {isHighProf && (
           <span className="card-badge" style={{ backgroundColor: 'var(--gold-accent)', color: '#fff', fontSize: '11px', fontWeight: 'bold', padding: '4px 10px', borderRadius: '20px' }}>
             ⭐ High-Profile

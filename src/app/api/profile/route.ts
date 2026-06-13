@@ -24,14 +24,18 @@ export async function GET(req: NextRequest) {
     }
 
     // Identify profile categories
-    const isSecondMarriage = profile.maritalStatus !== 'Single';
+    const profileCat = (profile as any).category || '';
+    const isSecondMarriage = profile.maritalStatus !== 'Single' || profileCat === 'second_marriage';
     const isHighProfile = 
+      profileCat === 'high_profile' ||
       profile.occupation.toLowerCase().includes('doctor') ||
       profile.occupation.toLowerCase().includes('engineer') ||
       profile.occupation.toLowerCase().includes('business') ||
       profile.annualIncomeRange.includes('₹10 LPA') ||
       profile.annualIncomeRange.includes('₹15 LPA') ||
       profile.annualIncomeRange.includes('Above');
+
+    const isGoodProfile = profileCat === 'good_profile';
 
     // Security check: is the current user allowed to see private fields?
     const isOwner = session?.user?.id === targetUserId;
@@ -62,18 +66,20 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    const hasStandardPkg = viewerHasPaid || hasPaid300Check() || simulatedPaid;
-    const hasSecondMarriagePkg = viewerPurchases.some(p => p.packageType === 'SECOND_MARRIAGE' && p.paymentStatus === 'PAID') || simulatedPackages.includes('SECOND_MARRIAGE');
-    const hasHighProfilePkg = viewerPurchases.some(p => p.packageType === 'HIGH_PROFILE' && p.paymentStatus === 'PAID' && p.eligibilityStatus === 'APPROVED') || (simulatedPackages.includes('HIGH_PROFILE') && simulatedHighProfileApproved);
+    const hasStandardPkg = viewerHasPaid || hasPaid300Check() || simulatedPaid || simulatedPackages.includes('monthly_membership');
+    const hasSecondMarriagePkg = viewerPurchases.some(p => p.packageType === 'second_marriage_package' && p.paymentStatus === 'PAID') || simulatedPackages.includes('second_marriage_package');
+    const hasHighProfilePkg = viewerPurchases.some(p => p.packageType === 'high_profile_package' && p.paymentStatus === 'PAID' && p.eligibilityStatus === 'APPROVED') || (simulatedPackages.includes('high_profile_package') && simulatedHighProfileApproved);
+    const hasGoodProfilePkg = viewerPurchases.some(p => p.packageType === 'good_profile_package' && p.paymentStatus === 'PAID') || simulatedPackages.includes('good_profile_package');
 
     function hasPaid300Check() {
-      return viewerPurchases.some(p => p.packageType === 'STANDARD' && p.paymentStatus === 'PAID');
+      return viewerPurchases.some(p => p.packageType === 'monthly_membership' && p.paymentStatus === 'PAID');
     }
 
     // Enforce privacy constraints
     const isAuthorizedForSecondMarriage = isOwner || isAdmin || hasSecondMarriagePkg;
     const isAuthorizedForHighProfile = isOwner || isAdmin || hasHighProfilePkg;
     const isAuthorizedForStandard = isOwner || isAdmin || hasStandardPkg;
+    const isAuthorizedForGoodProfile = isOwner || isAdmin || (hasStandardPkg && hasGoodProfilePkg);
 
     // Log access where appropriate
     if (viewerId) {
@@ -87,11 +93,38 @@ export async function GET(req: NextRequest) {
               action: actionMsg,
               targetType: 'MatrimonialProfile',
               targetId: targetUserId,
-              metadata: JSON.stringify({ isSecondMarriage, isHighProfile, authorized: isAuthorizedForStandard }),
+              metadata: JSON.stringify({ isSecondMarriage, isHighProfile, isGoodProfile, authorized: isAuthorizedForStandard }),
             }
           });
         } catch {}
       }
+    }
+
+    if (isGoodProfile && !isAuthorizedForGoodProfile) {
+      return NextResponse.json({
+        profile: {
+          id: profile.id,
+          fullName: 'Good Profile Candidate (Locked)',
+          gender: profile.gender,
+          dateOfBirth: new Date(1900, 0, 1),
+          maritalStatus: profile.maritalStatus,
+          city: profile.city,
+          state: profile.state,
+          country: profile.country,
+          education: 'Hidden (Good Profile Package Required)',
+          occupation: 'Hidden',
+          annualIncomeRange: 'Hidden',
+          bio: 'Buy Good Profile Package for ₹5,500 to view these profiles.',
+          themeColor: profile.themeColor,
+          verificationStatus: profile.verificationStatus,
+          profileCompletionStatus: profile.profileCompletionStatus,
+          createdAt: profile.createdAt,
+          phoneNumber: '+91-XXXXX-XXXXX',
+          latitude: null,
+          longitude: null,
+          isLockedCategory: 'good_profile_package'
+        }
+      });
     }
 
     if (isSecondMarriage && !isAuthorizedForSecondMarriage) {
@@ -116,7 +149,7 @@ export async function GET(req: NextRequest) {
           phoneNumber: '+91-XXXXX-XXXXX',
           latitude: null,
           longitude: null,
-          isLockedCategory: 'SECOND_MARRIAGE'
+          isLockedCategory: 'second_marriage_package'
         }
       });
     }
@@ -143,7 +176,7 @@ export async function GET(req: NextRequest) {
           phoneNumber: '+91-XXXXX-XXXXX',
           latitude: null,
           longitude: null,
-          isLockedCategory: 'HIGH_PROFILE'
+          isLockedCategory: 'high_profile_package'
         }
       });
     }
@@ -164,7 +197,7 @@ export async function GET(req: NextRequest) {
           education: profile.education,
           occupation: profile.occupation,
           annualIncomeRange: profile.annualIncomeRange,
-          bio: profile.bio,
+          bio: 'Unlock this profile by subscribing to our monthly membership.',
           themeColor: profile.themeColor,
           verificationStatus: profile.verificationStatus,
           profileCompletionStatus: profile.profileCompletionStatus,
@@ -188,7 +221,6 @@ export async function GET(req: NextRequest) {
         }
       });
     }
-
 
     return NextResponse.json({ profile });
   } catch (error) {

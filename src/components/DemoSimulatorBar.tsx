@@ -40,7 +40,7 @@ export const DemoSimulatorBar: React.FC = () => {
 
   return (
     <div className="demo-bar font-sans">
-      <span className="demo-bar-label">DEMO MODE — Verification & Custom Redesign Simulator</span>
+      <span className="demo-bar-label">DEMO MODE — Pricing & Access Simulator</span>
       <div className="demo-bar-controls">
         <label className="demo-bar-checkbox">
           <input
@@ -61,70 +61,74 @@ export const DemoSimulatorBar: React.FC = () => {
         <label className="demo-bar-checkbox">
           <input
             type="checkbox"
-            checked={hasPaid300 || simulatedPackages.includes('STANDARD')}
+            checked={isLoggedIn && (hasPaid300 || simulatedPackages.includes('monthly_membership'))}
+            disabled={!isLoggedIn}
             onChange={(e) => {
               const checked = e.target.checked;
               setHasPaid300(checked);
               if (checked) {
-                setSimulatedPackages((prev) => Array.from(new Set([...prev, 'STANDARD'])));
+                setSimulatedPackages((prev) => Array.from(new Set([...prev, 'monthly_membership'])));
               } else {
-                setSimulatedPackages((prev) => prev.filter((p) => p !== 'STANDARD'));
+                setSimulatedPackages((prev) => prev.filter((p) => p !== 'monthly_membership'));
               }
             }}
             id="sim-paid-300-checkbox"
           />
-          Standard Pkg Paid
+          Monthly Active (₹300)
         </label>
         <label className="demo-bar-checkbox">
           <input
             type="checkbox"
-            checked={simulatedPackages.includes('CURATED')}
+            checked={isLoggedIn && simulatedPackages.includes('good_profile_package')}
+            disabled={!isLoggedIn}
             onChange={(e) => {
               const checked = e.target.checked;
               if (checked) {
-                setSimulatedPackages((prev) => Array.from(new Set([...prev, 'CURATED'])));
+                setSimulatedPackages((prev) => Array.from(new Set([...prev, 'good_profile_package'])));
               } else {
-                setSimulatedPackages((prev) => prev.filter((p) => p !== 'CURATED'));
+                setSimulatedPackages((prev) => prev.filter((p) => p !== 'good_profile_package'));
               }
             }}
-            id="sim-curated-checkbox"
+            id="sim-good-profile-checkbox"
           />
-          Curated Paid
+          Good Profile Paid (₹5,500)
         </label>
         <label className="demo-bar-checkbox">
           <input
             type="checkbox"
-            checked={simulatedPackages.includes('SECOND_MARRIAGE')}
+            checked={isLoggedIn && simulatedPackages.includes('second_marriage_package')}
+            disabled={!isLoggedIn}
             onChange={(e) => {
               const checked = e.target.checked;
               if (checked) {
-                setSimulatedPackages((prev) => Array.from(new Set([...prev, 'SECOND_MARRIAGE'])));
+                setSimulatedPackages((prev) => Array.from(new Set([...prev, 'second_marriage_package'])));
               } else {
-                setSimulatedPackages((prev) => prev.filter((p) => p !== 'SECOND_MARRIAGE'));
+                setSimulatedPackages((prev) => prev.filter((p) => p !== 'second_marriage_package'));
               }
             }}
             id="sim-second-marriage-checkbox"
           />
-          Second Marriage Paid
+          Second Marriage Paid (₹11,000)
         </label>
         <label className="demo-bar-checkbox">
           <input
             type="checkbox"
-            checked={simulatedPackages.includes('HIGH_PROFILE')}
+            checked={isLoggedIn && simulatedPackages.includes('high_profile_package')}
+            disabled={!isLoggedIn}
             onChange={(e) => {
               const checked = e.target.checked;
               if (checked) {
-                setSimulatedPackages((prev) => Array.from(new Set([...prev, 'HIGH_PROFILE'])));
+                setSimulatedPackages((prev) => Array.from(new Set([...prev, 'high_profile_package'])));
               } else {
-                setSimulatedPackages((prev) => prev.filter((p) => p !== 'HIGH_PROFILE'));
+                setSimulatedPackages((prev) => prev.filter((p) => p !== 'high_profile_package'));
                 setSimulatedHighProfileApproved(false);
               }
             }}
             id="sim-high-profile-checkbox"
           />
-          High Profile Paid
+          High Profile Paid (₹21,000)
         </label>
-        {simulatedPackages.includes('HIGH_PROFILE') && (
+        {isLoggedIn && simulatedPackages.includes('high_profile_package') && (
           <label className="demo-bar-checkbox" style={{ color: 'var(--gold-accent)' }}>
             <input
               type="checkbox"

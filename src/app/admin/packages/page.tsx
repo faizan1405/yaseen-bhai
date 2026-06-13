@@ -60,10 +60,10 @@ export default function PremiumPackagesPage() {
             ) : (
               adminPurchases.map((purchase) => {
                 const getPriceDetails = (pkgType: string) => {
-                  if (pkgType === 'STANDARD') return { name: 'Standard Monthly Membership', base: 300, gst: 54, total: 354 };
-                  if (pkgType === 'CURATED') return { name: 'Curated Profiles', base: 5500, gst: 990, total: 6490 };
-                  if (pkgType === 'SECOND_MARRIAGE') return { name: 'Second-Marriage Profiles', base: 11000, gst: 1980, total: 12980 };
-                  if (pkgType === 'HIGH_PROFILE') return { name: 'High-Profile Matches', base: 21000, gst: 3780, total: 24780 };
+                  if (pkgType === 'monthly_membership') return { name: 'Monthly Membership', base: 300, gst: 54, total: 354 };
+                  if (pkgType === 'good_profile_package') return { name: 'Good Profile Package', base: 5500, gst: 990, total: 6490 };
+                  if (pkgType === 'second_marriage_package') return { name: 'Second Marriage Package', base: 11000, gst: 1980, total: 12980 };
+                  if (pkgType === 'high_profile_package') return { name: 'High Profile Package', base: 21000, gst: 3780, total: 24780 };
                   return { name: pkgType, base: 0, gst: 0, total: 0 };
                 };
                 const details = getPriceDetails(purchase.packageType);
@@ -91,7 +91,7 @@ export default function PremiumPackagesPage() {
                     </td>
                     <td style={{ padding: '12px 8px' }}>{new Date(purchase.purchaseDate).toLocaleDateString()}</td>
                     <td style={{ padding: '12px 8px' }}>
-                      {purchase.packageType === 'HIGH_PROFILE' ? (
+                      {purchase.packageType === 'high_profile_package' ? (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                           <span style={{ fontWeight: 'bold', fontSize: '12px', color: purchase.eligibilityStatus === 'APPROVED' ? 'green' : purchase.eligibilityStatus === 'REJECTED' ? 'red' : 'orange' }}>
                             {purchase.eligibilityStatus}
@@ -108,7 +108,7 @@ export default function PremiumPackagesPage() {
                       )}
                     </td>
                     <td style={{ padding: '12px 8px' }}>
-                      {['CURATED', 'HIGH_PROFILE'].includes(purchase.packageType) ? (
+                      {['good_profile_package', 'high_profile_package'].includes(purchase.packageType) ? (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                           <span style={{ fontWeight: 'bold', color: purchase.marriageConfirmation === 'CONFIRMED' ? 'green' : 'var(--text-dark)' }}>{purchase.marriageConfirmation}</span>
                           {purchase.marriageConfirmation === 'PENDING' ? (
@@ -126,7 +126,7 @@ export default function PremiumPackagesPage() {
                       )}
                     </td>
                     <td style={{ padding: '12px 8px' }}>
-                      {['CURATED', 'HIGH_PROFILE'].includes(purchase.packageType) ? (
+                      {['good_profile_package', 'high_profile_package'].includes(purchase.packageType) ? (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                           <span style={{ fontWeight: 'bold', color: purchase.successFeePaymentStatus === 'PAID' ? 'green' : 'orange' }}>{purchase.successFeePaymentStatus}</span>
                           {purchase.successFeePaymentStatus === 'PENDING' && (
@@ -161,7 +161,7 @@ export default function PremiumPackagesPage() {
             <label className="form-label">Select Curated Buyer</label>
             <select className="form-control" value={assignBuyerId} onChange={(e) => setAssignBuyerId(e.target.value)}>
               <option value="">-- Choose Buyer --</option>
-              {adminPurchases.filter(p => p.packageType === 'CURATED' && p.paymentStatus === 'PAID').map(p => (
+              {adminPurchases.filter(p => p.packageType === 'good_profile_package' && p.paymentStatus === 'PAID').map(p => (
                 <option key={p.id} value={p.profileId}>{p.profile?.fullName} ({p.profile?.city})</option>
               ))}
             </select>

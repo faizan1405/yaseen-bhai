@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const packageTypeInput = (body.packageType || 'STANDARD') as PackageType;
+    const packageTypeInput = (body.packageType || 'monthly_membership') as PackageType;
 
     const pkgDef = PREMIUM_PACKAGES[packageTypeInput];
     if (!pkgDef) {

@@ -762,45 +762,45 @@ export default function Home() {
 
                 <div className="grid-4">
                   <PremiumPlanCard
-                    title="Standard Monthly"
+                    title="Monthly Membership"
                     price={300}
                     gstRate={0.18}
                     billingText="per month"
-                    features={['View unblurred candidate photos', 'Reveal call-verified phone numbers', 'Advanced profile filters', 'Save matching biodatas']}
-                    isActive={hasPaid300 || simulatedPackages.includes('STANDARD')}
-                    ctaText="Activate Plan"
-                    onActivate={() => handleRazorpayCheckout('STANDARD', 300, 'Standard Monthly Membership')}
+                    features={['View unblurred normal profiles', 'Reveal call-verified phone numbers', 'Advanced directory search filters', 'Save matching biodatas']}
+                    isActive={hasPaid300 || simulatedPackages.includes('monthly_membership')}
+                    ctaText="Activate Membership"
+                    onActivate={() => handleRazorpayCheckout('monthly_membership', 300, 'Monthly Membership')}
                     isPopular
                   />
                   <PremiumPlanCard
-                    title="Curated Matches"
+                    title="Good Profile Package"
                     price={5500}
                     gstRate={0.18}
                     billingText="one-time base"
-                    features={['Personal match assistant support', 'Handpicked matches via email/WA', 'Leads provided until marriage', '₹21,000 Success fee on Nikah']}
-                    isActive={simulatedPackages.includes('CURATED')}
-                    ctaText="Choose Curated"
-                    onActivate={() => handleRazorpayCheckout('CURATED', 5500, 'Curated Matches Package')}
+                    features={['For handsome & beautiful profile matches', 'Leads provided until marriage', '₹21,000 payable after marriage confirmation', 'Requires active ₹300 Monthly Membership']}
+                    isActive={simulatedPackages.includes('good_profile_package')}
+                    ctaText="Buy Good Profile Package"
+                    onActivate={() => handleRazorpayCheckout('good_profile_package', 5500, 'Good Profile Package')}
                   />
                   <PremiumPlanCard
-                    title="Second-Marriage"
+                    title="Second Marriage Package"
                     price={11000}
                     gstRate={0.18}
                     billingText="one-time fee"
-                    features={['Private separated directory listing', 'Highly confidential biodata share', '1-on-1 advisor counseling checks', 'No success fee matches']}
-                    isActive={simulatedPackages.includes('SECOND_MARRIAGE')}
-                    ctaText="Choose Second Marriage"
-                    onActivate={() => handleRazorpayCheckout('SECOND_MARRIAGE', 11000, 'Second-Marriage Package')}
+                    features={['For second marriage matches', 'Private segregated directory listing', 'Leads provided until marriage', 'No extra after-marriage fee']}
+                    isActive={simulatedPackages.includes('second_marriage_package')}
+                    ctaText="Buy Second Marriage Package"
+                    onActivate={() => handleRazorpayCheckout('second_marriage_package', 11000, 'Second Marriage Package')}
                   />
                   <PremiumPlanCard
-                    title="High-Profile"
+                    title="High Profile Package"
                     price={21000}
                     gstRate={0.18}
                     billingText="one-time base"
-                    features={['For doctors, Masters, business owners', 'Exclusive verified list', 'Dedicated matchmaking desk', '₹25,000 Success fee on Nikah']}
-                    isActive={simulatedPackages.includes('HIGH_PROFILE')}
-                    ctaText="Choose High Profile"
-                    onActivate={() => handleRazorpayCheckout('HIGH_PROFILE', 21000, 'High-Profile Matches Package')}
+                    features={['For candidates earning ₹10 lakh+ annually', 'Doctors, engineers, professionals & premium families', 'Leads provided until marriage', '₹25,000 payable after marriage confirmation']}
+                    isActive={simulatedPackages.includes('high_profile_package')}
+                    ctaText="Buy High Profile Package"
+                    onActivate={() => handleRazorpayCheckout('high_profile_package', 21000, 'High Profile Package')}
                   />
                 </div>
               </div>

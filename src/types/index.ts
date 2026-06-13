@@ -34,6 +34,7 @@ export interface Profile {
   noCastePreference: boolean;
   noMaslakPreference: boolean;
   willingToRelocate: boolean;
+  category?: string | null;
 }
 
 

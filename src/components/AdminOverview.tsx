@@ -15,11 +15,11 @@ export const AdminOverview: React.FC = () => {
   const totalProfiles = profiles.length;
   const pendingVerifications = adminRequests.filter((r) => r.status === 'PENDING').length;
   const verifiedProfiles = profiles.filter((p) => p.verificationStatus === 'APPROVED').length;
-  const activeMonthlyMembers = adminPurchases.filter((p) => p.packageType === 'STANDARD' && p.paymentStatus === 'PAID').length;
+  const activeMonthlyMembers = adminPurchases.filter((p) => p.packageType === 'monthly_membership' && p.paymentStatus === 'PAID').length;
   const premiumPurchases = adminPurchases.length;
-  const curatedMatches = adminPurchases.filter((p) => p.packageType === 'CURATED').length;
-  const secondMarriage = adminPurchases.filter((p) => p.packageType === 'SECOND_MARRIAGE').length;
-  const highProfile = adminPurchases.filter((p) => p.packageType === 'HIGH_PROFILE').length;
+  const curatedMatches = adminPurchases.filter((p) => p.packageType === 'good_profile_package').length;
+  const secondMarriage = adminPurchases.filter((p) => p.packageType === 'second_marriage_package').length;
+  const highProfile = adminPurchases.filter((p) => p.packageType === 'high_profile_package').length;
   const completedMatches = adminAssignments.filter((a) => a.status === 'MARRIED').length + adminPurchases.filter((p) => p.marriageConfirmation === 'CONFIRMED').length;
   const totalAuditLogs = auditLogs.length;
 
@@ -75,7 +75,7 @@ export const AdminOverview: React.FC = () => {
 
         <div className="stat-card">
           <div>
-            <div className="stat-card-label">Curated Matches Cases</div>
+            <div className="stat-card-label">Good Profile Cases</div>
             <div className="stat-card-value">{curatedMatches}</div>
           </div>
           <div className="stat-card-icon">🤝</div>
@@ -83,7 +83,7 @@ export const AdminOverview: React.FC = () => {
 
         <div className="stat-card">
           <div>
-            <div className="stat-card-label">Second-Marriage Cases</div>
+            <div className="stat-card-label">Second Marriage Cases</div>
             <div className="stat-card-value">{secondMarriage}</div>
           </div>
           <div className="stat-card-icon">💍</div>
@@ -91,7 +91,7 @@ export const AdminOverview: React.FC = () => {
 
         <div className="stat-card">
           <div>
-            <div className="stat-card-label">High-Profile Cases</div>
+            <div className="stat-card-label">High Profile Cases</div>
             <div className="stat-card-value">{highProfile}</div>
           </div>
           <div className="stat-card-icon">👑</div>
