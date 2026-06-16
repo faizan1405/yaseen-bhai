@@ -7,7 +7,10 @@ export default function AdminSettingsPage() {
     adminEmail: '',
     adminPhone: '',
     emailAlertsEnabled: true,
-    smsAlertsEnabled: false
+    smsAlertsEnabled: false,
+    officeAddress: '',
+    mapEmbedUrl: '',
+    mapOpenUrl: ''
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -22,7 +25,10 @@ export default function AdminSettingsPage() {
             adminEmail: data.settings.adminEmail || '',
             adminPhone: data.settings.adminPhone || '',
             emailAlertsEnabled: data.settings.emailAlertsEnabled,
-            smsAlertsEnabled: data.settings.smsAlertsEnabled
+            smsAlertsEnabled: data.settings.smsAlertsEnabled,
+            officeAddress: data.settings.officeAddress || '',
+            mapEmbedUrl: data.settings.mapEmbedUrl || '',
+            mapOpenUrl: data.settings.mapOpenUrl || ''
           });
         }
         setIsLoading(false);
@@ -92,6 +98,42 @@ export default function AdminSettingsPage() {
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
           />
           <p className="text-xs text-gray-500 mt-1">Receive urgent SMS alerts.</p>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Office Address</label>
+          <input 
+            type="text" 
+            value={settings.officeAddress}
+            onChange={e => setSettings({...settings, officeAddress: e.target.value})}
+            placeholder="Shadi Mubarak Office, Bandra West, Mumbai, MH"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
+          />
+          <p className="text-xs text-gray-500 mt-1">Physical address shown on the contact page and footer.</p>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Google Maps Embed URL</label>
+          <input 
+            type="url" 
+            value={settings.mapEmbedUrl}
+            onChange={e => setSettings({...settings, mapEmbedUrl: e.target.value})}
+            placeholder="https://www.google.com/maps/embed?pb=..."
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
+          />
+          <p className="text-xs text-gray-500 mt-1">The URL of the embedded map iframe. Make sure it is an official Google Maps Embed URL.</p>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Google Maps Directions/Open URL</label>
+          <input 
+            type="url" 
+            value={settings.mapOpenUrl}
+            onChange={e => setSettings({...settings, mapOpenUrl: e.target.value})}
+            placeholder="https://www.google.com/maps/search/?api=1&query=..."
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
+          />
+          <p className="text-xs text-gray-500 mt-1">The external link used for the "Open in Google Maps" buttons.</p>
         </div>
 
         <div className="flex items-center space-x-3 pt-4 border-t border-gray-100">

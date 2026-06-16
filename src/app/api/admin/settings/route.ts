@@ -39,7 +39,15 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { adminEmail, adminPhone, emailAlertsEnabled, smsAlertsEnabled } = body;
+    const { 
+      adminEmail, 
+      adminPhone, 
+      emailAlertsEnabled, 
+      smsAlertsEnabled,
+      officeAddress,
+      mapEmbedUrl,
+      mapOpenUrl 
+    } = body;
 
     let settings = await prisma.globalSettings.findFirst();
     
@@ -50,7 +58,10 @@ export async function POST(req: NextRequest) {
           adminEmail,
           adminPhone,
           emailAlertsEnabled: !!emailAlertsEnabled,
-          smsAlertsEnabled: !!smsAlertsEnabled
+          smsAlertsEnabled: !!smsAlertsEnabled,
+          officeAddress,
+          mapEmbedUrl,
+          mapOpenUrl
         }
       });
     } else {
@@ -59,7 +70,10 @@ export async function POST(req: NextRequest) {
           adminEmail,
           adminPhone,
           emailAlertsEnabled: !!emailAlertsEnabled,
-          smsAlertsEnabled: !!smsAlertsEnabled
+          smsAlertsEnabled: !!smsAlertsEnabled,
+          officeAddress,
+          mapEmbedUrl,
+          mapOpenUrl
         }
       });
     }

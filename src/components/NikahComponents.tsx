@@ -683,6 +683,24 @@ interface PremiumFooterProps {
 }
 
 export const PremiumFooter: React.FC<PremiumFooterProps> = ({ onNavigate }) => {
+  const [location, setLocation] = React.useState<{ address: string; phone: string; phoneRaw: string; mapOpenUrl: string } | null>(null);
+
+  React.useEffect(() => {
+    fetch('/api/business-location')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && !data.error) {
+          setLocation({
+            address: data.address,
+            phone: data.phone,
+            phoneRaw: data.phoneRaw,
+            mapOpenUrl: data.mapOpenUrl
+          });
+        }
+      })
+      .catch((err) => console.error('Error fetching location for footer:', err));
+  }, []);
+
   return (
     <footer className="footer" style={{
       backgroundColor: 'var(--deep-maroon)',
@@ -700,6 +718,15 @@ export const PremiumFooter: React.FC<PremiumFooterProps> = ({ onNavigate }) => {
             <p style={{ fontSize: '13.5px', color: 'rgba(248, 241, 231, 0.8)', lineHeight: '1.8', marginBottom: '16px' }}>
               Trusted Halal Matrimony. Helping single, divorced, and high-profile Muslim candidates find compatible marriage partners.
             </p>
+            <div style={{ fontSize: '13px', color: 'rgba(248, 241, 231, 0.9)', marginBottom: '18px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <div>📍 {location ? location.address : 'Shadi Mubarak Office, Bandra West, Mumbai, MH'}</div>
+              <div>📞 Call: <a href={`tel:${location ? location.phoneRaw : '+919557006617'}`} style={{ color: 'var(--gold-accent)', fontWeight: 'bold', textDecoration: 'underline' }}>{location ? location.phone : '+91 95570 06617'}</a></div>
+              {(!location || location.mapOpenUrl) && (
+                <div>
+                  🗺️ <a href={location ? location.mapOpenUrl : 'https://www.google.com/maps/search/?api=1&query=Bandra+West%2C+Mumbai%2C+Maharashtra'} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold-light)', textDecoration: 'underline' }}>Open in Google Maps</a>
+                </div>
+              )}
+            </div>
             {/* Dua closing phrase */}
             <div style={{ fontStyle: 'italic', fontSize: '12px', color: 'var(--gold-light)', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '12px' }}>
               May Allah bless your search and grant you a righteous life partner.

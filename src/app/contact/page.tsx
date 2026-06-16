@@ -1,14 +1,33 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from '../../components/Navbar';
 import Image from 'next/image';
 import { SectionHeading, FloralCorner, PremiumFooter } from '../../components/NikahComponents';
 import LeadForm from '../../components/LeadForm';
+import { GoogleMapSection } from '../../components/GoogleMapSection';
+import { BusinessLocation, defaultBusinessLocation } from '../../lib/businessLocation';
 
 export default function ContactPage() {
   const router = useRouter();
+  const [location, setLocation] = useState<BusinessLocation>(defaultBusinessLocation);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/business-location')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && !data.error) {
+          setLocation(data);
+        }
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.error('Failed to load map location:', err);
+        setIsLoading(false);
+      });
+  }, []);
 
   const handleNavigate = (view: string) => {
     router.push('/' + (view === 'home' ? '' : view));
@@ -32,9 +51,9 @@ export default function ContactPage() {
               </div>
               <div style={{ padding: '32px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', color: 'var(--deep-maroon)' }}>Contact Details</h3>
-                <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>📍 Shadi Mubarak Office, Bandra West, Mumbai, MH</p>
+                <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>📍 {location.address}</p>
                 <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>
-                  📞 Call us: <a href="tel:+919557006617" style={{ color: 'var(--deep-maroon)', fontWeight: 'bold', textDecoration: 'underline' }}>+91 95570 06617</a> (10 AM - 6 PM)
+                  📞 Call us: <a href={`tel:${location.phoneRaw}`} style={{ color: 'var(--deep-maroon)', fontWeight: 'bold', textDecoration: 'underline' }}>{location.phone}</a> (10 AM - 6 PM)
                 </p>
                 <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>✉️ Verification Dept: support@shadimubarak.in</p>
                 <hr style={{ borderColor: 'var(--border-color)' }} />
@@ -48,6 +67,10 @@ export default function ContactPage() {
               <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', color: 'var(--deep-maroon)', marginBottom: '16px' }}>Send Support Message</h3>
               <LeadForm defaultInquiryType="General Inquiry" />
             </div>
+          </div>
+
+          <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+            <GoogleMapSection location={location} isLoading={isLoading} />
           </div>
         </div>
       </main>

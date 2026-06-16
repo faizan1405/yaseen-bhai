@@ -282,6 +282,22 @@ a {
   overflow: hidden;
 }
 
+/* Premium Google Maps Iframe Styling */
+.map-iframe {
+  border: 0;
+  display: block;
+  width: 100%;
+  min-height: 260px;
+  height: 320px;
+  background-color: #eaeaea;
+}
+
+@media (min-width: 768px) {
+  .map-iframe {
+    height: 400px;
+  }
+}
+
 .ornament {
   position: absolute;
   width: 20px;
