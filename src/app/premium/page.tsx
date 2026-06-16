@@ -4,6 +4,7 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useSimulator } from '../../context/SimulatorContext';
 import Navbar from '../../components/Navbar';
+import Image from 'next/image';
 import { SectionHeading, PremiumPlanCard, PremiumFooter } from '../../components/NikahComponents';
 
 export default function PremiumPage() {
@@ -28,6 +29,31 @@ export default function PremiumPage() {
             subtitle="Choose a package that fits your matchmaking needs. Keep your monthly membership active to access our search directory."
             scriptText="Premium Services"
           />
+
+          <div style={{ marginBottom: '40px', borderRadius: 'var(--border-radius-xl)', overflow: 'hidden', boxShadow: 'var(--shadow-premium)', position: 'relative', height: '300px' }}>
+            <Image
+              src="/images/nikah-3.jpeg"
+              alt="Premium Matrimonial Journey"
+              fill
+              style={{ objectFit: 'cover', objectPosition: 'center 40%' }}
+            />
+            <div style={{
+              position: 'absolute',
+              top: 0, left: 0, right: 0, bottom: 0,
+              background: 'linear-gradient(to right, rgba(111, 29, 53, 0.7), rgba(111, 29, 53, 0.1))',
+              display: 'flex',
+              alignItems: 'center',
+              padding: '0 40px'
+            }}>
+              <div style={{ color: 'white', maxWidth: '500px' }}>
+                <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '28px', marginBottom: '12px' }}>A Commitment to Trust</h3>
+                <p style={{ fontSize: '15px', lineHeight: '1.6', opacity: 0.9 }}>
+                  Our premium packages ensure you connect with verified, serious candidates. 
+                  Invest in a beautiful future with complete privacy and dedicated support.
+                </p>
+              </div>
+            </div>
+          </div>
 
           <div className="grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '32px', marginBottom: '60px' }}>
             <PremiumPlanCard

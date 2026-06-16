@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { useSimulator } from '../context/SimulatorContext';
-import { DecorativeArch, FloralCorner } from './NikahComponents';
 
 export const HeroSection: React.FC = () => {
   const router = useRouter();
@@ -28,70 +28,56 @@ export const HeroSection: React.FC = () => {
   };
 
   return (
-    <section className="container font-sans" style={{ padding: '20px 0 60px 0' }}>
-      <DecorativeArch className="hero-split">
-        <div className="hero-content">
-          <div className="hero-subtitle" style={{ color: 'var(--gold-accent)', fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontWeight: 600, fontSize: '18px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-            Halal & Safe Matrimonial Invitations
-          </div>
-          
-          <h1 className="hero-title font-serif" style={{ fontSize: '48px', color: 'var(--deep-maroon)', lineHeight: '1.2', fontWeight: 'bold', margin: '16px 0 24px 0' }}>
-            A Beautiful Beginning Starts With the Right Match
-          </h1>
-          
-          <p className="hero-description" style={{ fontSize: '15.5px', color: 'var(--text-muted)', lineHeight: '1.7', marginBottom: '32px' }}>
-            Discover verified matrimonial profiles through a respectful, family-friendly platform designed to help you begin your Nikah journey with confidence.
-          </p>
-          
-          <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginBottom: '24px' }}>
-            <button onClick={handleFindMatch} className="btn btn-gold" style={{ padding: '12px 28px' }}>
-              Find Your Match
-            </button>
-            <button
-              onClick={handleCreateProfile}
-              className="btn btn-primary"
-              style={{ padding: '12px 28px' }}
-            >
-              Create Your Profile
-            </button>
-          </div>
-          
-          <div style={{ fontSize: '12.5px', color: 'var(--text-muted)', display: 'flex', gap: '16px', opacity: 0.9, flexWrap: 'wrap' }}>
-            <span>✓ Manually Verified Profiles</span>
-            <span>✓ Complete Privacy Controls</span>
-            <span>✓ Family-Friendly Community</span>
-          </div>
-        </div>
+    <section className="font-sans" style={{ position: 'relative', minHeight: '600px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '60px 20px', overflow: 'hidden' }}>
+      {/* Background Image */}
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 0 }}>
+        <Image
+          src="/images/nikah-1.jpeg"
+          alt="Premium Islamic Matrimonial Nikah"
+          fill
+          style={{ objectFit: 'cover', objectPosition: 'center' }}
+          priority
+        />
+        {/* Soft Cream/Gradient Overlay for readability */}
+        <div style={{
+          position: 'absolute',
+          top: 0, left: 0, right: 0, bottom: 0,
+          background: 'linear-gradient(to bottom, rgba(253, 248, 245, 0.85), rgba(253, 248, 245, 0.95))'
+        }} />
+      </div>
 
-        <div className="hero-visual-container" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <div className="hero-visual-frame" style={{ width: '90%', borderRadius: 'var(--border-radius-xl)', overflow: 'hidden', border: '1.5px solid var(--gold-accent)', padding: '6px', backgroundColor: '#fff' }}>
-            {/* Premium bridal visual representing couples */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=600&h=800"
-              alt="Muslim Couple Marriage scene illustration"
-              className="hero-visual-img"
-              style={{ width: '100%', borderRadius: 'calc(var(--border-radius-xl) - 4px)', objectFit: 'cover' }}
-            />
-          </div>
-          
-          <div className="floating-preview-card floating-card-1">
-            <span style={{ color: 'var(--gold-accent)' }}>✓</span>
-            <div>
-              <strong style={{ display: 'block', fontSize: '12.5px', color: 'var(--text-dark)' }}>Verified Biodata</strong>
-              <span style={{ fontSize: '10.5px', color: 'var(--text-muted)' }}>100% Manual Phone Checked</span>
-            </div>
-          </div>
-
-          <div className="floating-preview-card floating-card-2">
-            <span style={{ color: 'var(--gold-accent)' }}>⭐</span>
-            <div>
-              <strong style={{ display: 'block', fontSize: '12.5px', color: 'var(--text-dark)' }}>Protected Photos</strong>
-              <span style={{ fontSize: '10.5px', color: 'var(--text-muted)' }}>Blurred for Unpaid Members</span>
-            </div>
-          </div>
+      <div className="container" style={{ position: 'relative', zIndex: 1, textAlign: 'center', maxWidth: '800px' }}>
+        <div className="hero-subtitle" style={{ color: 'var(--gold-accent)', fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontWeight: 600, fontSize: '20px', marginBottom: '16px', display: 'inline-flex', alignItems: 'center', gap: '10px' }}>
+          Halal & Safe Matrimonial Invitations
         </div>
-      </DecorativeArch>
+        
+        <h1 className="hero-title font-serif" style={{ fontSize: '56px', color: 'var(--deep-maroon)', lineHeight: '1.2', fontWeight: 'bold', margin: '0 0 24px 0' }}>
+          A Beautiful Beginning Starts With the Right Match
+        </h1>
+        
+        <p className="hero-description" style={{ fontSize: '18px', color: 'var(--text-dark)', opacity: 0.85, lineHeight: '1.7', marginBottom: '40px', maxWidth: '700px', marginLeft: 'auto', marginRight: 'auto' }}>
+          Discover verified matrimonial profiles through a respectful, family-friendly platform designed to help you begin your Nikah journey with confidence.
+        </p>
+        
+        <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '40px' }}>
+          <button onClick={handleFindMatch} className="btn btn-gold" style={{ padding: '14px 32px', fontSize: '16px' }}>
+            Find Your Match
+          </button>
+          <button
+            onClick={handleCreateProfile}
+            className="btn btn-primary"
+            style={{ padding: '14px 32px', fontSize: '16px' }}
+          >
+            Create Your Profile
+          </button>
+        </div>
+        
+        <div style={{ fontSize: '14px', color: 'var(--text-dark)', display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap', fontWeight: 500 }}>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><span style={{ color: 'var(--gold-accent)' }}>✓</span> Manually Verified Profiles</span>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><span style={{ color: 'var(--gold-accent)' }}>✓</span> Complete Privacy Controls</span>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><span style={{ color: 'var(--gold-accent)' }}>✓</span> Family-Friendly Community</span>
+        </div>
+      </div>
     </section>
   );
 };

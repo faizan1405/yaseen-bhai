@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { useSimulator } from '../../context/SimulatorContext';
 import Navbar from '../../components/Navbar';
 import ProfileFilters from '../../components/ProfileFilters';
@@ -176,12 +177,32 @@ export default function SearchPage() {
     <>
       <Navbar />
       <main className="flex-grow">
-        <div className="container font-sans" style={{ padding: '40px 0 80px 0' }}>
-          <SectionHeading
-            title="Matrimonial Candidate Directory"
-            scriptText="Browse Profiles"
-            subtitle="Browse call-verified brides and grooms. Use filters to narrow down compatibility matches."
-          />
+        {/* Subtle top banner */}
+        <div style={{ position: 'relative', padding: '60px 0 20px 0', overflow: 'hidden', marginBottom: '20px' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 0 }}>
+            <Image
+              src="/images/nikah-2.jpeg"
+              alt="Search Muslim Profiles"
+              fill
+              style={{ objectFit: 'cover', objectPosition: 'center 30%' }}
+              priority
+            />
+            <div style={{
+              position: 'absolute',
+              top: 0, left: 0, right: 0, bottom: 0,
+              background: 'linear-gradient(to bottom, rgba(253, 248, 245, 0.9), rgba(253, 248, 245, 1))'
+            }} />
+          </div>
+          <div className="container font-sans" style={{ position: 'relative', zIndex: 1 }}>
+            <SectionHeading
+              title="Matrimonial Candidate Directory"
+              scriptText="Browse Profiles"
+              subtitle="Browse call-verified brides and grooms. Use filters to narrow down compatibility matches."
+            />
+          </div>
+        </div>
+
+        <div className="container font-sans" style={{ padding: '0 0 80px 0' }}>
 
           {isAgeRangeInvalid && (
             <div style={{

@@ -3,6 +3,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from '../../components/Navbar';
+import Image from 'next/image';
 import { SectionHeading, FloralCorner, PremiumFooter } from '../../components/NikahComponents';
 
 export default function ContactPage() {
@@ -24,13 +25,18 @@ export default function ContactPage() {
           />
 
           <div className="grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '32px', maxWidth: '1000px', margin: '0 auto' }}>
-            <div className="card-theme-wrapper" style={{ padding: '32px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', color: 'var(--deep-maroon)' }}>Contact Details</h3>
-              <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>📍 Shadi Mubarak Office, Bandra West, Mumbai, MH</p>
-              <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>📞 Support Desk: +91 98765 43210 (10 AM - 6 PM)</p>
-              <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>✉️ Verification Dept: support@shadimubarak.in</p>
-              <hr style={{ borderColor: 'var(--border-color)' }} />
-              <span style={{ fontSize: '12.5px', color: 'var(--gold-accent)', fontWeight: 600 }}>We usually call back within 24 hours of submission.</span>
+            <div className="card-theme-wrapper" style={{ padding: '0', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+              <div style={{ position: 'relative', height: '160px' }}>
+                <Image src="/images/nikah-1.jpeg" fill style={{ objectFit: 'cover', objectPosition: 'center 30%' }} alt="Contact Shadi Mubarak" />
+              </div>
+              <div style={{ padding: '32px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', color: 'var(--deep-maroon)' }}>Contact Details</h3>
+                <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>📍 Shadi Mubarak Office, Bandra West, Mumbai, MH</p>
+                <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>📞 Support Desk: +91 98765 43210 (10 AM - 6 PM)</p>
+                <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>✉️ Verification Dept: support@shadimubarak.in</p>
+                <hr style={{ borderColor: 'var(--border-color)' }} />
+                <span style={{ fontSize: '12.5px', color: 'var(--gold-accent)', fontWeight: 600 }}>We usually call back within 24 hours of submission.</span>
+              </div>
             </div>
 
             <div className="card-theme-wrapper" style={{ gridColumn: 'span 2', padding: '32px' }}>

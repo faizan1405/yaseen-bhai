@@ -3,6 +3,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from '../../components/Navbar';
+import Image from 'next/image';
 import { SectionHeading, FloralCorner, PremiumFooter } from '../../components/NikahComponents';
 
 export default function SafetyPage() {
@@ -22,6 +23,20 @@ export default function SafetyPage() {
             subtitle="We deploy rigorous controls, manual screening, and masking to keep you secure."
             scriptText="Trust Center"
           />
+
+          <div style={{ maxWidth: '1000px', margin: '0 auto 40px auto', borderRadius: 'var(--border-radius-xl)', overflow: 'hidden', height: '240px', position: 'relative', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-premium)' }}>
+            <Image
+              src="/images/nikah-2.jpeg"
+              alt="Safe Matrimonial Platform"
+              fill
+              style={{ objectFit: 'cover', objectPosition: 'center 60%' }}
+            />
+            <div style={{
+              position: 'absolute',
+              top: 0, left: 0, right: 0, bottom: 0,
+              background: 'linear-gradient(to right, rgba(253, 248, 245, 0.8), rgba(253, 248, 245, 0.4))'
+            }} />
+          </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '32px', maxWidth: '1000px', margin: '0 auto' }}>
             <div className="card-theme-wrapper" style={{ padding: '30px' }}>

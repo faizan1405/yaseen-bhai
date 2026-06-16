@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import Navbar from '../../components/Navbar';
 import { SectionHeading, SuccessStoryCard, PremiumFooter } from '../../components/NikahComponents';
 
@@ -15,8 +16,23 @@ export default function SuccessStoriesPage() {
   return (
     <>
       <Navbar />
-      <main className="flex-grow">
-        <div className="container font-sans" style={{ padding: '40px 0 80px 0' }}>
+      <main className="flex-grow" style={{ position: 'relative' }}>
+        {/* Background Image Layer */}
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 0 }}>
+          <Image
+            src="/images/nikah-4.jpeg"
+            alt="Success Stories Nikah"
+            fill
+            style={{ objectFit: 'cover', objectPosition: 'center' }}
+          />
+          <div style={{
+            position: 'absolute',
+            top: 0, left: 0, right: 0, bottom: 0,
+            background: 'linear-gradient(to bottom, rgba(253, 248, 245, 0.85), rgba(253, 248, 245, 0.95))'
+          }} />
+        </div>
+
+        <div className="container font-sans" style={{ padding: '60px 0 80px 0', position: 'relative', zIndex: 1 }}>
           <SectionHeading
             title="Blessed Success Stories"
             subtitle="Alhamdulillah! Read inspiring stories of marriage from blessed couples."

@@ -3,6 +3,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from '../../components/Navbar';
+import Image from 'next/image';
 import { SectionHeading, FloralCorner, PremiumFooter } from '../../components/NikahComponents';
 
 export default function AboutPage() {
@@ -22,6 +23,15 @@ export default function AboutPage() {
             subtitle="Dedicated to enabling serious, respectful, and Shariah-compliant matrimonial connections."
             scriptText="Our Values"
           />
+
+          <div style={{ maxWidth: '800px', margin: '0 auto 40px auto', borderRadius: 'var(--border-radius-xl)', overflow: 'hidden', height: '300px', position: 'relative', boxShadow: 'var(--shadow-premium)' }}>
+            <Image
+              src="/images/nikah-1.jpeg"
+              alt="Islamic Marriage Mission"
+              fill
+              style={{ objectFit: 'cover', objectPosition: 'center 40%' }}
+            />
+          </div>
 
           <div className="arch-container max-w-4xl mx-auto p-12 gold-rim gold-glow" style={{ maxWidth: '800px', margin: '0 auto', padding: '40px' }}>
             <FloralCorner position="tl" color="var(--gold-accent)" />
