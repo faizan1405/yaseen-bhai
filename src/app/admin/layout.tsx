@@ -1,59 +1,20 @@
-'use client';
-
 import React from 'react';
-import { useRouter } from 'next/navigation';
-import { useSimulator } from '../../context/SimulatorContext';
-import AdminSidebar from '../../components/AdminSidebar';
+import { redirect } from 'next/navigation';
+import { auth } from '@/auth';
+import { headers } from 'next/headers';
+import AdminLayoutClient from './AdminLayoutClient';
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
-  const {
-    isAdminMobileOpen,
-    setIsAdminMobileOpen,
-    setIsAdminMode
-  } = useSimulator();
+export default async function AdminLayout({ children }: { children: React.ReactNode }) {
+  const session = await auth();
+  const headersList = await headers();
+  const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
+  const simulatedAdmin = isDemoMode && headersList.get('x-simulator-admin') === 'true';
 
-  const handleExitAdmin = () => {
-    setIsAdminMode(false);
-    router.push('/');
-  };
+  const isAdmin = session?.user?.role === 'ADMIN' || simulatedAdmin;
+  
+  if (!isAdmin) {
+    redirect('/');
+  }
 
-  return (
-    <>
-      {/* Admin Mobile Bar */}
-      <div className="admin-mobile-bar font-sans">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <button
-            onClick={() => setIsAdminMobileOpen(!isAdminMobileOpen)}
-            style={{ background: 'none', border: 'none', color: 'var(--white)', fontSize: '20px', cursor: 'pointer' }}
-          >
-            ☰
-          </button>
-          <span style={{ fontWeight: 'bold', fontFamily: 'var(--font-serif)', color: 'var(--gold-accent)', fontSize: '15px' }}>
-            Shadi Mubarak Admin
-          </span>
-        </div>
-        <button
-          onClick={handleExitAdmin}
-          className="btn btn-gold"
-          style={{ padding: '6px 12px', fontSize: '11px' }}
-        >
-          Exit Admin
-        </button>
-      </div>
-
-      {/* Mobile drawer overlay */}
-      {isAdminMobileOpen && (
-        <div className="admin-drawer-overlay" onClick={() => setIsAdminMobileOpen(false)} />
-      )}
-
-      {/* Main Admin Grid */}
-      <div className="admin-grid container font-sans">
-        <AdminSidebar />
-        <main className="admin-view-area">
-          {children}
-        </main>
-      </div>
-    </>
-  );
+  return <AdminLayoutClient>{children}</AdminLayoutClient>;
 }
