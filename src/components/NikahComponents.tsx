@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 // Color types matching schema & UI
 import { Profile } from '../types';
@@ -897,10 +898,10 @@ export const PremiumFooter: React.FC<PremiumFooterProps> = ({ onNavigate }) => {
           <div>
             <h4 style={{ color: 'var(--gold-accent)', fontSize: '14px', fontWeight: 'bold', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '0.8px' }}>Safety & Support</h4>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '13.5px', padding: 0 }}>
-              <li><button onClick={() => onNavigate('safety')} style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', opacity: 0.8, padding: 0 }}>Verification & Safety</button></li>
-              <li><button onClick={() => onNavigate('success-stories')} style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', opacity: 0.8, padding: 0 }}>Success Stories</button></li>
-              <li><button onClick={() => onNavigate('about')} style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', opacity: 0.8, padding: 0 }}>About Us</button></li>
-              <li><button onClick={() => onNavigate('contact')} style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', opacity: 0.8, padding: 0 }}>Contact Support</button></li>
+              <li><Link href="/safety" className="footer-link">Verification & Safety</Link></li>
+              <li><Link href="/success-stories" className="footer-link">Success Stories</Link></li>
+              <li><Link href="/about" className="footer-link">About Us</Link></li>
+              <li><Link href="/contact" className="footer-link">Contact Support</Link></li>
             </ul>
           </div>
         </div>

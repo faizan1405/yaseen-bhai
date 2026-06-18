@@ -2392,3 +2392,24 @@ input[type="checkbox"] {
     right: 16px !important;
   }
 }
+
+/* Footer Links */
+.footer-link {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.8;
+  padding: 6px 0;
+  display: block;
+  transition: var(--transition-smooth);
+  text-decoration: none;
+  width: 100%;
+}
+
+.footer-link:hover, .footer-link:focus {
+  opacity: 1;
+  color: var(--gold-accent);
+  transform: translateX(4px);
+  outline: none;
+}
