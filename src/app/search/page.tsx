@@ -1,3 +1,4 @@
+import React, { Suspense } from 'react';
 import SearchClient from './SearchClient';
 import { Metadata } from 'next';
 import { prisma } from '@/lib/db';
@@ -79,7 +80,9 @@ export default function SearchPage() {
   return (
     <>
       <JsonLd schema={breadcrumbSchema} />
-      <SearchClient />
+      <Suspense fallback={<div className="loading-spinner"></div>}>
+        <SearchClient />
+      </Suspense>
     </>
   );
 }

@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
 import { useSimulator } from '../../context/SimulatorContext';
 import Navbar from '../../components/Navbar';
 import ProfileFilters from '../../components/ProfileFilters';
@@ -11,11 +12,41 @@ import { SectionHeading, PremiumFooter } from '../../components/NikahComponents'
 export default function SearchClient() {
   const { profiles, isLoggedIn, userProfile } = useSimulator();
   
+  const searchParams = useSearchParams();
+  const queryLocation = searchParams?.get('location');
+
+  const { masterLocations } = useSimulator();
+  
+  // Parse query location to set initial state/city
+  let initialState = 'All';
+  let initialCity = 'All';
+
+  if (queryLocation && queryLocation !== 'All India') {
+    const isState = masterLocations.some(l => l.state === queryLocation);
+    const isCity = masterLocations.some(l => l.district === queryLocation);
+
+    if (queryLocation === 'Delhi NCR') {
+      initialState = 'Delhi';
+    } else if (isState) {
+      initialState = queryLocation;
+    } else if (isCity) {
+      initialCity = queryLocation;
+      const foundLoc = masterLocations.find(l => l.district === queryLocation);
+      if (foundLoc) {
+        initialState = foundLoc.state;
+      }
+    } else {
+      // Fallback if not found perfectly, we can check if any state contains it
+      const partialState = masterLocations.find(l => l.state.includes(queryLocation));
+      if (partialState) initialState = partialState.state;
+    }
+  }
+
   // Standard and advanced filters
   const [selectedCaste, setSelectedCaste] = useState('All');
   const [selectedCommunity, setSelectedCommunity] = useState('All');
-  const [selectedState, setSelectedState] = useState('All');
-  const [selectedCity, setSelectedCity] = useState('All');
+  const [selectedState, setSelectedState] = useState(initialState);
+  const [selectedCity, setSelectedCity] = useState(initialCity);
 
   // New Gender and Age filters
   const [selectedGender, setSelectedGender] = useState('No preference');

@@ -8,7 +8,7 @@ import { getProfileImage, getThemeClass } from '../lib/helpers';
 import Navbar from '../components/Navbar';
 import HeroSection from '../components/HeroSection';
 import SearchableCombobox from '../components/SearchableCombobox';
-import { DEFAULT_FIQHS } from '../lib/masterData';
+import { DEFAULT_FIQHS, QUICK_MATCH_LOCATIONS } from '../lib/masterData';
 
 import {
   FloralCorner,
@@ -40,6 +40,7 @@ const THEME_COLORS = [
 export default function HomeClient() {
   const router = useRouter();
   const [inquiryPackage, setInquiryPackage] = React.useState<string | null>(null);
+  const [quickLocation, setQuickLocation] = React.useState('All India');
   const {
     isLoggedIn,
     hasPaid300,
@@ -595,10 +596,16 @@ export default function HomeClient() {
                     </select>
                   </div>
                   <div>
-                    <label className="form-label">City Location</label>
-                    <select className="form-control" style={{ backgroundColor: 'var(--warm-ivory)' }}>
-                      <option>All India</option>
-                      <option>Mumbai Only</option>
+                    <label className="form-label">STATE / CITY LOCATION</label>
+                    <select 
+                      className="form-control" 
+                      style={{ backgroundColor: 'var(--warm-ivory)' }}
+                      value={quickLocation}
+                      onChange={(e) => setQuickLocation(e.target.value)}
+                    >
+                      {QUICK_MATCH_LOCATIONS.map(loc => (
+                        <option key={loc} value={loc}>{loc}</option>
+                      ))}
                     </select>
                   </div>
                   <div>
@@ -611,7 +618,7 @@ export default function HomeClient() {
                       <option>Syed</option>
                     </select>
                   </div>
-                  <button onClick={() => router.push('/search')} className="btn btn-primary" style={{ width: '100%' }}>
+                  <button onClick={() => router.push(`/search?location=${encodeURIComponent(quickLocation)}`)} className="btn btn-primary" style={{ width: '100%' }}>
                     Search Now
                   </button>
                 </div>
