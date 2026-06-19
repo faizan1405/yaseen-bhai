@@ -636,25 +636,35 @@ export default function HomeClient() {
                   scriptText="Nikah Matches"
                 />
 
-                <div className="grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '32px' }}>
-                  {profiles.slice(0, 3).map((profile, index) => (
-                    <ProfileCard
-                      key={profile.id}
-                      profile={profile}
-                      index={index}
-                      isLoggedIn={isLoggedIn}
-                      hasPaid300={hasPaid300}
-                      simulatedPackages={simulatedPackages}
-                      simulatedHighProfileApproved={simulatedHighProfileApproved}
-                      savedProfiles={savedProfiles}
-                      onToggleSave={toggleSaveProfile}
-                      onViewDetails={setSelectedProfileForDetails}
-                      onShowLogin={() => setShowLoginModal(true)}
-                      getProfileImage={getProfileImage}
-                      getThemeClass={getThemeClass}
-                    />
-                  ))}
-                </div>
+                {profiles.length > 0 ? (
+                  <div className="grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '32px' }}>
+                    {profiles.slice(0, 3).map((profile, index) => (
+                      <ProfileCard
+                        key={profile.id}
+                        profile={profile}
+                        index={index}
+                        isLoggedIn={isLoggedIn}
+                        hasPaid300={hasPaid300}
+                        simulatedPackages={simulatedPackages}
+                        simulatedHighProfileApproved={simulatedHighProfileApproved}
+                        savedProfiles={savedProfiles}
+                        onToggleSave={toggleSaveProfile}
+                        onViewDetails={setSelectedProfileForDetails}
+                        onShowLogin={() => setShowLoginModal(true)}
+                        getProfileImage={getProfileImage}
+                        getThemeClass={getThemeClass}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div style={{ textAlign: 'center', padding: '48px 20px', backgroundColor: 'var(--white)', borderRadius: '12px', border: '1px dashed var(--gold-accent)' }}>
+                    <div style={{ fontSize: '32px', marginBottom: '12px', color: 'var(--gold-accent)' }}>📭</div>
+                    <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', color: 'var(--primary-brand)', marginBottom: '8px' }}>No Featured Candidates</h3>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '15px' }}>
+                      No featured candidates available right now. Please explore all profiles or check again soon.
+                    </p>
+                  </div>
+                )}
 
                 <div style={{ textAlign: 'center', marginTop: '48px' }}>
                   <button onClick={() => router.push('/search')} className="btn btn-gold" style={{ padding: '12px 36px' }}>

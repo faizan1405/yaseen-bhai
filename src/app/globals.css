@@ -2413,3 +2413,87 @@ input[type="checkbox"] {
   transform: translateX(4px);
   outline: none;
 }
+
+/* ==========================================================================
+   PREMIUM MOBILE & TABLET UX/UI OVERRIDES
+   ========================================================================== */
+
+/* Tablet & Mobile (max-width: 991px) */
+@media (max-width: 991px) {
+  /* Layout & Spacing */
+  section { padding: 80px 0; }
+  .container { padding: 0 20px; }
+  
+  /* Hero Section */
+  .hero-split { grid-template-columns: 1fr; gap: 40px; padding: 40px 0; text-align: center; }
+  .hero-content { text-align: center; }
+  .hero-subtitle { justify-content: center; }
+  
+  /* Typography */
+  .hero-title { font-size: 42px; line-height: 1.2; }
+  .section-header h2 { font-size: 32px; }
+  
+  /* Cards Grid */
+  .grid-3 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+}
+
+/* Mobile Devices (max-width: 767px) */
+@media (max-width: 767px) {
+  /* Typography Enhancements */
+  body { font-size: 15px; line-height: 1.6; }
+  .hero-title { font-size: 36px !important; margin-bottom: 16px; }
+  .hero-description { font-size: 16px !important; margin-bottom: 24px; margin-left: auto; margin-right: auto; max-width: 100%; }
+  .section-header h2 { font-size: 28px; }
+  .section-header p { font-size: 14px; }
+  
+  /* Spacing */
+  section { padding: 60px 0; }
+  .container { padding: 0 16px; }
+  .hero-split { padding: 30px 0; min-height: auto; }
+  
+  /* Header & Navigation */
+  .nav-container { height: 64px; }
+  .logo { font-size: 24px; }
+  #hamburger-btn { font-size: 24px; padding: 8px; min-height: 48px; min-width: 48px; display: flex; align-items: center; justify-content: center; }
+  
+  /* Buttons - Touch Target Size > 44px */
+  .btn { padding: 14px 24px; min-height: 48px; font-size: 15px; width: 100%; justify-content: center; margin-bottom: 8px; }
+  .hero-content .btn { width: 100%; margin: 0 0 12px 0; }
+  .hero-content { display: flex; flex-direction: column; align-items: center; }
+  
+  /* Profile Cards / Product Cards */
+  .profile-card { border-radius: var(--border-radius-md); }
+  .profile-image-wrapper { padding-bottom: 100%; } /* Square on mobile for better visibility */
+  .profile-card-details { padding: 16px; }
+  .profile-card-name { font-size: 19px; }
+  .profile-specs-grid { grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .card-badge { font-size: 10px; padding: 4px 10px; }
+  
+  /* Forms */
+  input, select, textarea { font-size: 16px !important; /* Prevents iOS zoom */ padding: 12px 16px !important; min-height: 48px; border-radius: var(--border-radius-sm); }
+  .form-group label { font-size: 14px; margin-bottom: 6px; }
+  
+  /* Modals & Dialogs */
+  .modal-content { padding: 24px 16px !important; width: 92vw !important; max-width: 92vw !important; max-height: 90vh; overflow-y: auto; margin: auto !important; border-radius: var(--border-radius-md); }
+  
+  /* Search Panel */
+  .search-panel { padding: 20px 16px; margin-top: -20px; border-radius: var(--border-radius-md); }
+  .search-panel-grid { grid-template-columns: 1fr; gap: 16px; }
+  
+  /* Floating elements adjustments */
+  .whatsapp-button-trigger, .call-button-trigger, .chatbot-trigger { 
+    min-height: 52px; min-width: 52px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 50%; padding: 12px; justify-content: center;
+  }
+  .whatsapp-button-text, .call-button-text, .chatbot-trigger-text { display: none; }
+  .whatsapp-button-container { bottom: 84px !important; left: 16px !important; z-index: 1000; }
+  .call-button-container { bottom: 16px !important; left: 16px !important; z-index: 1000; }
+  .chatbot-widget-container { bottom: 16px !important; right: 16px !important; z-index: 1000; }
+}
+
+/* Very Small Phones (max-width: 375px) */
+@media (max-width: 375px) {
+  .hero-title { font-size: 32px !important; }
+  .logo { font-size: 22px; }
+  .btn { font-size: 14px; padding: 12px 20px; }
+  .profile-specs-grid { grid-template-columns: 1fr; }
+}
