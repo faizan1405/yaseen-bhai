@@ -554,7 +554,7 @@ export default function HomeClient() {
                       onChange={(e) => setFormData({ ...formData, termsAccepted: e.target.checked })}
                     />
                     <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
-                      I agree to the <a href="/terms" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary-brand)', textDecoration: 'underline' }}>Terms &amp; Conditions</a> and <a href="/privacy" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary-brand)', textDecoration: 'underline' }}>Privacy Policy</a>.
+                      I agree to the <a href="/terms-and-conditions" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary-brand)', textDecoration: 'underline' }}>Terms &amp; Conditions</a> and <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary-brand)', textDecoration: 'underline' }}>Privacy Policy</a>.
                     </span>
                   </div>
                 )}
