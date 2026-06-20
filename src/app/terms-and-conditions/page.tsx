@@ -55,7 +55,12 @@ export default function TermsAndConditionsPage() {
             <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '24px', color: 'var(--deep-maroon)', marginBottom: '16px' }}>9. Prohibited Misuse</h2>
             <p style={{ marginBottom: '24px' }}>Spamming, creating fake profiles, requesting money from other members, or using the platform for commercial purposes is strictly forbidden. We reserve the right to remove any profile at our discretion.</p>
 
-            <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '24px', color: 'var(--deep-maroon)', marginBottom: '16px' }}>10. Contact & Support</h2>
+            <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '24px', color: 'var(--deep-maroon)', marginBottom: '16px' }}>10. Success Fee After Marriage</h2>
+            <p style={{ marginBottom: '12px' }}>Shadi Mubarak may charge a success fee after a marriage is finalized through our platform, as clearly mentioned on our website, membership plan, or written agreement.</p>
+            <p style={{ marginBottom: '12px' }}>By using our services, the user agrees to pay the applicable success fee within <strong>3 months from the date of marriage confirmation</strong>.</p>
+            <p style={{ marginBottom: '24px' }}>If the user fails to pay the agreed success fee within this period, Shadi Mubarak reserves the right to recover the pending amount through legal action as per applicable law.</p>
+
+            <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '24px', color: 'var(--deep-maroon)', marginBottom: '16px' }}>11. Contact & Support</h2>
             <p>If you have any questions about these Terms, please reach out to us via our Support or Contact pages.</p>
           </div>
         </div>
