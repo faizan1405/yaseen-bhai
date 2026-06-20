@@ -118,7 +118,7 @@ export default function AdminSettingsPage() {
             type="text" 
             value={settings.officeAddress}
             onChange={e => setSettings({...settings, officeAddress: e.target.value})}
-            placeholder="Shadi Mubarak Office, Bandra West, Mumbai, MH"
+            placeholder="Innov8 44 Regal Building, 2nd Floor, Connaught Place, New Delhi - 110001"
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
           />
           <p className="text-xs text-gray-500 mt-1">Physical address shown on the contact page and footer.</p>

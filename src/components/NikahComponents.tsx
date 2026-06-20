@@ -873,11 +873,11 @@ export const PremiumFooter: React.FC<PremiumFooterProps> = ({ onNavigate }) => {
               </div>
             )}
             <div style={{ fontSize: '13px', color: 'rgba(248, 241, 231, 0.9)', marginBottom: '18px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              <div>📍 {location ? location.address : 'Shadi Mubarak Office, Bandra West, Mumbai, MH'}</div>
+              <div>📍 {location ? location.address : 'Innov8 44 Regal Building, 2nd Floor, Connaught Place, New Delhi - 110001'}</div>
               <div>📞 Call: <a href={`tel:${location ? location.phoneRaw : '+919675483125'}`} style={{ color: 'var(--gold-accent)', fontWeight: 'bold', textDecoration: 'underline' }}>{location ? location.phone : '+91 96754 83125'}</a></div>
               {(!location || location.mapOpenUrl) && (
                 <div>
-                  🗺️ <a href={location ? location.mapOpenUrl : 'https://www.google.com/maps/search/?api=1&query=Bandra+West%2C+Mumbai%2C+Maharashtra'} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold-light)', textDecoration: 'underline' }}>Open in Google Maps</a>
+                  🗺️ <a href={location ? location.mapOpenUrl : 'https://www.google.com/maps/search/?api=1&query=Innov8+44+Regal+Building%2C+Connaught+Place%2C+New+Delhi+-+110001'} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold-light)', textDecoration: 'underline' }}>Open in Google Maps</a>
                 </div>
               )}
             </div>

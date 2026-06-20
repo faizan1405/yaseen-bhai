@@ -13,7 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
   
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://shadimubarak.in';
   const title = "Contact Customer Support — Shadi Mubarak Marriage Bureau";
-  const description = "Get in touch with Shadi Mubarak customer support. Find our Bandra office address, verified phone number +91-96754-83125, and email details.";
+  const description = "Get in touch with Shadi Mubarak customer support. Find our New Delhi office address, verified phone number +91-96754-83125, and email details.";
   const previewImage = settings?.defaultPreviewImage || "/images/nikah-1.jpeg";
   const imageUrl = previewImage.startsWith('http') ? previewImage : `${siteUrl}${previewImage}`;
 
@@ -66,10 +66,10 @@ export default function ContactPage() {
     "url": "https://shadimubarak.in",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Bandra West",
-      "addressLocality": "Mumbai",
-      "addressRegion": "Maharashtra",
-      "postalCode": "400050",
+      "streetAddress": "Innov8 44 Regal Building, 2nd Floor, Property No. 44, Above Madame Tussauds, Regal Building",
+      "addressLocality": "Connaught Place, New Delhi",
+      "addressRegion": "Delhi",
+      "postalCode": "110001",
       "addressCountry": "IN"
     },
     "priceRange": "$$",
