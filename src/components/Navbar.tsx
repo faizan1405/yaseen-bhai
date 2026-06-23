@@ -49,13 +49,13 @@ export const Navbar: React.FC = () => {
     <header className="header font-sans">
       <div className="container nav-container">
         <style>{`
-          @media (max-width: 1180px) {
+          @media (max-width: 1280px) {
             #hamburger-btn { display: flex !important; }
             .nav-menu-desktop { display: none !important; }
           }
         `}</style>
 
-        {/* Left: hamburger (mobile) + primary nav links (desktop) */}
+        {/* Left Column: hamburger (mobile) + primary nav links (desktop) */}
         <div className="nav-section nav-left">
           <button
             className="hamburger-btn"
@@ -81,6 +81,26 @@ export const Navbar: React.FC = () => {
                   How It Works
                 </Link>
               </li>
+            </ul>
+          </nav>
+        </div>
+
+        {/* Center Column: Logo only */}
+        <Link href="/" className="logo" id="header-logo-link" style={{ display: 'flex', alignItems: 'center' }}>
+          <Image
+            src="/images/rishte-forever-logo.png"
+            alt="Rishte Forever — Where Faith Meets Forever"
+            width={210}
+            height={79}
+            priority
+            style={{ display: 'block' }}
+          />
+        </Link>
+
+        {/* Right Column: Premium/Safety/Zaicha nav links + action buttons */}
+        <div className="nav-section nav-right">
+          <div className="nav-menu-desktop nav-right-desktop-wrapper">
+            <ul className="nav-menu">
               <li>
                 <Link href="/premium" className={`nav-link ${pathname === '/premium' ? 'active' : ''}`}>
                   Premium
@@ -97,67 +117,52 @@ export const Navbar: React.FC = () => {
                 </Link>
               </li>
             </ul>
-          </nav>
-        </div>
 
-        {/* Center: logo */}
-        <Link href="/" className="logo" id="header-logo-link" style={{ display: 'flex', alignItems: 'center' }}>
-          <Image
-            src="/images/rishte-forever-logo.png"
-            alt="Rishte Forever — Where Faith Meets Forever"
-            width={210}
-            height={79}
-            priority
-            style={{ display: 'block' }}
-          />
-        </Link>
-
-        {/* Right: action buttons */}
-        <div className="nav-section nav-right">
-          <div className="nav-menu-desktop nav-actions-wrapper">
-            {isLoggedIn && (
-              <Link
-                href="/my-account"
-                className="btn btn-secondary nav-btn"
-              >
-                My Account
-              </Link>
-            )}
-            <Link
-              href="/admin"
-              className="btn btn-secondary nav-btn"
-              id="btn-toggle-admin"
-            >
-              {pathname.startsWith('/admin') ? 'View Website' : 'Admin Panel'}
-            </Link>
-            {isLoggedIn ? (
-              <div className="nav-actions-group">
-                <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--primary-brand)', fontFamily: 'var(--font-serif)', display: 'inline-flex', alignItems: 'center' }}>Salaam!</span>
-                <button
-                  onClick={handleLogout}
-                  className="btn btn-primary nav-btn"
-                  id="btn-logout"
-                >
-                  Logout
-                </button>
-              </div>
-            ) : (
-              <div className="nav-actions-group">
-                <button
-                  onClick={handleLoginTrigger}
+            <div className="nav-actions-wrapper">
+              {isLoggedIn && (
+                <Link
+                  href="/my-account"
                   className="btn btn-secondary nav-btn"
-                  id="btn-login-trigger"
                 >
-                  Login
-                </button>
-                <button
-                  onClick={handleRegisterFree}
-                  className="btn btn-gold nav-btn"
-                >
-                  Register Free
-                </button>
-              </div>
-            )}
+                  My Account
+                </Link>
+              )}
+              <Link
+                href="/admin"
+                className="btn btn-secondary nav-btn"
+                id="btn-toggle-admin"
+              >
+                {pathname.startsWith('/admin') ? 'View Website' : 'Admin Panel'}
+              </Link>
+              {isLoggedIn ? (
+                <div className="nav-actions-group">
+                  <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--primary-brand)', fontFamily: 'var(--font-serif)', display: 'inline-flex', alignItems: 'center' }}>Salaam!</span>
+                  <button
+                    onClick={handleLogout}
+                    className="btn btn-primary nav-btn"
+                    id="btn-logout"
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <div className="nav-actions-group">
+                  <button
+                    onClick={handleLoginTrigger}
+                    className="btn btn-secondary nav-btn"
+                    id="btn-login-trigger"
+                  >
+                    Login
+                  </button>
+                  <button
+                    onClick={handleRegisterFree}
+                    className="btn btn-gold nav-btn"
+                  >
+                    Register Free
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
