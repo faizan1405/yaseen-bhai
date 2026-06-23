@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useSimulator } from '../../context/SimulatorContext';
 import AdminSidebar from '../../components/AdminSidebar';
@@ -29,8 +30,15 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
           >
             ☰
           </button>
-          <span style={{ fontWeight: 'bold', fontFamily: 'var(--font-serif)', color: 'var(--gold-accent)', fontSize: '15px' }}>
-            Shadi Mubarak Admin
+          <Image
+            src="/images/rishte-forever-logo.png"
+            alt="Rishte Forever"
+            width={130}
+            height={49}
+            style={{ height: '28px', width: 'auto', background: 'var(--white)', padding: '5px 7px', borderRadius: '7px' }}
+          />
+          <span style={{ fontWeight: 'bold', fontFamily: 'var(--font-serif)', color: 'var(--gold-accent)', fontSize: '13px' }}>
+            Admin
           </span>
         </div>
         <button

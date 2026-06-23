@@ -65,7 +65,7 @@ export default function Home() {
     "@type": "Organization",
     "name": "Shadi Mubarak",
     "url": "https://shadimubarak.in",
-    "logo": "https://shadimubarak.in/images/nikah-1.jpeg",
+    "logo": "https://shadimubarak.in/images/rishte-forever-logo.png",
     "contactPoint": {
       "@type": "ContactPoint",
       "telephone": "+91-96754-83125",

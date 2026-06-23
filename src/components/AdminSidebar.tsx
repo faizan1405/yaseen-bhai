@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSimulator } from '../context/SimulatorContext';
@@ -15,9 +16,16 @@ export const AdminSidebar: React.FC = () => {
 
   return (
     <aside className={`admin-nav-list ${isAdminMobileOpen ? 'open' : ''}`}>
-      <h2 style={{ fontFamily: 'var(--font-serif)', color: 'var(--gold-accent)', marginBottom: '12px', paddingLeft: '12px', fontSize: '20px' }}>
-        Shadi Mubarak Admin
-      </h2>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px', paddingLeft: '12px' }}>
+        <Image
+          src="/images/rishte-forever-logo.png"
+          alt="Rishte Forever"
+          width={150}
+          height={57}
+          style={{ height: '36px', width: 'auto', background: 'var(--white)', padding: '6px 8px', borderRadius: '8px' }}
+        />
+        <span style={{ fontFamily: 'var(--font-serif)', color: 'var(--gold-accent)', fontSize: '16px', fontWeight: 'bold' }}>Admin</span>
+      </div>
       
       <div className="admin-nav-section-title">Operations</div>
       <Link

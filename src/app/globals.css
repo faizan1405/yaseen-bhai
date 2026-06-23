@@ -190,6 +190,12 @@ a {
   color: var(--gold-accent);
 }
 
+.logo img {
+  height: 48px;
+  width: auto;
+  display: block;
+}
+
 .nav-menu {
   display: flex;
   gap: 12px;
@@ -279,23 +285,6 @@ a {
   padding: 40px;
   box-shadow: var(--shadow-premium);
   overflow: hidden;
-}
-
-/* Premium Google Maps Iframe Styling */
-.map-iframe {
-  border: 0;
-  display: block;
-  width: 100%;
-  max-width: 100vw;
-  min-height: 260px;
-  height: 320px;
-  background-color: #eaeaea;
-}
-
-@media (min-width: 768px) {
-  .map-iframe {
-    height: 400px;
-  }
 }
 
 .ornament {
@@ -1093,6 +1082,10 @@ section {
 
 .footer-logo span {
   color: var(--gold-accent);
+}
+
+.footer-logo img {
+  display: block;
 }
 
 .footer-bottom {
@@ -2454,6 +2447,7 @@ input[type="checkbox"] {
   /* Header & Navigation */
   .nav-container { height: 64px; }
   .logo { font-size: 24px; }
+  .logo img { height: 40px; }
   #hamburger-btn { font-size: 24px; padding: 8px; min-height: 48px; min-width: 48px; display: flex; align-items: center; justify-content: center; }
   
   /* Buttons - Touch Target Size > 44px */
@@ -2494,6 +2488,7 @@ input[type="checkbox"] {
 @media (max-width: 375px) {
   .hero-title { font-size: 32px !important; }
   .logo { font-size: 22px; }
+  .logo img { height: 36px; }
   .btn { font-size: 14px; padding: 12px 20px; }
   .profile-specs-grid { grid-template-columns: 1fr; }
 }

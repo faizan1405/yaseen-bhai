@@ -266,8 +266,6 @@ model GlobalSettings {
   emailAlertsEnabled  Boolean  @default(true)
   smsAlertsEnabled    Boolean  @default(false)
   officeAddress       String?
-  mapEmbedUrl         String?
-  mapOpenUrl          String?
   facebookUrl         String?
   instagramUrl        String?
   youtubeUrl          String?

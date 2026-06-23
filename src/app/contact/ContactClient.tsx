@@ -6,16 +6,12 @@ import Navbar from '../../components/Navbar';
 import Image from 'next/image';
 import { SectionHeading, FloralCorner, PremiumFooter } from '../../components/NikahComponents';
 import LeadForm from '../../components/LeadForm';
-import dynamic from 'next/dynamic';
 import { BusinessLocation, defaultBusinessLocation } from '../../lib/businessLocation';
 import { getSupportWhatsAppLink } from '../../lib/whatsapp';
-
-const GoogleMapSection = dynamic(() => import('../../components/GoogleMapSection').then(mod => mod.GoogleMapSection), { ssr: false });
 
 export default function ContactClient() {
   const router = useRouter();
   const [location, setLocation] = useState<BusinessLocation>(defaultBusinessLocation);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetch('/api/business-location')
@@ -24,11 +20,9 @@ export default function ContactClient() {
         if (data && !data.error) {
           setLocation(data);
         }
-        setIsLoading(false);
       })
       .catch((err) => {
-        console.error('Failed to load map location:', err);
-        setIsLoading(false);
+        console.error('Failed to load business location:', err);
       });
   }, []);
 
@@ -172,10 +166,6 @@ export default function ContactClient() {
               <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', color: 'var(--deep-maroon)', marginBottom: '16px' }}>Send Support Message</h3>
               <LeadForm defaultInquiryType="General Inquiry" />
             </div>
-          </div>
-
-          <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
-            <GoogleMapSection location={location} isLoading={isLoading} />
           </div>
         </div>
       </main>

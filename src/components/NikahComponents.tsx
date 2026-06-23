@@ -52,8 +52,8 @@ export const DecorativeArch: React.FC<{ children: React.ReactNode; className?: s
 // 3. Bismillah Calligraphy (SVG representation)
 export const BismillahCalligraphy: React.FC = () => {
   return (
-    <div className="flex justify-center my-6" aria-label="Bismillah-ir-Rahman-ir-Rahim calligraphy stamp">
-      <svg width="280" height="65" viewBox="0 0 300 70" fill="none" xmlns="http://www.w3.org/2000/svg" className="mx-auto">
+    <div className="flex justify-center my-6" aria-label="Bismillah-ir-Rahman-ir-Rahim calligraphy stamp" style={{ display: 'flex', justifyContent: 'center', width: '100%', margin: '24px 0' }}>
+      <svg width="280" height="65" viewBox="0 0 300 70" fill="none" xmlns="http://www.w3.org/2000/svg" className="mx-auto" style={{ display: 'block', maxWidth: '100%', height: 'auto' }}>
         {/* Background elegant calligraphic shape */}
         <path d="M10 35 C 70 5, 230 5, 290 35 C 230 65, 70 65, 10 35 Z" fill="#F8F1E7" stroke="var(--gold-accent)" strokeWidth="0.75" />
         {/* Stylized high-quality Arabic Bismillah lettering paths */}
@@ -796,7 +796,6 @@ export const PremiumFooter: React.FC<PremiumFooterProps> = ({ onNavigate }) => {
     address: string;
     phone: string;
     phoneRaw: string;
-    mapOpenUrl: string;
     facebookUrl?: string;
     instagramUrl?: string;
     youtubeUrl?: string;
@@ -826,8 +825,14 @@ export const PremiumFooter: React.FC<PremiumFooterProps> = ({ onNavigate }) => {
       <div className="container">
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '40px', marginBottom: '40px' }}>
           <div>
-            <div className="footer-logo" style={{ fontFamily: 'var(--font-serif)', fontSize: '32px', fontWeight: 'bold', color: 'var(--white)', marginBottom: '18px' }}>
-              Shadi Mubarak<span style={{ color: 'var(--gold-accent)' }}>.</span>
+            <div className="footer-logo" style={{ marginBottom: '18px', display: 'inline-block', background: 'var(--white)', padding: '12px 16px', borderRadius: '12px', boxShadow: '0 4px 14px rgba(0,0,0,0.25)' }}>
+              <Image
+                src="/images/rishte-forever-logo.png"
+                alt="Rishte Forever — Where Faith Meets Forever"
+                width={260}
+                height={98}
+                style={{ height: '60px', width: 'auto' }}
+              />
             </div>
             <p style={{ fontSize: '13.5px', color: 'rgba(248, 241, 231, 0.8)', lineHeight: '1.8', marginBottom: '16px' }}>
               Trusted Halal Matrimony. Helping single, divorced, and high-profile Muslim candidates find compatible marriage partners.
@@ -875,11 +880,6 @@ export const PremiumFooter: React.FC<PremiumFooterProps> = ({ onNavigate }) => {
             <div style={{ fontSize: '13px', color: 'rgba(248, 241, 231, 0.9)', marginBottom: '18px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
               <div>📍 {location ? location.address : 'Innov8 44 Regal Building, 2nd Floor, Connaught Place, New Delhi - 110001'}</div>
               <div>📞 Call: <a href={`tel:${location ? location.phoneRaw : '+919675483125'}`} style={{ color: 'var(--gold-accent)', fontWeight: 'bold', textDecoration: 'underline' }}>{location ? location.phone : '+91 96754 83125'}</a></div>
-              {(!location || location.mapOpenUrl) && (
-                <div>
-                  🗺️ <a href={location ? location.mapOpenUrl : 'https://www.google.com/maps/search/?api=1&query=Innov8+44+Regal+Building%2C+Connaught+Place%2C+New+Delhi+-+110001'} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold-light)', textDecoration: 'underline' }}>Open in Google Maps</a>
-                </div>
-              )}
             </div>
             {/* Dua closing phrase */}
             <div style={{ fontStyle: 'italic', fontSize: '12px', color: 'var(--gold-light)', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '12px' }}>

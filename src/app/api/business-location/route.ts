@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
-import { defaultBusinessLocation, sanitizeMapsUrl, validateSocialUrl } from '@/lib/businessLocation';
+import { defaultBusinessLocation, validateSocialUrl } from '@/lib/businessLocation';
 
 export const dynamic = 'force-dynamic';
 
@@ -13,9 +13,6 @@ export async function GET(req: NextRequest) {
     
     // Format phoneRaw: remove spaces, plus sign is kept or custom formatted
     const phoneRaw = phone.replace(/[^+\d]/g, '');
-
-    const mapEmbedUrl = sanitizeMapsUrl(settings?.mapEmbedUrl, defaultBusinessLocation.mapEmbedUrl);
-    const mapOpenUrl = sanitizeMapsUrl(settings?.mapOpenUrl, defaultBusinessLocation.mapOpenUrl);
 
     // Validate social URLs
     const facebookUrl = validateSocialUrl(settings?.facebookUrl) || defaultBusinessLocation.facebookUrl;
@@ -30,8 +27,6 @@ export async function GET(req: NextRequest) {
       address,
       phone,
       phoneRaw,
-      mapEmbedUrl,
-      mapOpenUrl,
       facebookUrl,
       instagramUrl,
       youtubeUrl,

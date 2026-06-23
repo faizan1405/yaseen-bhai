@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useSimulator } from '../context/SimulatorContext';
@@ -48,7 +49,13 @@ export const Navbar: React.FC = () => {
     <header className="header font-sans">
       <div className="container nav-container">
         <Link href="/" className="logo" id="header-logo-link">
-          Shadi Mubarak<span>.</span>
+          <Image
+            src="/images/rishte-forever-logo.png"
+            alt="Rishte Forever — Where Faith Meets Forever"
+            width={210}
+            height={79}
+            priority
+          />
         </Link>
 
         <button
@@ -171,7 +178,14 @@ export const Navbar: React.FC = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span className="logo">Shadi Mubarak<span>.</span></span>
+              <span className="logo">
+                <Image
+                  src="/images/rishte-forever-logo.png"
+                  alt="Rishte Forever — Where Faith Meets Forever"
+                  width={180}
+                  height={68}
+                />
+              </span>
               <button className="modal-close-btn" onClick={() => setIsMobileMenuOpen(false)}>×</button>
             </div>
             <hr style={{ borderColor: 'var(--border-color)' }} />
