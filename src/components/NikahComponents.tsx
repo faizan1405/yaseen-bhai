@@ -50,7 +50,6 @@ export const DecorativeArch: React.FC<{ children: React.ReactNode; className?: s
 };
 
 // 3. Bismillah Calligraphy (SVG representation)
-// 3. Bismillah Calligraphy (SVG representation)
 export const BismillahCalligraphy: React.FC = () => {
   return (
     <div className="bismillah-container font-sans" aria-label="Bismillah-ir-Rahman-ir-Rahim calligraphy stamp">
@@ -69,54 +68,70 @@ export const BismillahCalligraphy: React.FC = () => {
         </svg>
       </div>
 
-      {/* Central Calligraphy Stamp Block */}
+      {/* Central Calligraphy Block */}
       <div className="bismillah-content">
-        {/* Top Crescent and Star Ornament */}
-        <div className="bismillah-ornament-top">
-          <svg width="60" height="24" viewBox="0 0 60 24" fill="none">
-            {/* Crescent Moon */}
-            <path d="M 26 7 A 6 6 0 0 0 26 17 A 5.2 5.2 0 0 1 26 7 Z" fill="#C9A227" />
+        {/* Top Crescent + Star Ornament */}
+        <div className="bismillah-ornament-top" style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}>
+          <svg width="48" height="24" viewBox="0 0 48 24" fill="none">
+            {/* Crescent */}
+            <path d="M21 4 A8 8 0 1 0 21 20 A6 6 0 1 1 21 4 Z" fill="#C9A227" />
             {/* Star */}
-            <polygon points="34,9 35.5,11.5 38,12 36,13.5 36.5,16 34,14.5 31.5,16 32,13.5 30,12 32.5,11.5" fill="#C9A227" />
+            <polygon points="33,6 34.6,9.4 38.3,9.7 35.4,12.1 36.4,15.7 33,13.7 29.6,15.7 30.6,12.1 27.7,9.7 31.4,9.4" fill="#C9A227" />
           </svg>
         </div>
 
-        {/* Bismillah Arabic SVG */}
-        <svg width="300" height="70" viewBox="0 0 300 70" fill="none" className="bismillah-svg" style={{ overflow: 'visible' }}>
-          <defs>
-            <radialGradient id="radialGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#C9A227" stopOpacity="0.12" />
-              <stop offset="60%" stopColor="#C9A227" stopOpacity="0.04" />
-              <stop offset="100%" stopColor="#C9A227" stopOpacity="0" />
-            </radialGradient>
-          </defs>
-          {/* Faint gold radial glow behind the text */}
-          <ellipse cx="150" cy="42" rx="100" ry="22" fill="url(#radialGlow)" />
-          
-          {/* Left Divider Line & Diamond */}
-          <line x1="15" y1="46" x2="48" y2="46" stroke="#C9A227" strokeWidth="1" />
-          <polygon points="54,42 58,46 54,50 50,46" fill="#C9A227" />
+        {/* Bismillah row: line+diamond | TEXT | diamond+line */}
+        <div style={{
+          position: 'relative',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 'clamp(10px, 3vw, 20px)',
+          padding: '8px 0',
+        }}>
+          {/* soft gold glow behind text */}
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'radial-gradient(ellipse 45% 75% at 50% 50%, rgba(201,162,39,0.12), transparent 70%)',
+            pointerEvents: 'none',
+          }} />
 
-          {/* Right Divider Line & Diamond */}
-          <polygon points="246,42 250,46 246,50 242,46" fill="#C9A227" />
-          <line x1="252" y1="46" x2="285" y2="46" stroke="#C9A227" strokeWidth="1" />
+          {/* Left decoration */}
+          <svg width="54" height="12" viewBox="0 0 54 12" fill="none" style={{ flexShrink: 0 }}>
+            <line x1="0" y1="6" x2="40" y2="6" stroke="#C9A227" strokeWidth="1" />
+            <polygon points="48,2 52,6 48,10 44,6" fill="#C9A227" />
+          </svg>
 
-          {/* Solid deep green text */}
-          <text x="50%" y="46" dominantBaseline="middle" textAnchor="middle" fill="#1B5E3A" fontFamily="var(--font-arabic)" fontSize="32" fontWeight="bold">
-            بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
-          </text>
-        </svg>
+          {/* Arabic text */}
+          <span style={{
+            position: 'relative',
+            color: '#1B5E3A',
+            fontFamily: 'var(--font-arabic)',
+            fontSize: 'clamp(24px, 6vw, 36px)',
+            fontWeight: 'bold',
+            lineHeight: 1.5,
+            whiteSpace: 'nowrap',
+            direction: 'rtl',
+          }}>
+            بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+          </span>
+
+          {/* Right decoration */}
+          <svg width="54" height="12" viewBox="0 0 54 12" fill="none" style={{ flexShrink: 0 }}>
+            <polygon points="6,2 10,6 6,10 2,6" fill="#C9A227" />
+            <line x1="14" y1="6" x2="54" y2="6" stroke="#C9A227" strokeWidth="1" />
+          </svg>
+        </div>
 
         {/* Bottom Gold Line with Center Accent */}
-        <div className="bismillah-divider-bottom">
-          <div className="bismillah-line-left"></div>
+        <div className="bismillah-divider-bottom" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '14px' }}>
           <svg width="40" height="15" viewBox="0 0 40 15" fill="none">
             <path d="M20,0 L24,7.5 L20,15 L16,7.5 Z" fill="#1B5E3A" stroke="#C9A227" strokeWidth="1" />
             <circle cx="20" cy="7.5" r="2" fill="#C9A227" />
             <line x1="0" y1="7.5" x2="12" y2="7.5" stroke="#C9A227" strokeWidth="1" />
             <line x1="28" y1="7.5" x2="40" y2="7.5" stroke="#C9A227" strokeWidth="1" />
           </svg>
-          <div className="bismillah-line-right"></div>
         </div>
       </div>
 
@@ -891,7 +906,7 @@ export const PremiumPlanCard: React.FC<PremiumPlanCardProps> = ({
       <h3 className="pkg-title" style={{ fontFamily: 'var(--font-serif)', fontSize: '26px', color: 'var(--primary-brand)', fontWeight: 800, marginBottom: '20px' }}>
         {title}
       </h3>
-      
+
       <div className="pkg-price" style={{ fontSize: '42px', fontWeight: '800', color: 'var(--deep-maroon)', marginBottom: '28px', fontFamily: 'var(--font-serif)' }}>
         ₹{price.toLocaleString()}
         <span style={{ fontSize: '12.5px', fontWeight: 'normal', color: 'var(--text-muted)', display: 'block', marginTop: '6px', fontFamily: 'var(--font-sans)' }}>
@@ -961,7 +976,7 @@ export const PremiumPlanCard: React.FC<PremiumPlanCardProps> = ({
             if (title.toLowerCase().includes('good')) path = '/packages/good-profiles';
             else if (title.toLowerCase().includes('second')) path = '/packages/second-marriage';
             else if (title.toLowerCase().includes('high')) path = '/packages/high-profile';
-            
+
             const shareUrl = `${window.location.origin}${path}`;
             const shareText = `Check out the ${title} on Rishte Forever matrimonial site:`;
             if (navigator.share) {
@@ -969,7 +984,7 @@ export const PremiumPlanCard: React.FC<PremiumPlanCardProps> = ({
                 title: `Rishte Forever - ${title}`,
                 text: shareText,
                 url: shareUrl
-              }).catch(() => {});
+              }).catch(() => { });
             } else {
               navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
               alert(`${title} link copied to clipboard!`);
@@ -1039,7 +1054,7 @@ export const SuccessStoryCard: React.FC<SuccessStoryCardProps> = ({
     }}>
       <FloralCorner position="tl" color="var(--gold-light)" />
       <FloralCorner position="br" color="var(--gold-light)" />
-      
+
       <div>
         <div style={{ position: 'relative', width: '100%', height: '180px', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--gold-light)', marginBottom: '20px' }}>
           <Image src={placeholderIllustration} alt={`Matched Muslim couple success story - ${names} on Rishte Forever`} fill sizes="(max-width: 768px) 100vw, 300px" style={{ objectFit: 'cover' }} />
@@ -1065,7 +1080,7 @@ export const SuccessStoryCard: React.FC<SuccessStoryCardProps> = ({
                 title: 'Rishte Forever Success Story',
                 text: shareText,
                 url: shareUrl
-              }).catch(() => {});
+              }).catch(() => { });
             } else {
               navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
               alert('Success story link copied to clipboard!');
@@ -1115,18 +1130,18 @@ export const SafetyFeatureCard: React.FC<SafetyFeatureCardProps> = ({ title, des
       boxShadow: 'var(--shadow-sm)',
       transition: 'var(--transition-smooth)'
     }}
-    onMouseEnter={e => {
-      const el = e.currentTarget as HTMLElement;
-      el.style.transform = 'translateY(-3px)';
-      el.style.boxShadow = 'var(--shadow-premium)';
-      el.style.borderColor = 'var(--gold-accent)';
-    }}
-    onMouseLeave={e => {
-      const el = e.currentTarget as HTMLElement;
-      el.style.transform = 'translateY(0)';
-      el.style.boxShadow = 'var(--shadow-sm)';
-      el.style.borderColor = 'rgba(184, 146, 74, 0.25)';
-    }}
+      onMouseEnter={e => {
+        const el = e.currentTarget as HTMLElement;
+        el.style.transform = 'translateY(-3px)';
+        el.style.boxShadow = 'var(--shadow-premium)';
+        el.style.borderColor = 'var(--gold-accent)';
+      }}
+      onMouseLeave={e => {
+        const el = e.currentTarget as HTMLElement;
+        el.style.transform = 'translateY(0)';
+        el.style.boxShadow = 'var(--shadow-sm)';
+        el.style.borderColor = 'rgba(184, 146, 74, 0.25)';
+      }}
     >
       <div className="safety-icon" style={{
         width: '36px',
@@ -1252,35 +1267,35 @@ export const PremiumFooter: React.FC<PremiumFooterProps> = ({ onNavigate }) => {
                 {location.facebookUrl && (
                   <a href={location.facebookUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold-accent)', transition: 'var(--transition-smooth)', display: 'flex', alignItems: 'center' }} aria-label="Visit Rishte Forever on Facebook">
                     <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24" style={{ display: 'block' }}>
-                      <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z"/>
+                      <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z" />
                     </svg>
                   </a>
                 )}
                 {location.instagramUrl && (
                   <a href={location.instagramUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold-accent)', transition: 'var(--transition-smooth)', display: 'flex', alignItems: 'center' }} aria-label="Visit Rishte Forever on Instagram">
                     <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24" style={{ display: 'block' }}>
-                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
+                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
                     </svg>
                   </a>
                 )}
                 {location.youtubeUrl && (
                   <a href={location.youtubeUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold-accent)', transition: 'var(--transition-smooth)', display: 'flex', alignItems: 'center' }} aria-label="Visit Rishte Forever on YouTube">
                     <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24" style={{ display: 'block' }}>
-                      <path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.11C19.517 3.545 12 3.545 12 3.545s-7.517 0-9.388.508a3.003 3.003 0 0 0-2.11 2.11C0 8.033 0 12 0 12s0 3.967.502 5.837a3.003 3.003 0 0 0 2.11 2.11C4.483 20.455 12 20.455 12 20.455s7.517 0 9.388-.508a3.003 3.003 0 0 0 2.11-2.11C24 15.967 24 12 24 12s0-3.967-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                      <path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.11C19.517 3.545 12 3.545 12 3.545s-7.517 0-9.388.508a3.003 3.003 0 0 0-2.11 2.11C0 8.033 0 12 0 12s0 3.967.502 5.837a3.003 3.003 0 0 0 2.11 2.11C4.483 20.455 12 20.455 12 20.455s7.517 0 9.388-.508a3.003 3.003 0 0 0 2.11-2.11C24 15.967 24 12 24 12s0-3.967-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
                     </svg>
                   </a>
                 )}
                 {location.linkedinUrl && (
                   <a href={location.linkedinUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold-accent)', transition: 'var(--transition-smooth)', display: 'flex', alignItems: 'center' }} aria-label="Visit Rishte Forever on LinkedIn">
                     <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24" style={{ display: 'block' }}>
-                      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                     </svg>
                   </a>
                 )}
                 {location.twitterUrl && (
                   <a href={location.twitterUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold-accent)', transition: 'var(--transition-smooth)', display: 'flex', alignItems: 'center' }} aria-label="Visit Rishte Forever on X">
                     <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24" style={{ display: 'block' }}>
-                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                     </svg>
                   </a>
                 )}
