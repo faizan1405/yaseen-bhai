@@ -71,14 +71,13 @@ export const BismillahCalligraphy: React.FC = () => {
 
       {/* Central Calligraphy Stamp Block */}
       <div className="bismillah-content">
-        {/* Top Floral Ornament */}
+        {/* Top Crescent and Star Ornament */}
         <div className="bismillah-ornament-top">
           <svg width="60" height="24" viewBox="0 0 60 24" fill="none">
-            <path d="M30,2 C32,7 37,9 41,7 C45,5 47,2 44,0 C41,-2 35,0 30,2 Z" fill="#1B5E3A" stroke="#C9A227" strokeWidth="0.5" opacity="0.9"/>
-            <path d="M30,2 C28,7 23,9 19,7 C15,5 13,2 16,0 C19,-2 25,0 30,2 Z" fill="#1B5E3A" stroke="#C9A227" strokeWidth="0.5" opacity="0.9"/>
-            <path d="M30,2 C30,8 26,13 21,15 C16,17 13,13 16,11 C19,9 25,7 30,2 Z" fill="#1B5E3A" stroke="#C9A227" strokeWidth="0.5" opacity="0.9"/>
-            <path d="M30,2 C30,8 34,13 39,15 C44,17 47,13 44,11 C41,9 35,7 30,2 Z" fill="#1B5E3A" stroke="#C9A227" strokeWidth="0.5" opacity="0.9"/>
-            <circle cx="30" cy="7" r="2.5" fill="#C9A227" />
+            {/* Crescent Moon */}
+            <path d="M 26 7 A 6 6 0 0 0 26 17 A 5.2 5.2 0 0 1 26 7 Z" fill="#C9A227" />
+            {/* Star */}
+            <polygon points="34,9 35.5,11.5 38,12 36,13.5 36.5,16 34,14.5 31.5,16 32,13.5 30,12 32.5,11.5" fill="#C9A227" />
           </svg>
         </div>
 
@@ -90,26 +89,22 @@ export const BismillahCalligraphy: React.FC = () => {
               <stop offset="60%" stopColor="#C9A227" stopOpacity="0.04" />
               <stop offset="100%" stopColor="#C9A227" stopOpacity="0" />
             </radialGradient>
-            <g id="bismillah-arabesque-flourish" stroke="#C9A227" strokeWidth="1" fill="none" strokeLinecap="round" strokeLinejoin="round">
-              {/* Elegant swirl stem */}
-              <path d="M 235,42 C 243,42 251,36 256,41 C 260,45 257,50 252,49 C 248,48 247,43 251,41 C 254,39 257,41 256,44" />
-              {/* Small accent leaves */}
-              <path d="M 242,41 C 244,36 248,35 248,35 C 248,35 246,40 242,41" fill="#C9A227" />
-              <path d="M 248,44 C 250,48 254,49 254,49 C 254,49 251,46 248,44" fill="#C9A227" />
-            </g>
           </defs>
           {/* Faint gold radial glow behind the text */}
           <ellipse cx="150" cy="42" rx="100" ry="22" fill="url(#radialGlow)" />
           
-          {/* Symmetrical flourishes flanking the Bismillah */}
-          <use href="#bismillah-arabesque-flourish" />
-          <use href="#bismillah-arabesque-flourish" transform="translate(300, 0) scale(-1, 1)" />
+          {/* Left Divider Line & Diamond */}
+          <line x1="15" y1="46" x2="48" y2="46" stroke="#C9A227" strokeWidth="1" />
+          <polygon points="54,42 58,46 54,50 50,46" fill="#C9A227" />
+
+          {/* Right Divider Line & Diamond */}
+          <polygon points="246,42 250,46 246,50 242,46" fill="#C9A227" />
+          <line x1="252" y1="46" x2="285" y2="46" stroke="#C9A227" strokeWidth="1" />
 
           {/* Solid deep green text */}
           <text x="50%" y="46" dominantBaseline="middle" textAnchor="middle" fill="#1B5E3A" fontFamily="var(--font-arabic)" fontSize="32" fontWeight="bold">
             بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
           </text>
-          <path d="M80 52 Q 150 60 220 52" stroke="#C9A227" strokeWidth="0.8" fill="none" strokeDasharray="4,4" opacity="0.6" />
         </svg>
 
         {/* Bottom Gold Line with Center Accent */}
