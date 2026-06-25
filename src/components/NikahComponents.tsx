@@ -819,6 +819,8 @@ interface PremiumPlanCardProps {
   imageUrl?: string;
   badgeText?: string;
   planTier?: 'basic' | 'silver' | 'gold' | 'membership';
+  hidePrices?: boolean;
+  onCompleteForm?: () => void;
 }
 
 export const PremiumPlanCard: React.FC<PremiumPlanCardProps> = ({
@@ -835,7 +837,9 @@ export const PremiumPlanCard: React.FC<PremiumPlanCardProps> = ({
   whatsappMessage,
   imageUrl,
   badgeText,
-  planTier
+  planTier,
+  hidePrices = false,
+  onCompleteForm,
 }) => {
   const finalBadge = badgeText || (isPopular ? 'Recommended' : undefined);
   const borderStyle = planTier === 'gold' 
@@ -924,12 +928,30 @@ export const PremiumPlanCard: React.FC<PremiumPlanCardProps> = ({
         {title}
       </h3>
 
-      <div className="pkg-price" style={{ fontSize: '42px', fontWeight: '800', color: 'var(--deep-maroon)', marginBottom: '28px', fontFamily: 'var(--font-serif)' }}>
-        ₹{price.toLocaleString()}
-        <span style={{ fontSize: '12.5px', fontWeight: 'normal', color: 'var(--text-muted)', display: 'block', marginTop: '6px', fontFamily: 'var(--font-sans)' }}>
-          + GST
-        </span>
-      </div>
+      {hidePrices ? (
+        <div style={{
+          background: 'linear-gradient(135deg, rgba(111,29,53,0.06) 0%, rgba(184,146,74,0.06) 100%)',
+          border: '1.5px dashed var(--gold-accent)',
+          borderRadius: '12px',
+          padding: '20px 16px',
+          marginBottom: '28px',
+          textAlign: 'center',
+        }}>
+          <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '6px', fontFamily: 'var(--font-sans)' }}>
+            Pricing available after
+          </div>
+          <div style={{ fontSize: '15px', fontWeight: 700, color: 'var(--deep-maroon)', fontFamily: 'var(--font-serif)' }}>
+            Complete your profile to view pricing
+          </div>
+        </div>
+      ) : (
+        <div className="pkg-price" style={{ fontSize: '42px', fontWeight: '800', color: 'var(--deep-maroon)', marginBottom: '28px', fontFamily: 'var(--font-serif)' }}>
+          ₹{price.toLocaleString()}
+          <span style={{ fontSize: '12.5px', fontWeight: 'normal', color: 'var(--text-muted)', display: 'block', marginTop: '6px', fontFamily: 'var(--font-sans)' }}>
+            + GST
+          </span>
+        </div>
+      )}
 
       <ul className="pkg-features" style={{ listStyle: 'none', textAlign: 'left', marginBottom: '36px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
         {features.map((feat, i) => (
@@ -940,15 +962,25 @@ export const PremiumPlanCard: React.FC<PremiumPlanCardProps> = ({
       </ul>
 
       <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-        <button
-          onClick={onActivate}
-          className={`btn ${isPopular || isActive ? 'btn-gold' : 'btn-primary'}`}
-          style={{ width: '100%' }}
-          disabled={isActive}
-        >
-          {isActive ? 'Active Package' : ctaText}
-        </button>
-        {onInquire && !isActive && (
+        {hidePrices ? (
+          <button
+            onClick={onCompleteForm}
+            className="btn btn-primary"
+            style={{ width: '100%' }}
+          >
+            Complete Form to View Price
+          </button>
+        ) : (
+          <button
+            onClick={onActivate}
+            className={`btn ${isPopular || isActive ? 'btn-gold' : 'btn-primary'}`}
+            style={{ width: '100%' }}
+            disabled={isActive}
+          >
+            {isActive ? 'Active Package' : ctaText}
+          </button>
+        )}
+        {!hidePrices && onInquire && !isActive && (
           <button
             onClick={onInquire}
             type="button"
@@ -958,7 +990,7 @@ export const PremiumPlanCard: React.FC<PremiumPlanCardProps> = ({
             Inquire & Request Callback
           </button>
         )}
-        {whatsappMessage && !isActive && (
+        {!hidePrices && whatsappMessage && !isActive && (
           <a
             href={`https://wa.me/919675483125?text=${encodeURIComponent(whatsappMessage)}`}
             target="_blank"

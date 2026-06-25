@@ -72,7 +72,14 @@ export default function HomeClient() {
     masterLocations,
   } = useSimulator();
 
-  const isFormComplete = userProfile?.profileCompletionStatus === 'COMPLETE';
+  const isFormComplete = isLoggedIn && userProfile?.profileCompletionStatus === 'COMPLETE';
+
+  const handleCompleteForm = () => {
+    setIsRegistering(true);
+    setRegStep(1);
+    // Scroll to top so the wizard is visible
+    if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const handleNextStep = () => {
     if (regStep === 1) {
@@ -839,6 +846,8 @@ export default function HomeClient() {
                     onInquire={() => setInquiryPackage('₹300 Monthly Membership')}
                     whatsappMessage="Assalamu Alaikum, I want to know more about the ₹300 monthly membership on Rishte Forever."
                     imageUrl="/images/monthly_active.png"
+                    hidePrices={!isFormComplete}
+                    onCompleteForm={handleCompleteForm}
                   />
                   <PremiumPlanCard
                     title="Good Profile Package"
@@ -854,6 +863,8 @@ export default function HomeClient() {
                     badgeText="Starter"
                     planTier="basic"
                     imageUrl="/images/good_profile.png"
+                    hidePrices={!isFormComplete}
+                    onCompleteForm={handleCompleteForm}
                   />
                   <PremiumPlanCard
                     title="Silver Plan"
@@ -878,6 +889,8 @@ export default function HomeClient() {
                     badgeText="Most Balanced"
                     planTier="silver"
                     imageUrl="/images/second_marriage.png"
+                    hidePrices={!isFormComplete}
+                    onCompleteForm={handleCompleteForm}
                   />
                   <PremiumPlanCard
                     title="Gold Package"
@@ -904,6 +917,8 @@ export default function HomeClient() {
                     badgeText="Premium Choice"
                     planTier="gold"
                     imageUrl="/images/high_profile.png"
+                    hidePrices={!isFormComplete}
+                    onCompleteForm={handleCompleteForm}
                   />
                 </div>
               </div>

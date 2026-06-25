@@ -193,6 +193,29 @@ export const SimulatorProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   // Tracks isLoading transitions to run post-load logic for the gated profile flow
   const wasLoadingRef = useRef(false);
 
+  // Detect real NextAuth session on first mount (production / non-demo mode only)
+  useEffect(() => {
+    if (process.env.NEXT_PUBLIC_DEMO_MODE === 'true') return;
+    if (isLoggedIn) return; // simulator already set this
+
+    async function detectRealSession() {
+      try {
+        const res = await fetch('/api/profile');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.profile) {
+            setIsLoggedIn(true); // triggers loadAllData via its dependency
+          }
+        }
+      } catch {
+        // no session or network error — stay logged out
+      }
+    }
+
+    detectRealSession();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // intentionally runs once on mount
+
   // Headers generator
   const getSimulatorHeaders = useCallback(() => {
     const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
@@ -268,6 +291,22 @@ export const SimulatorProvider: React.FC<{ children: React.ReactNode }> = ({ chi
               setRegStep(1);
             } else {
               setIsRegistering(false);
+            }
+
+            // Sync active packages from DB into state (so page-refresh preserves access)
+            try {
+              const resPkg = await fetch('/api/user/purchases', { headers: simulatorHeaders });
+              if (resPkg.ok) {
+                const pkgData = await resPkg.json();
+                if (pkgData.packages && pkgData.packages.length > 0) {
+                  setSimulatedPackages(prev => Array.from(new Set([...prev, ...pkgData.packages])));
+                }
+                if (pkgData.hasPaid) {
+                  setHasPaid300(true);
+                }
+              }
+            } catch {
+              // ignore — purchases will just be empty if DB is down
             }
           } else {
             setUserProfile(null);

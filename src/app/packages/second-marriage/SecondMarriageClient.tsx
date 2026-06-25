@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useSimulator } from '../../../context/SimulatorContext';
 import Navbar from '../../../components/Navbar';
 import ProfileGrid from '../../../components/ProfileGrid';
@@ -8,9 +9,19 @@ import { SectionHeading, PremiumFooter, FloralCorner } from '../../../components
 import PackageInquiryForm from '../../../components/PackageInquiryForm';
 
 export default function SecondMarriageClient() {
-  const { profiles, isLoggedIn, simulatedPackages, handleRazorpayCheckout } = useSimulator();
+  const { profiles, isLoggedIn, simulatedPackages, handleRazorpayCheckout, userProfile, setIsRegistering, setRegStep } = useSimulator();
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [showInquiry, setShowInquiry] = useState(false);
+
+  const isFormComplete = isLoggedIn && userProfile?.profileCompletionStatus === 'COMPLETE';
+  const isPackageActive = simulatedPackages.includes('second_marriage_package');
+
+  const handleCompleteForm = () => {
+    setIsRegistering(true);
+    setRegStep(1);
+    router.push('/');
+  };
 
   // Second marriage filtering
   const secondMarriageProfiles = profiles.filter((p) => {
@@ -67,13 +78,20 @@ export default function SecondMarriageClient() {
               <h3 style={{ fontFamily: 'var(--font-serif)', color: 'var(--deep-maroon)', fontSize: '22px', marginBottom: '16px', fontWeight: 800 }}>
                 Silver Plan
               </h3>
-              <div style={{ fontSize: '36px', fontWeight: '800', color: 'var(--deep-maroon)', marginBottom: '8px', fontFamily: 'var(--font-serif)' }}>
-                ₹11,000 <span style={{ fontSize: '14px', color: 'var(--text-muted)', fontFamily: 'var(--font-sans)', fontWeight: 'normal' }}>+ GST</span>
-              </div>
+              {isFormComplete ? (
+                <div style={{ fontSize: '36px', fontWeight: '800', color: 'var(--deep-maroon)', marginBottom: '8px', fontFamily: 'var(--font-serif)' }}>
+                  ₹11,000 <span style={{ fontSize: '14px', color: 'var(--text-muted)', fontFamily: 'var(--font-sans)', fontWeight: 'normal' }}>+ GST</span>
+                </div>
+              ) : (
+                <div style={{ background: 'linear-gradient(135deg,rgba(111,29,53,0.06),rgba(184,146,74,0.06))', border: '1.5px dashed var(--gold-accent)', borderRadius: '10px', padding: '14px', marginBottom: '8px', textAlign: 'center' }}>
+                  <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '4px' }}>Pricing available after</div>
+                  <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--deep-maroon)' }}>Complete your profile to view pricing</div>
+                </div>
+              )}
               <p style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: '20px' }}>
                 Access our private segregated matches directory tailored for second marriages.
               </p>
-              
+
               <ul style={{ paddingLeft: '20px', marginBottom: '24px', fontSize: '13.5px', color: 'var(--text-dark)' }}>
                 <li style={{ marginBottom: '8px' }}>Everything in Basic Package</li>
                 <li style={{ marginBottom: '8px' }}>More verified profile suggestions</li>
@@ -85,16 +103,26 @@ export default function SecondMarriageClient() {
                 <li style={{ marginBottom: '8px' }}>1 year service validity</li>
               </ul>
 
-              <button
-                className="btn btn-gold"
-                style={{ width: '100%', padding: '12px', fontSize: '15px' }}
-                onClick={() => handleRazorpayCheckout('second_marriage_package', 11000, 'Silver Plan')}
-                disabled={simulatedPackages.includes('second_marriage_package')}
-              >
-                {simulatedPackages.includes('second_marriage_package') ? 'Package Active ✅' : 'Buy Silver Plan'}
-              </button>
+              {isFormComplete ? (
+                <button
+                  className="btn btn-gold"
+                  style={{ width: '100%', padding: '12px', fontSize: '15px' }}
+                  onClick={() => handleRazorpayCheckout('second_marriage_package', 11000, 'Silver Plan')}
+                  disabled={isPackageActive}
+                >
+                  {isPackageActive ? 'Package Active ✅' : 'Buy Silver Plan'}
+                </button>
+              ) : (
+                <button
+                  className="btn btn-primary"
+                  style={{ width: '100%', padding: '12px', fontSize: '15px' }}
+                  onClick={handleCompleteForm}
+                >
+                  Complete Form to View Price
+                </button>
+              )}
 
-              {!simulatedPackages.includes('second_marriage_package') && (
+              {isFormComplete && !isPackageActive && (
                 <>
                   <button
                     className="btn btn-secondary"
