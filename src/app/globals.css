@@ -230,9 +230,7 @@ body:has(.demo-bar) .header {
 .nav-container {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
-  grid-template-rows: auto auto;
   align-items: center;
-  row-gap: 12px;
   column-gap: 16px;
   background-color: var(--warm-ivory);
   border: 1.5px solid var(--gold-accent);
@@ -242,7 +240,7 @@ body:has(.demo-bar) .header {
   position: relative;
   overflow: visible;
   max-width: 1240px;
-  margin: 20px auto 10px auto;
+  margin: 0 auto;
 }
 
 .nav-section {
@@ -253,7 +251,6 @@ body:has(.demo-bar) .header {
 
 .nav-left {
   grid-column: 1;
-  grid-row: 1;
   justify-self: end;
   display: flex;
   align-items: center;
@@ -267,9 +264,8 @@ body:has(.demo-bar) .header {
   flex-shrink: 0;
 }
 
-.nav-right-links {
+.nav-right {
   grid-column: 3;
-  grid-row: 1;
   justify-self: start;
   display: flex;
   align-items: center;
@@ -283,23 +279,14 @@ body:has(.demo-bar) .header {
   flex-shrink: 0;
 }
 
-.nav-right-actions {
-  grid-column: 3;
-  grid-row: 2;
-  justify-self: end;
-  display: flex;
-  align-items: center;
-}
-
 /* Mughal Arch Wrapper for Logo centering & cutout effect */
 .logo-arch-wrapper {
   grid-column: 2;
-  grid-row: 1 / span 2;
   justify-self: center;
   position: relative;
   width: 260px;
   height: 115px;
-  margin-top: -46px;
+  margin-top: -30px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -2896,5 +2883,52 @@ input[type="checkbox"] {
 @media (max-width: 768px) {
   .good-profiles-container, .second-marriage-container, .high-profile-container {
     grid-template-columns: 1fr !important;
+  }
+}
+
+/* --- Bismillah Calligraphy Section --- */
+.bismillah-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  position: relative;
+  height: 140px; /* 120-180px height as requested */
+  overflow: hidden;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.bismillah-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  text-align: center;
+}
+
+.lantern-wrapper {
+  position: absolute;
+  top: 0;
+  z-index: 1;
+}
+
+.lantern-left {
+  left: 10%;
+}
+
+.lantern-right {
+  right: 10%;
+}
+
+@media (max-width: 768px) {
+  .lantern-wrapper {
+    display: none; /* Hide lanterns on mobile */
+  }
+  .bismillah-container {
+    height: 120px;
   }
 }

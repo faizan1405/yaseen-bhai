@@ -129,110 +129,109 @@ export const Navbar: React.FC = () => {
             </div>
           </div>
 
-          {/* Right Column (Row 1): Premium/Safety/Zaicha nav links */}
-          <div className="nav-section nav-right-links">
+          {/* Right Column: Premium/Safety/Zaicha nav links + Action buttons */}
+          <div className="nav-section nav-right">
             {/* Vertical separator */}
             <div className="nav-right-divider nav-menu-desktop"></div>
-            <nav className="nav-menu-desktop">
-              <ul className="nav-menu">
-                <li>
-                  <Link href="/premium" className={`nav-link ${pathname === '/premium' ? 'active' : ''}`}>
-                    <svg className="nav-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7z"></path>
-                      <path d="M3 20h18a1 1 0 0 0 1-1v-1a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1z"></path>
-                    </svg>
-                    Premium
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/safety" className={`nav-link ${pathname === '/safety' ? 'active' : ''}`}>
-                    <svg className="nav-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                    </svg>
-                    Safety
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/zaicha" className={`nav-link nav-link-zaicha ${pathname === '/zaicha' ? 'active' : ''}`}>
-                    <svg className="nav-icon animate-star" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                    </svg>
-                    Zaicha
-                  </Link>
-                </li>
-              </ul>
-            </nav>
-          </div>
+            <div className="nav-right-desktop-wrapper">
+              <nav className="nav-menu-desktop">
+                <ul className="nav-menu">
+                  <li>
+                    <Link href="/premium" className={`nav-link ${pathname === '/premium' ? 'active' : ''}`}>
+                      <svg className="nav-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7z"></path>
+                        <path d="M3 20h18a1 1 0 0 0 1-1v-1a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1z"></path>
+                      </svg>
+                      Premium
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/safety" className={`nav-link ${pathname === '/safety' ? 'active' : ''}`}>
+                      <svg className="nav-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                      </svg>
+                      Safety
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/zaicha" className={`nav-link nav-link-zaicha ${pathname === '/zaicha' ? 'active' : ''}`}>
+                      <svg className="nav-icon animate-star" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                      </svg>
+                      Zaicha
+                    </Link>
+                  </li>
+                </ul>
+              </nav>
 
-          {/* Right Column (Row 2): Action buttons */}
-          <div className="nav-section nav-right-actions">
-            <div className="nav-menu-desktop nav-actions-wrapper">
-              {isLoggedIn && (
+              <div className="nav-menu-desktop nav-actions-wrapper">
+                {isLoggedIn && (
+                  <Link
+                    href="/my-account"
+                    className="btn btn-secondary nav-btn"
+                  >
+                    <svg className="btn-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    My Account
+                  </Link>
+                )}
                 <Link
-                  href="/my-account"
+                  href="/admin"
                   className="btn btn-secondary nav-btn"
+                  id="btn-toggle-admin"
                 >
                   <svg className="btn-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="12" cy="7" r="4"></circle>
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
                   </svg>
-                  My Account
+                  {pathname.startsWith('/admin') ? 'View Website' : 'Admin Panel'}
                 </Link>
-              )}
-              <Link
-                href="/admin"
-                className="btn btn-secondary nav-btn"
-                id="btn-toggle-admin"
-              >
-                <svg className="btn-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="3"></circle>
-                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                </svg>
-                {pathname.startsWith('/admin') ? 'View Website' : 'Admin Panel'}
-              </Link>
-              {isLoggedIn ? (
-                <div className="nav-actions-group">
-                  <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--primary-brand)', fontFamily: 'var(--font-serif)', display: 'inline-flex', alignItems: 'center' }}>Salaam!</span>
-                  <button
-                    onClick={handleLogout}
-                    className="btn btn-primary nav-btn"
-                    id="btn-logout"
-                  >
-                    <svg className="btn-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                      <polyline points="16 17 21 12 16 7"></polyline>
-                      <line x1="21" y1="12" x2="9" y2="12"></line>
-                    </svg>
-                    Logout
-                  </button>
-                </div>
-              ) : (
-                <div className="nav-actions-group">
-                  <button
-                    onClick={handleLoginTrigger}
-                    className="btn btn-secondary nav-btn"
-                    id="btn-login-trigger"
-                  >
-                    <svg className="btn-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                      <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                    </svg>
-                    Login
-                  </button>
-                  <button
-                    onClick={handleRegisterFree}
-                    className="btn btn-gold nav-btn"
-                  >
-                    <svg className="btn-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                      <circle cx="8.5" cy="7" r="4"></circle>
-                      <line x1="20" y1="8" x2="20" y2="14"></line>
-                      <line x1="17" y1="11" x2="23" y2="11"></line>
-                    </svg>
-                    Register Free
-                  </button>
-                </div>
-              )}
+                {isLoggedIn ? (
+                  <div className="nav-actions-group">
+                    <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--primary-brand)', fontFamily: 'var(--font-serif)', display: 'inline-flex', alignItems: 'center' }}>Salaam!</span>
+                    <button
+                      onClick={handleLogout}
+                      className="btn btn-primary nav-btn"
+                      id="btn-logout"
+                    >
+                      <svg className="btn-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                      </svg>
+                      Logout
+                    </button>
+                  </div>
+                ) : (
+                  <div className="nav-actions-group">
+                    <button
+                      onClick={handleLoginTrigger}
+                      className="btn btn-secondary nav-btn"
+                      id="btn-login-trigger"
+                    >
+                      <svg className="btn-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                      </svg>
+                      Login
+                    </button>
+                    <button
+                      onClick={handleRegisterFree}
+                      className="btn btn-gold nav-btn"
+                    >
+                      <svg className="btn-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <line x1="20" y1="8" x2="20" y2="14"></line>
+                        <line x1="17" y1="11" x2="23" y2="11"></line>
+                      </svg>
+                      Register Free
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
