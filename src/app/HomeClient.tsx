@@ -656,25 +656,28 @@ export default function HomeClient() {
                     <p style={{ color: 'var(--text-muted)', fontSize: '15px', fontWeight: 500 }}>Loading profiles…</p>
                   </div>
                 ) : profiles.length > 0 ? (
-                  <div className="grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '32px' }}>
-                    {profiles.slice(0, 6).map((profile, index) => (
-                      <ProfileCard
-                        key={profile.id}
-                        profile={profile}
-                        index={index}
-                        isLoggedIn={isLoggedIn}
-                        hasPaid300={hasPaid300}
-                        simulatedPackages={simulatedPackages}
-                        simulatedHighProfileApproved={simulatedHighProfileApproved}
-                        savedProfiles={savedProfiles}
-                        onToggleSave={toggleSaveProfile}
-                        onViewDetails={setSelectedProfileForDetails}
-                        onShowLogin={() => setShowLoginModal(true)}
-                        getProfileImage={getProfileImage}
-                        getThemeClass={getThemeClass}
-                      />
-                    ))}
-                  </div>
+                  <>
+                    <p className="mobile-swipe-hint" aria-hidden="true">Swipe to explore →</p>
+                    <div className="grid-3 mobile-swipe-row" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '32px' }}>
+                      {profiles.slice(0, 6).map((profile, index) => (
+                        <ProfileCard
+                          key={profile.id}
+                          profile={profile}
+                          index={index}
+                          isLoggedIn={isLoggedIn}
+                          hasPaid300={hasPaid300}
+                          simulatedPackages={simulatedPackages}
+                          simulatedHighProfileApproved={simulatedHighProfileApproved}
+                          savedProfiles={savedProfiles}
+                          onToggleSave={toggleSaveProfile}
+                          onViewDetails={setSelectedProfileForDetails}
+                          onShowLogin={() => setShowLoginModal(true)}
+                          getProfileImage={getProfileImage}
+                          getThemeClass={getThemeClass}
+                        />
+                      ))}
+                    </div>
+                  </>
                 ) : (
                   <div style={{ textAlign: 'center', padding: '48px 20px', backgroundColor: 'var(--white)', borderRadius: '12px', border: '1px dashed var(--gold-accent)' }}>
                     <div style={{ fontSize: '32px', marginBottom: '12px', color: 'var(--gold-accent)' }}>🌙</div>
@@ -781,7 +784,8 @@ export default function HomeClient() {
                   scriptText="Success Stories"
                 />
 
-                <div className="grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '32px' }}>
+                <p className="mobile-swipe-hint" aria-hidden="true">Swipe to explore →</p>
+                <div className="grid-3 mobile-swipe-row" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '32px' }}>
                   <SuccessStoryCard
                     names="Dr. Sarah & Tariq"
                     location="Mumbai • Married 2025"
@@ -813,7 +817,8 @@ export default function HomeClient() {
                   scriptText="Choose Your Plan"
                 />
 
-                <div className="grid-4" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '32px' }}>
+                <p className="mobile-swipe-hint" aria-hidden="true">Swipe to compare plans →</p>
+                <div className="grid-4 mobile-swipe-row swipe-packages" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '32px' }}>
                   <PremiumPlanCard
                     title="Monthly Membership"
                     price={300}

@@ -2949,3 +2949,73 @@ input[type="checkbox"] {
     height: 120px;
   }
 }
+
+/* ================================================================
+   Mobile Swipe Carousel — horizontal scroll for card sections
+   Only active on screens ≤ 767px. Desktop keeps existing grid.
+   ================================================================ */
+
+.mobile-swipe-hint {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  /* Subtle "swipe" nudge above carousel sections */
+  .mobile-swipe-hint {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    opacity: 0.72;
+    letter-spacing: 0.025em;
+    user-select: none;
+  }
+
+  /* The horizontal swipe row container */
+  .mobile-swipe-row {
+    display: flex !important;
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    gap: 14px !important;
+    /* Bleed to container edges so first card aligns with section text */
+    padding: 6px 16px 28px 16px !important;
+    margin-left: -16px !important;
+    margin-right: -16px !important;
+    /* Hide scrollbar visually while keeping scroll functional */
+    scrollbar-width: none;
+    min-width: 0;
+    /* Align all cards to top so varying heights don't stretch neighbours */
+    align-items: flex-start;
+  }
+
+  .mobile-swipe-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Default card width — ~84% shows a peek of the next card */
+  .mobile-swipe-row > * {
+    flex: 0 0 84% !important;
+    width: 84% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    scroll-snap-align: start !important;
+  }
+
+  /* Package cards slightly narrower so the next plan peeks through */
+  .mobile-swipe-row.swipe-packages > * {
+    flex: 0 0 80% !important;
+    width: 80% !important;
+  }
+
+  /* Override the grid-3/grid-4 1-column stacking rule for swipe rows */
+  .mobile-swipe-row.grid-3,
+  .mobile-swipe-row.grid-4 {
+    grid-template-columns: none !important;
+  }
+}
