@@ -85,22 +85,31 @@ export const BismillahCalligraphy: React.FC = () => {
         {/* Bismillah Arabic SVG */}
         <svg width="300" height="70" viewBox="0 0 300 70" fill="none" className="bismillah-svg" style={{ overflow: 'visible' }}>
           <defs>
-            <linearGradient id="textSheen" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#1B5E3A" />
-              <stop offset="25%" stopColor="#1B5E3A" />
-              <stop offset="50%" stopColor="#55773A" />
-              <stop offset="75%" stopColor="#1B5E3A" />
-              <stop offset="100%" stopColor="#0F3821" />
-            </linearGradient>
-            <filter id="subtleGoldGlow" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="0" dy="0" stdDeviation="1.5" floodColor="#C9A227" floodOpacity="0.5"/>
-            </filter>
+            <radialGradient id="radialGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#C9A227" stopOpacity="0.12" />
+              <stop offset="60%" stopColor="#C9A227" stopOpacity="0.04" />
+              <stop offset="100%" stopColor="#C9A227" stopOpacity="0" />
+            </radialGradient>
+            <g id="bismillah-arabesque-flourish" stroke="#C9A227" strokeWidth="1" fill="none" strokeLinecap="round" strokeLinejoin="round">
+              {/* Elegant swirl stem */}
+              <path d="M 235,42 C 243,42 251,36 256,41 C 260,45 257,50 252,49 C 248,48 247,43 251,41 C 254,39 257,41 256,44" />
+              {/* Small accent leaves */}
+              <path d="M 242,41 C 244,36 248,35 248,35 C 248,35 246,40 242,41" fill="#C9A227" />
+              <path d="M 248,44 C 250,48 254,49 254,49 C 254,49 251,46 248,44" fill="#C9A227" />
+            </g>
           </defs>
-          <path d="M10 35 C 70 5, 230 5, 290 35 C 230 65, 70 65, 10 35 Z" fill="var(--warm-ivory)" stroke="#C9A227" strokeWidth="1" />
-          <text x="50%" y="46" dominantBaseline="middle" textAnchor="middle" fill="url(#textSheen)" stroke="#C9A227" strokeWidth="0.3" filter="url(#subtleGoldGlow)" fontFamily="var(--font-arabic)" fontSize="32" fontWeight="bold">
+          {/* Faint gold radial glow behind the text */}
+          <ellipse cx="150" cy="42" rx="100" ry="22" fill="url(#radialGlow)" />
+          
+          {/* Symmetrical flourishes flanking the Bismillah */}
+          <use href="#bismillah-arabesque-flourish" />
+          <use href="#bismillah-arabesque-flourish" transform="translate(300, 0) scale(-1, 1)" />
+
+          {/* Solid deep green text */}
+          <text x="50%" y="46" dominantBaseline="middle" textAnchor="middle" fill="#1B5E3A" fontFamily="var(--font-arabic)" fontSize="32" fontWeight="bold">
             بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
           </text>
-          <path d="M80 52 Q 150 60 220 52" stroke="#C9A227" strokeWidth="1" fill="none" strokeDasharray="4,4" />
+          <path d="M80 52 Q 150 60 220 52" stroke="#C9A227" strokeWidth="0.8" fill="none" strokeDasharray="4,4" opacity="0.6" />
         </svg>
 
         {/* Bottom Gold Line with Center Accent */}
