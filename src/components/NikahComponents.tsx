@@ -837,9 +837,6 @@ export const PremiumPlanCard: React.FC<PremiumPlanCardProps> = ({
   badgeText,
   planTier
 }) => {
-  const gstAmount = Math.floor(price * gstRate);
-  const totalAmount = price + gstAmount;
-
   const finalBadge = badgeText || (isPopular ? 'Recommended' : undefined);
   const borderStyle = planTier === 'gold' 
     ? '2.5px solid var(--gold-accent)' 
@@ -930,7 +927,7 @@ export const PremiumPlanCard: React.FC<PremiumPlanCardProps> = ({
       <div className="pkg-price" style={{ fontSize: '42px', fontWeight: '800', color: 'var(--deep-maroon)', marginBottom: '28px', fontFamily: 'var(--font-serif)' }}>
         ₹{price.toLocaleString()}
         <span style={{ fontSize: '12.5px', fontWeight: 'normal', color: 'var(--text-muted)', display: 'block', marginTop: '6px', fontFamily: 'var(--font-sans)' }}>
-          + 18% GST (₹{gstAmount.toLocaleString()}) = <strong style={{ color: 'var(--gold-dark)', fontSize: '14px' }}>₹{totalAmount.toLocaleString()}</strong> {billingText}
+          + GST
         </span>
       </div>
 

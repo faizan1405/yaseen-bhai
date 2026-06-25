@@ -68,7 +68,7 @@ export default function GoodProfilesClient() {
                 Good Profile Package
               </h3>
               <div style={{ fontSize: '36px', fontWeight: '800', color: 'var(--deep-maroon)', marginBottom: '8px', fontFamily: 'var(--font-serif)' }}>
-                ₹5,500 <span style={{ fontSize: '14px', color: 'var(--text-muted)', fontFamily: 'var(--font-sans)', fontWeight: 'normal' }}>+ 18% GST</span>
+                ₹5,500 <span style={{ fontSize: '14px', color: 'var(--text-muted)', fontFamily: 'var(--font-sans)', fontWeight: 'normal' }}>+ GST</span>
               </div>
               <p style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: '20px' }}>
                 Unlock access to verified premium candidates characterized by handsome & beautiful appearances.

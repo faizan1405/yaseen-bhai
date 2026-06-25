@@ -68,7 +68,7 @@ export default function SecondMarriageClient() {
                 Silver Plan
               </h3>
               <div style={{ fontSize: '36px', fontWeight: '800', color: 'var(--deep-maroon)', marginBottom: '8px', fontFamily: 'var(--font-serif)' }}>
-                ₹11,000 <span style={{ fontSize: '14px', color: 'var(--text-muted)', fontFamily: 'var(--font-sans)', fontWeight: 'normal' }}>+ 18% GST</span>
+                ₹11,000 <span style={{ fontSize: '14px', color: 'var(--text-muted)', fontFamily: 'var(--font-sans)', fontWeight: 'normal' }}>+ GST</span>
               </div>
               <p style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: '20px' }}>
                 Access our private segregated matches directory tailored for second marriages.
