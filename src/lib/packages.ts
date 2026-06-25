@@ -1,5 +1,27 @@
 export type PackageType = 'monthly_membership' | 'good_profile_package' | 'second_marriage_package' | 'high_profile_package';
 
+/**
+ * Single source of truth for the package keys used across the entire app — the
+ * demo simulator bar, access-control checks, privacy redaction, the payment
+ * flow and the API headers all key off these EXACT strings. They must stay in
+ * sync with the Prisma `PackageType` enum and the keys of `PREMIUM_PACKAGES`.
+ *
+ * IMPORTANT: the customer-facing UI labels intentionally differ from the keys.
+ * Always reference the key, never the label, in logic:
+ *   monthly_membership      → "Monthly Membership"
+ *   good_profile_package    → "Good Profile Package"
+ *   second_marriage_package → "Silver Plan"      (NOT a separate "silver_plan" key)
+ *   high_profile_package    → "Gold Package"     (NOT a separate "gold_package" key)
+ */
+export const PACKAGE_KEYS = {
+  MONTHLY: 'monthly_membership',
+  GOOD_PROFILE: 'good_profile_package',
+  SILVER: 'second_marriage_package',
+  GOLD: 'high_profile_package',
+} as const;
+
+export type PackageKey = typeof PACKAGE_KEYS[keyof typeof PACKAGE_KEYS];
+
 export interface PackageDefinition {
   type: PackageType;
   name: string;

@@ -135,6 +135,49 @@ const initialFormData = {
   familyOrigin: '',
 };
 
+// localStorage key for persisting demo simulator selections across refreshes
+const DEMO_STATE_KEY = 'rf-demo-sim-state';
+
+const IS_DEMO_MODE = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
+
+/**
+ * In demo mode the simulated user never has a real DB-backed profile
+ * (`/api/profile` returns 401 for `simulated-user-123`). So that package access
+ * can be driven purely by the demo bar toggles, we hand the app a synthetic,
+ * already-complete & approved profile. This makes `isFormComplete` true so the
+ * package toggles actually unlock profile cards instead of getting stuck behind
+ * the "Complete Form" gate.
+ */
+function buildDemoUserProfile(): Profile {
+  return {
+    id: 'demo-sim-profile',
+    userId: 'simulated-user-123',
+    fullName: 'Demo Member',
+    gender: 'Female',
+    dateOfBirth: '1995-06-15',
+    maritalStatus: 'Single',
+    phoneNumber: '+91 99999 99999',
+    city: 'Mumbai',
+    areaOrLocality: 'Bandra',
+    state: 'Maharashtra',
+    country: 'India',
+    education: 'Post Graduate',
+    occupation: 'Professional',
+    annualIncomeRange: '₹5 LPA - ₹10 LPA',
+    familyInfo: 'Demo family background.',
+    bio: 'Synthetic profile used by the Pricing & Access Simulator.',
+    themeColor: 'emerald',
+    verificationStatus: 'APPROVED',
+    profileCompletionStatus: 'COMPLETE',
+    createdAt: new Date().toISOString(),
+    maslak: null,
+    fiqh: null,
+    biradari: null,
+    district: null,
+    locality: null,
+    preferredLocations: [],
+  } as Profile;
+}
 
 const SimulatorContext = createContext<SimulatorContextType | undefined>(undefined);
 
@@ -154,6 +197,9 @@ export const SimulatorProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [reloadTrigger, setReloadTrigger] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  // True once demo selections have been restored from localStorage; gates the
+  // persistence writer so it never overwrites saved state with defaults on mount.
+  const [demoHydrated, setDemoHydrated] = useState(false);
 
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [savedProfiles, setSavedProfiles] = useState<string[]>([]);
@@ -216,6 +262,48 @@ export const SimulatorProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // intentionally runs once on mount
 
+  // Restore demo simulator selections from localStorage on first mount (demo
+  // mode only). Done in an effect (not a lazy useState initializer) to avoid a
+  // server/client hydration mismatch — the first paint always matches the SSR
+  // "logged-out" state, then we hydrate the saved selections.
+  useEffect(() => {
+    if (!IS_DEMO_MODE) {
+      setDemoHydrated(true);
+      return;
+    }
+    try {
+      const raw = window.localStorage.getItem(DEMO_STATE_KEY);
+      if (raw) {
+        const saved = JSON.parse(raw);
+        if (typeof saved.isLoggedIn === 'boolean') setIsLoggedIn(saved.isLoggedIn);
+        if (typeof saved.hasPaid300 === 'boolean') setHasPaid300(saved.hasPaid300);
+        if (Array.isArray(saved.simulatedPackages)) setSimulatedPackages(saved.simulatedPackages);
+        if (typeof saved.simulatedHighProfileApproved === 'boolean') {
+          setSimulatedHighProfileApproved(saved.simulatedHighProfileApproved);
+        }
+      }
+    } catch {
+      // corrupt or unavailable storage — start fresh
+    }
+    setDemoHydrated(true);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Persist demo simulator selections whenever they change (demo mode only).
+  // Guarded by demoHydrated so the initial mount render doesn't clobber the
+  // values we just restored above.
+  useEffect(() => {
+    if (!IS_DEMO_MODE || !demoHydrated) return;
+    try {
+      window.localStorage.setItem(
+        DEMO_STATE_KEY,
+        JSON.stringify({ isLoggedIn, hasPaid300, simulatedPackages, simulatedHighProfileApproved })
+      );
+    } catch {
+      // storage full / unavailable — non-fatal for the demo
+    }
+  }, [demoHydrated, isLoggedIn, hasPaid300, simulatedPackages, simulatedHighProfileApproved]);
+
   // Headers generator
   const getSimulatorHeaders = useCallback(() => {
     const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
@@ -223,17 +311,21 @@ export const SimulatorProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       return { 'Content-Type': 'application/json' } as Record<string, string>;
     }
     
+    // Admin is only asserted while the simulator is actually in admin mode.
+    // Sending it unconditionally made every demo request look like an admin,
+    // which bypassed server-side privacy redaction so the package toggles had
+    // no effect on the data the directory returned.
     return {
       'Content-Type': 'application/json',
       'x-simulator-user-id': 'simulated-user-123',
       'x-simulator-logged-in': isLoggedIn ? 'true' : 'false',
       'x-simulator-paid': hasPaid300 ? 'true' : 'false',
-      'x-simulator-admin': 'true',
-      'x-simulator-admin-id': 'simulated-admin-999',
+      'x-simulator-admin': isAdminMode ? 'true' : 'false',
+      'x-simulator-admin-id': isAdminMode ? 'simulated-admin-999' : '',
       'x-simulator-packages': simulatedPackages.join(','),
       'x-simulator-high-profile-approved': simulatedHighProfileApproved ? 'true' : 'false',
     } as Record<string, string>;
-  }, [isLoggedIn, hasPaid300, simulatedPackages, simulatedHighProfileApproved]);
+  }, [isLoggedIn, hasPaid300, simulatedPackages, simulatedHighProfileApproved, isAdminMode]);
 
   // Fetch all data
   useEffect(() => {
@@ -243,7 +335,16 @@ export const SimulatorProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         const simulatorHeaders = getSimulatorHeaders();
 
         // 1. Fetch current user profile
-        if (isLoggedIn) {
+        if (isLoggedIn && IS_DEMO_MODE) {
+          // DEMO MODE: the simulated user has no real DB profile, so give the app
+          // a synthetic complete profile. This keeps `isFormComplete` true so the
+          // demo bar package toggles are the single source of access. We also skip
+          // the /api/user/purchases merge below — re-adding DB packages would fight
+          // the tester un-toggling a package. We intentionally do NOT touch
+          // isRegistering here, so the "Register Free" flow can still open the
+          // wizard on demand.
+          setUserProfile(buildDemoUserProfile());
+        } else if (isLoggedIn) {
           const res = await fetch('/api/profile', { headers: simulatorHeaders });
           const data = await res.json();
           if (data.profile) {

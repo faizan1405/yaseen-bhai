@@ -3,6 +3,7 @@
 import React from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useSimulator } from '../context/SimulatorContext';
+import { PACKAGE_KEYS } from '../lib/packages';
 
 export const DemoSimulatorBar: React.FC = () => {
   const {
@@ -26,6 +27,17 @@ export const DemoSimulatorBar: React.FC = () => {
     if (checked) {
       router.push('/admin');
     } else {
+      router.push('/');
+    }
+  };
+
+  const handleReset = () => {
+    setIsLoggedIn(false);
+    setHasPaid300(false);
+    setSimulatedPackages([]);
+    setSimulatedHighProfileApproved(false);
+    setIsAdminMode(false);
+    if (pathname.startsWith('/admin')) {
       router.push('/');
     }
   };
@@ -61,15 +73,15 @@ export const DemoSimulatorBar: React.FC = () => {
         <label className="demo-bar-checkbox">
           <input
             type="checkbox"
-            checked={isLoggedIn && (hasPaid300 || simulatedPackages.includes('monthly_membership'))}
+            checked={isLoggedIn && (hasPaid300 || simulatedPackages.includes(PACKAGE_KEYS.MONTHLY))}
             disabled={!isLoggedIn}
             onChange={(e) => {
               const checked = e.target.checked;
               setHasPaid300(checked);
               if (checked) {
-                setSimulatedPackages((prev) => Array.from(new Set([...prev, 'monthly_membership'])));
+                setSimulatedPackages((prev) => Array.from(new Set([...prev, PACKAGE_KEYS.MONTHLY])));
               } else {
-                setSimulatedPackages((prev) => prev.filter((p) => p !== 'monthly_membership'));
+                setSimulatedPackages((prev) => prev.filter((p) => p !== PACKAGE_KEYS.MONTHLY));
               }
             }}
             id="sim-paid-300-checkbox"
@@ -79,14 +91,14 @@ export const DemoSimulatorBar: React.FC = () => {
         <label className="demo-bar-checkbox">
           <input
             type="checkbox"
-            checked={isLoggedIn && simulatedPackages.includes('good_profile_package')}
+            checked={isLoggedIn && simulatedPackages.includes(PACKAGE_KEYS.GOOD_PROFILE)}
             disabled={!isLoggedIn}
             onChange={(e) => {
               const checked = e.target.checked;
               if (checked) {
-                setSimulatedPackages((prev) => Array.from(new Set([...prev, 'good_profile_package'])));
+                setSimulatedPackages((prev) => Array.from(new Set([...prev, PACKAGE_KEYS.GOOD_PROFILE])));
               } else {
-                setSimulatedPackages((prev) => prev.filter((p) => p !== 'good_profile_package'));
+                setSimulatedPackages((prev) => prev.filter((p) => p !== PACKAGE_KEYS.GOOD_PROFILE));
               }
             }}
             id="sim-good-profile-checkbox"
@@ -96,14 +108,14 @@ export const DemoSimulatorBar: React.FC = () => {
         <label className="demo-bar-checkbox">
           <input
             type="checkbox"
-            checked={isLoggedIn && simulatedPackages.includes('second_marriage_package')}
+            checked={isLoggedIn && simulatedPackages.includes(PACKAGE_KEYS.SILVER)}
             disabled={!isLoggedIn}
             onChange={(e) => {
               const checked = e.target.checked;
               if (checked) {
-                setSimulatedPackages((prev) => Array.from(new Set([...prev, 'second_marriage_package'])));
+                setSimulatedPackages((prev) => Array.from(new Set([...prev, PACKAGE_KEYS.SILVER])));
               } else {
-                setSimulatedPackages((prev) => prev.filter((p) => p !== 'second_marriage_package'));
+                setSimulatedPackages((prev) => prev.filter((p) => p !== PACKAGE_KEYS.SILVER));
               }
             }}
             id="sim-second-marriage-checkbox"
@@ -113,14 +125,14 @@ export const DemoSimulatorBar: React.FC = () => {
         <label className="demo-bar-checkbox">
           <input
             type="checkbox"
-            checked={isLoggedIn && simulatedPackages.includes('high_profile_package')}
+            checked={isLoggedIn && simulatedPackages.includes(PACKAGE_KEYS.GOLD)}
             disabled={!isLoggedIn}
             onChange={(e) => {
               const checked = e.target.checked;
               if (checked) {
-                setSimulatedPackages((prev) => Array.from(new Set([...prev, 'high_profile_package'])));
+                setSimulatedPackages((prev) => Array.from(new Set([...prev, PACKAGE_KEYS.GOLD])));
               } else {
-                setSimulatedPackages((prev) => prev.filter((p) => p !== 'high_profile_package'));
+                setSimulatedPackages((prev) => prev.filter((p) => p !== PACKAGE_KEYS.GOLD));
                 setSimulatedHighProfileApproved(false);
               }
             }}
@@ -128,7 +140,7 @@ export const DemoSimulatorBar: React.FC = () => {
           />
           Gold Package Paid (₹21,000)
         </label>
-        {isLoggedIn && simulatedPackages.includes('high_profile_package') && (
+        {isLoggedIn && simulatedPackages.includes(PACKAGE_KEYS.GOLD) && (
           <label className="demo-bar-checkbox" style={{ color: 'var(--gold-accent)' }}>
             <input
               type="checkbox"
@@ -148,6 +160,26 @@ export const DemoSimulatorBar: React.FC = () => {
           />
           Admin Dashboard
         </label>
+        <button
+          type="button"
+          onClick={handleReset}
+          className="demo-bar-reset"
+          id="sim-reset-btn"
+          style={{
+            marginLeft: '4px',
+            padding: '4px 12px',
+            fontSize: '12px',
+            fontWeight: 600,
+            color: 'var(--gold-accent, #b8924a)',
+            background: 'rgba(255,255,255,0.08)',
+            border: '1px solid var(--gold-accent, #b8924a)',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          ↺ Reset Demo
+        </button>
       </div>
     </div>
   );
