@@ -239,17 +239,21 @@ export const SimulatorProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   // Tracks isLoading transitions to run post-load logic for the gated profile flow
   const wasLoadingRef = useRef(false);
 
-  // Detect real NextAuth session on first mount (production / non-demo mode only)
+  // Detect a real NextAuth (Google) session on first mount. Runs in BOTH demo
+  // and production modes so a real Google login reflects in the UI even while
+  // the demo simulator is enabled. The demo "Continue as Demo User" button sets
+  // isLoggedIn directly, so skip if it's already set. We hit /api/auth/session
+  // (not /api/profile) so a freshly signed-in Google user with no matrimonial
+  // profile yet still counts as logged in.
   useEffect(() => {
-    if (process.env.NEXT_PUBLIC_DEMO_MODE === 'true') return;
-    if (isLoggedIn) return; // simulator already set this
+    if (isLoggedIn) return; // simulator (or a prior run) already set this
 
     async function detectRealSession() {
       try {
-        const res = await fetch('/api/profile');
+        const res = await fetch('/api/auth/session');
         if (res.ok) {
-          const data = await res.json();
-          if (data.profile) {
+          const session = await res.json();
+          if (session?.user) {
             setIsLoggedIn(true); // triggers loadAllData via its dependency
           }
         }

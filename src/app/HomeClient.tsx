@@ -3,6 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 import { useSimulator } from '../context/SimulatorContext';
 import { getProfileImage, getThemeClass } from '../lib/helpers';
 import Navbar from '../components/Navbar';
@@ -40,6 +41,7 @@ const THEME_COLORS = [
 
 export default function HomeClient() {
   const router = useRouter();
+  const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
   const [inquiryPackage, setInquiryPackage] = React.useState<string | null>(null);
   const [quickGender, setQuickGender] = React.useState('');
   const [quickAgeMin, setQuickAgeMin] = React.useState('');
@@ -1191,7 +1193,7 @@ export default function HomeClient() {
               </p>
 
               <button
-                onClick={handleGoogleLogin}
+                onClick={() => signIn('google', { callbackUrl: window.location.href })}
                 className="btn btn-primary"
                 style={{
                   width: '100%',
@@ -1212,6 +1214,32 @@ export default function HomeClient() {
                 />
                 Continue with Google
               </button>
+
+              {isDemoMode && (
+                <>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                      margin: '16px 0',
+                      color: 'var(--text-muted)',
+                      fontSize: '12px',
+                    }}
+                  >
+                    <div style={{ flex: 1, height: '1px', background: 'var(--border-color)' }} />
+                    <span>or demo access</span>
+                    <div style={{ flex: 1, height: '1px', background: 'var(--border-color)' }} />
+                  </div>
+                  <button
+                    onClick={handleGoogleLogin}
+                    className="btn btn-gold"
+                    style={{ width: '100%', fontWeight: 600 }}
+                  >
+                    🎭 Continue as Demo User
+                  </button>
+                </>
+              )}
 
               <button
                 onClick={() => setShowLoginModal(false)}
