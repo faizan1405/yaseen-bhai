@@ -77,12 +77,12 @@ export const ProfileDetails: React.FC = () => {
     modalUnlockText = 'Buy Good Profile Package (₹5,500)';
   } else if (isSecMarriage && !hasSecMarriageAccess) {
     modalBlur = true;
-    modalLockReason = 'Second-Marriage Candidate. Access requires Silver Plan.';
-    modalUnlockText = 'Unlock Silver Plan (₹11,000)';
+    modalLockReason = 'Second-Marriage Candidate. Access requires Basic Access.';
+    modalUnlockText = 'Unlock Basic Access (₹11,000)';
   } else if (isHighProf && !hasHighProfAccess) {
     modalBlur = true;
-    modalLockReason = 'High-Profile Match. Requires Gold Package & Admin eligibility approval.';
-    modalUnlockText = 'Unlock Gold Package (₹21,000)';
+    modalLockReason = 'High-Profile Match. Requires Premium Match Access & Admin eligibility approval.';
+    modalUnlockText = 'Unlock Premium Match Access (₹21,000)';
   }
 
   const handleUnlockClick = () => {
@@ -245,8 +245,8 @@ export const ProfileDetails: React.FC = () => {
             <a
               href={`https://wa.me/919675483125?text=${encodeURIComponent(
                 modalBlur
-                  ? 'Assalamu Alaikum, I am interested in this Rishte Forever profile. Please guide me.'
-                  : `Assalamu Alaikum, I am interested in this Rishte Forever profile (Name: ${selectedProfileForDetails.fullName}, ID: ${selectedProfileForDetails.id}). Please guide me.`
+                  ? 'Assalamu Alaikum, I am interested in this Asan Nikah profile. Please guide me.'
+                  : `Assalamu Alaikum, I am interested in this Asan Nikah profile (Name: ${selectedProfileForDetails.fullName}, ID: ${selectedProfileForDetails.id}). Please guide me.`
               )}`}
               target="_blank"
               rel="noopener noreferrer"
@@ -291,10 +291,10 @@ export const ProfileDetails: React.FC = () => {
             <button
               onClick={() => {
                 const shareUrl = `${window.location.origin}/search?profile=${selectedProfileForDetails.id}`;
-                const shareText = "Check this profile on Rishte Forever.";
+                const shareText = "Check this profile on Asan Nikah.";
                 if (navigator.share) {
                   navigator.share({
-                    title: 'Rishte Forever Matrimonial Profile',
+                    title: 'Asan Nikah Matrimonial Profile',
                     text: shareText,
                     url: shareUrl
                   }).catch(() => {});
@@ -310,7 +310,7 @@ export const ProfileDetails: React.FC = () => {
               Share Profile 🔗
             </button>
             <a
-              href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`Check this profile on Rishte Forever: ${window.location.origin}/search?profile=${selectedProfileForDetails.id}`)}`}
+              href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`Check this profile on Asan Nikah: ${window.location.origin}/search?profile=${selectedProfileForDetails.id}`)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="btn"

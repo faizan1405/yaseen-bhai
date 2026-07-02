@@ -12,15 +12,15 @@ export interface BusinessLocation {
 }
 
 export const defaultBusinessLocation: BusinessLocation = {
-  name: "Rishte Forever",
+  name: "Asan Nikah",
   address: "Innov8 44 Regal Building, 2nd Floor, Property No. 44, Above Madame Tussauds, Regal Building, Connaught Place, New Delhi - 110001",
   phone: "+91 96754 83125",
   phoneRaw: "+919675483125",
-  facebookUrl: "https://www.facebook.com/rishteforever",
-  instagramUrl: "https://www.instagram.com/rishteforever",
-  youtubeUrl: "https://www.youtube.com/rishteforever",
-  linkedinUrl: "https://www.linkedin.com/company/rishteforever",
-  twitterUrl: "https://x.com/rishteforever",
+  facebookUrl: "https://www.facebook.com/asannikah",
+  instagramUrl: "https://www.instagram.com/asannikah",
+  youtubeUrl: "https://www.youtube.com/asannikah",
+  linkedinUrl: "https://www.linkedin.com/company/asannikah",
+  twitterUrl: "https://x.com/asannikah",
   defaultPreviewImage: "/images/nikah-1.jpeg" // Elegant default preview
 };
 

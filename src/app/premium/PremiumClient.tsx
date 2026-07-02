@@ -102,7 +102,7 @@ export default function PremiumClient() {
               ctaText="Buy Monthly Membership"
               onActivate={() => handleRazorpayCheckout('monthly_membership', 300, 'Standard Monthly Membership')}
               onInquire={() => setInquiryPackage('₹300 Monthly Membership')}
-              whatsappMessage="Assalamu Alaikum, I want to know more about the ₹300 monthly membership on Rishte Forever."
+              whatsappMessage="Assalamu Alaikum, I want to know more about the ₹300 monthly membership on Asan Nikah."
               imageUrl="/images/monthly_active.png"
               hidePrices={!isFormComplete}
               isLoggedIn={isLoggedIn}
@@ -119,7 +119,7 @@ export default function PremiumClient() {
               ctaText="Buy Good Profile Package"
               onActivate={() => handleRazorpayCheckout('good_profile_package', 5500, 'Good Profile Package')}
               onInquire={() => setInquiryPackage('₹5,500 Good Profiles Package')}
-              whatsappMessage="Assalamu Alaikum, I am interested in the ₹5,500 Good Profiles Package on Rishte Forever. Please guide me."
+              whatsappMessage="Assalamu Alaikum, I am interested in the ₹5,500 Good Profiles Package on Asan Nikah. Please guide me."
               badgeText="Starter"
               planTier="basic"
               imageUrl="/images/good_profile.png"
@@ -129,7 +129,7 @@ export default function PremiumClient() {
               onShowLogin={() => setShowLoginModal(true)}
             />
             <PremiumPlanCard
-              title="Silver Plan"
+              title="Basic Access"
               price={11000}
               gstRate={0.18}
               billingText="one-time fee"
@@ -144,10 +144,10 @@ export default function PremiumClient() {
                 '1 year service validity'
               ]}
               isActive={simulatedPackages.includes('second_marriage_package')}
-              ctaText="Buy Silver Plan"
-              onActivate={() => handleRazorpayCheckout('second_marriage_package', 11000, 'Silver Plan')}
-              onInquire={() => setInquiryPackage('₹11,000 Silver Plan')}
-              whatsappMessage="Assalamu Alaikum, I am interested in the ₹11,000 Silver Plan on Rishte Forever. Please guide me."
+              ctaText="Buy Basic Access"
+              onActivate={() => handleRazorpayCheckout('second_marriage_package', 11000, 'Basic Access')}
+              onInquire={() => setInquiryPackage('₹11,000 Basic Access')}
+              whatsappMessage="Assalamu Alaikum, I am interested in the ₹11,000 Basic Access on Asan Nikah. Please guide me."
               badgeText="Most Balanced"
               planTier="silver"
               imageUrl="/images/second_marriage.png"
@@ -157,12 +157,12 @@ export default function PremiumClient() {
               onShowLogin={() => setShowLoginModal(true)}
             />
             <PremiumPlanCard
-              title="Gold Package"
+              title="Premium Match Access"
               price={21000}
               gstRate={0.18}
               billingText="one-time base"
               features={[
-                'Everything in Silver Plan',
+                'Everything in Basic Access',
                 'Premium verified profile suggestions',
                 'High-priority matchmaking assistance',
                 'Personalized profile shortlisting',
@@ -174,10 +174,10 @@ export default function PremiumClient() {
                 '1 year service validity'
               ]}
               isActive={simulatedPackages.includes('high_profile_package')}
-              ctaText="Buy Gold Package"
-              onActivate={() => handleRazorpayCheckout('high_profile_package', 21000, 'Gold Package')}
-              onInquire={() => setInquiryPackage('₹21,000 Gold Package')}
-              whatsappMessage="Assalamu Alaikum, I am interested in the ₹21,000 Gold Package on Rishte Forever. Please guide me."
+              ctaText="Buy Premium Match Access"
+              onActivate={() => handleRazorpayCheckout('high_profile_package', 21000, 'Premium Match Access')}
+              onInquire={() => setInquiryPackage('₹21,000 Premium Match Access')}
+              whatsappMessage="Assalamu Alaikum, I am interested in the ₹21,000 Premium Match Access on Asan Nikah. Please guide me."
               badgeText="Premium Choice"
               planTier="gold"
               imageUrl="/images/high_profile.png"
@@ -197,8 +197,8 @@ export default function PremiumClient() {
                   <tr style={{ borderBottom: '2px solid var(--border-color)', height: '40px', color: 'var(--deep-maroon)', fontWeight: 'bold' }}>
                     <th style={{ textAlign: 'left', padding: '12px' }}>Feature Benefits</th>
                     <th>Good Profiles</th>
-                    <th>Silver Plan</th>
-                    <th>Gold Package</th>
+                    <th>Basic Access</th>
+                    <th>Premium Match Access</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -221,13 +221,13 @@ export default function PremiumClient() {
                     <td>✓</td>
                   </tr>
                   <tr style={{ borderBottom: '1px solid var(--border-color)', height: '48px' }}>
-                    <td style={{ textAlign: 'left', padding: '12px' }}>Silver Plan Directory Access</td>
+                    <td style={{ textAlign: 'left', padding: '12px' }}>Basic Access Directory Access</td>
                     <td>—</td>
                     <td>✓</td>
                     <td>✓</td>
                   </tr>
                   <tr style={{ borderBottom: '1px solid var(--border-color)', height: '48px' }}>
-                    <td style={{ textAlign: 'left', padding: '12px' }}>Gold Package Directory Access</td>
+                    <td style={{ textAlign: 'left', padding: '12px' }}>Premium Match Access Directory Access</td>
                     <td>—</td>
                     <td>—</td>
                     <td>✓</td>

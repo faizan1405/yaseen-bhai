@@ -52,7 +52,7 @@ export default function SecondMarriageClient() {
         <div className="container font-sans" style={{ padding: '40px 0 80px 0' }}>
           <SectionHeading
             title="Second Marriage Directory"
-            subtitle="Browse matching divorcee/widow/widower profiles. Unlock access with the Silver Plan."
+            subtitle="Browse matching divorcee/widow/widower profiles. Unlock access with the Basic Access."
             scriptText="Second Marriage Matches"
             as="h1"
           />
@@ -81,7 +81,7 @@ export default function SecondMarriageClient() {
 
             <div className="card-theme-wrapper" style={{ padding: '24px', position: 'sticky', top: '100px', border: '1.5px solid var(--gold-accent)', boxShadow: 'var(--shadow-premium)' }}>
               <h3 style={{ fontFamily: 'var(--font-serif)', color: 'var(--deep-maroon)', fontSize: '22px', marginBottom: '16px', fontWeight: 800 }}>
-                Silver Plan
+                Basic Access
               </h3>
               {isFormComplete ? (
                 <div style={{ fontSize: '36px', fontWeight: '800', color: 'var(--deep-maroon)', marginBottom: '8px', fontFamily: 'var(--font-serif)' }}>
@@ -112,10 +112,10 @@ export default function SecondMarriageClient() {
                 <button
                   className="btn btn-gold"
                   style={{ width: '100%', padding: '12px', fontSize: '15px' }}
-                  onClick={() => handleRazorpayCheckout('second_marriage_package', 11000, 'Silver Plan')}
+                  onClick={() => handleRazorpayCheckout('second_marriage_package', 11000, 'Basic Access')}
                   disabled={isPackageActive}
                 >
-                  {isPackageActive ? 'Package Active ✅' : 'Buy Silver Plan'}
+                  {isPackageActive ? 'Package Active ✅' : 'Buy Basic Access'}
                 </button>
               ) : (
                 <button
@@ -137,7 +137,7 @@ export default function SecondMarriageClient() {
                     Inquire & Ask Call back
                   </button>
                   <a
-                    href={`https://wa.me/919675483125?text=${encodeURIComponent("Assalamu Alaikum, I am interested in the ₹11,000 Silver Plan on Rishte Forever. Please guide me.")}`}
+                    href={`https://wa.me/919675483125?text=${encodeURIComponent("Assalamu Alaikum, I am interested in the ₹11,000 Basic Access on Asan Nikah. Please guide me.")}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn"
@@ -195,7 +195,7 @@ export default function SecondMarriageClient() {
               Package Inquiry & Callback
             </h3>
             <PackageInquiryForm
-              defaultPackage="₹11,000 Silver Plan"
+              defaultPackage="₹11,000 Basic Access"
               onSuccess={() => setShowInquiry(false)}
               onCancel={() => setShowInquiry(false)}
             />

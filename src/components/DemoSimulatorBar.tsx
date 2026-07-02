@@ -120,7 +120,7 @@ export const DemoSimulatorBar: React.FC = () => {
             }}
             id="sim-second-marriage-checkbox"
           />
-          Silver Plan Paid (₹11,000)
+          Basic Access Paid (₹11,000)
         </label>
         <label className="demo-bar-checkbox">
           <input
@@ -138,7 +138,7 @@ export const DemoSimulatorBar: React.FC = () => {
             }}
             id="sim-high-profile-checkbox"
           />
-          Gold Package Paid (₹21,000)
+          Premium Match Access Paid (₹21,000)
         </label>
         {isLoggedIn && simulatedPackages.includes(PACKAGE_KEYS.GOLD) && (
           <label className="demo-bar-checkbox" style={{ color: 'var(--gold-accent)' }}>

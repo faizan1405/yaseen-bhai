@@ -218,7 +218,7 @@ export default function AdminEventsPage() {
                           View
                         </button>
                         <a
-                          href={getWhatsAppLink(lead.phone, `Assalamu Alaikum ${lead.fullName}, this is Rishte Forever. We received your event service inquiry and would like to discuss further.`)}
+                          href={getWhatsAppLink(lead.phone, `Assalamu Alaikum ${lead.fullName}, this is Asan Nikah. We received your event service inquiry and would like to discuss further.`)}
                           target="_blank" rel="noopener noreferrer"
                           style={{ padding: '4px 8px', fontSize: '11px', background: '#25D366', color: '#fff', border: 'none', borderRadius: '4px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', fontWeight: 600 }}
                         >
@@ -270,7 +270,7 @@ export default function AdminEventsPage() {
 
             <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
               <a href={`tel:${selected.phone}`} className="btn btn-gold" style={{ flex: 1, textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>📞 Call</a>
-              <a href={getWhatsAppLink(selected.phone, `Assalamu Alaikum ${selected.fullName}, this is Rishte Forever Event Services. We received your inquiry for ${selected.inquiryType} and would like to discuss further. Jazakallah Khair.`)} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ flex: 1, textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>💬 WhatsApp</a>
+              <a href={getWhatsAppLink(selected.phone, `Assalamu Alaikum ${selected.fullName}, this is Asan Nikah Event Services. We received your inquiry for ${selected.inquiryType} and would like to discuss further. Jazakallah Khair.`)} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ flex: 1, textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>💬 WhatsApp</a>
             </div>
 
             <hr style={{ borderColor: 'var(--border-color)', margin: '16px 0' }} />

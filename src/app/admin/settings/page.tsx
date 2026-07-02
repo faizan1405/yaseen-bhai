@@ -159,7 +159,7 @@ export default function AdminSettingsPage() {
                 style={inputStyle}
                 value={settings.adminEmail}
                 onChange={e => setSettings({ ...settings, adminEmail: e.target.value })}
-                placeholder="admin@rishteforever.in"
+                placeholder="admin@asannikah.com"
               />
               <p style={hintStyle}>Receive new profile alerts and system notifications here.</p>
             </div>
@@ -272,7 +272,7 @@ export default function AdminSettingsPage() {
                 style={inputStyle}
                 value={settings.defaultPreviewImage}
                 onChange={e => setSettings({ ...settings, defaultPreviewImage: e.target.value })}
-                placeholder="https://rishteforever.in/images/og-default.jpg"
+                placeholder="https://asannikah.com/images/og-default.jpg"
               />
               <p style={hintStyle}>OG image shown when links are shared on social media.</p>
             </div>

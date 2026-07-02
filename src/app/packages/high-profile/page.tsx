@@ -11,9 +11,9 @@ export async function generateMetadata(): Promise<Metadata> {
     console.error("Failed to load settings in metadata", e);
   }
   
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://rishteforever.in';
-  const title = "Gold Package Matrimonial Matches — Rishte Forever";
-  const description = "Browse verified Gold Package Muslim matrimonial candidates earning ₹10 Lakh+ annually (Doctors, Engineers, Business Owners, and Premium Families) on Rishte Forever.";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://asannikah.com';
+  const title = "Premium Match Access Matrimonial Matches — Asan Nikah";
+  const description = "Browse verified Premium Match Access Muslim matrimonial candidates earning ₹10 Lakh+ annually (Doctors, Engineers, Business Owners, and Premium Families) on Asan Nikah.";
   const previewImage = settings?.defaultPreviewImage || "/images/commitment.png";
   const imageUrl = previewImage.startsWith('http') ? previewImage : `${siteUrl}${previewImage}`;
 
@@ -22,11 +22,11 @@ export async function generateMetadata(): Promise<Metadata> {
     description,
     metadataBase: new URL(siteUrl),
     keywords: [
-      "Muslim gold package matchmaking",
+      "Muslim premium match access matchmaking",
       "Premium Muslim matchmaking services",
       "Doctors matrimonial Muslim",
       "Engineers matrimonial Muslim",
-      "Rishte Forever Gold Package"
+      "Asan Nikah Premium Match Access"
     ],
     alternates: {
       canonical: '/packages/high-profile',
@@ -35,13 +35,13 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       url: '/packages/high-profile',
-      siteName: "Rishte Forever",
+      siteName: "Asan Nikah",
       images: [
         {
           url: imageUrl,
           width: 1200,
           height: 630,
-          alt: "Rishte Forever Gold Package",
+          alt: "Asan Nikah Premium Match Access",
         }
       ],
       type: "website",
@@ -64,19 +64,19 @@ export default function HighProfilePage() {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://rishteforever.in"
+        "item": "https://asannikah.com"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Premium Packages",
-        "item": "https://rishteforever.in/premium"
+        "item": "https://asannikah.com/premium"
       },
       {
         "@type": "ListItem",
         "position": 3,
-        "name": "Gold Package Matches",
-        "item": "https://rishteforever.in/packages/high-profile"
+        "name": "Premium Match Access Matches",
+        "item": "https://asannikah.com/packages/high-profile"
       }
     ]
   };

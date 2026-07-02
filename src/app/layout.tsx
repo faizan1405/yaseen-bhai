@@ -42,9 +42,9 @@ import {
 } from "../components/ClientDynamicWrappers";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://rishteforever.in"),
-  title: "Rishte Forever — Trusted Muslim Matrimonial Platform",
-  description: "Rishte Forever is a secure, manual-verified Muslim matrimonial site offering verified matches, curated profiles, silver plan matches, and premium gold package options.",
+  metadataBase: new URL("https://asannikah.com"),
+  title: "Asan Nikah — Trusted Muslim Matrimonial Platform",
+  description: "Asan Nikah is a secure, manual-verified Muslim matrimonial site offering verified matches, curated profiles, basic access matches, and premium premium match access options.",
   openGraph: {
     images: [{ url: "/images/rishte-forever-logo.png", width: 900, height: 340 }],
   },

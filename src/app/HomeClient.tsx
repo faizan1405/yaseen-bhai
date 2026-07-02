@@ -577,7 +577,7 @@ export default function HomeClient() {
                         required
                       />
                       <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
-                        I consent to manual phone verification call from Rishte Forever Admin team to confirm these profile details.
+                        I consent to manual phone verification call from Asan Nikah Admin team to confirm these profile details.
                       </span>
                     </div>
 
@@ -590,7 +590,7 @@ export default function HomeClient() {
                         required
                       />
                       <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
-                        I accept the Rishte Forever Terms of Service and Shariah-compliant match guidelines.
+                        I accept the Asan Nikah Terms of Service and Shariah-compliant match guidelines.
                       </span>
                     </div>
                   </div>
@@ -765,7 +765,16 @@ export default function HomeClient() {
               </div>
             </div>
 
-            <QuranVerseBlock />
+            
+            {/* Trust Stats */}
+            <section style={{ padding: '40px 0', backgroundColor: 'var(--color-bg)', borderBottom: '1px solid var(--border-color)' }}>
+              <div className="container" style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: '20px', textAlign: 'center' }}>
+                <div><h3 style={{ fontSize: '36px', color: 'var(--color-primary)', margin: 0 }}>5,000+</h3><p style={{ margin: 0, color: 'var(--color-muted)' }}>Verified Profiles</p></div>
+                <div><h3 style={{ fontSize: '36px', color: 'var(--color-primary)', margin: 0 }}>100%</h3><p style={{ margin: 0, color: 'var(--color-muted)' }}>Privacy Control</p></div>
+                <div><h3 style={{ fontSize: '36px', color: 'var(--color-primary)', margin: 0 }}>24/7</h3><p style={{ margin: 0, color: 'var(--color-muted)' }}>Admin Support</p></div>
+              </div>
+            </section>
+
 
             {/* Featured Candidates Preview */}
             <section style={{ backgroundColor: 'var(--soft-cream)', padding: '80px 0' }}>
@@ -828,7 +837,7 @@ export default function HomeClient() {
             <section style={{ backgroundColor: 'var(--warm-ivory)', padding: '80px 0' }}>
               <div className="container">
                 <SectionHeading
-                  title="How Rishte Forever Works"
+                  title="How Asan Nikah Works"
                   subtitle="Designed from the ground up for pure, respectful, and family-approved matches."
                   scriptText="Begin Your Journey"
                 />
@@ -870,7 +879,7 @@ export default function HomeClient() {
                     <div style={{ position: 'relative', width: '100%', paddingBottom: '75%', borderRadius: 'var(--border-radius-lg)', border: '1.5px solid var(--gold-accent)', boxShadow: 'var(--shadow-premium)', overflow: 'hidden' }}>
                       <Image
                         src="/images/trust-safety.jpg"
-                        alt="Verified Muslim profiles and matchmaking safety - Rishte Forever"
+                        alt="Verified Muslim profiles and matchmaking safety - Asan Nikah"
                         fill
                         sizes="(max-width: 768px) 100vw, 500px"
                         style={{ objectFit: 'cover', objectPosition: 'center' }}
@@ -905,39 +914,6 @@ export default function HomeClient() {
 
             <ZaichaPromoCard />
 
-            {/* Success Stories Preview */}
-            <section style={{ backgroundColor: 'var(--warm-ivory)', padding: '80px 0' }}>
-              <div className="container">
-                <SectionHeading
-                  title="Blessed Success Stories"
-                  subtitle="Alhamdulillah! Here are matching stories of couples who found their partners on Rishte Forever."
-                  scriptText="Success Stories"
-                />
-
-                <p className="mobile-swipe-hint" aria-hidden="true">Swipe to explore →</p>
-                <div className="grid-3 mobile-swipe-row" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '32px' }}>
-                  <SuccessStoryCard
-                    names="Dr. Sarah & Tariq"
-                    location="Mumbai • Married 2025"
-                    story="Rishte Forever made the search simple and extremely respectful. The manual verification check gave my parents peace of mind, and we connected securely."
-                    imageIndex={0}
-                  />
-                  <SuccessStoryCard
-                    names="Aisha & Khalid"
-                    location="Delhi • Married 2026"
-                    story="Alhamdulillah, the Curated Matchmaking package was worth every rupee. Our dedicated advisor sent compatible matches directly, and we tied the knot within months."
-                    imageIndex={1}
-                  />
-                  <SuccessStoryCard
-                    names="Adnan & Yasmin"
-                    location="Bangalore • Married 2024"
-                    story="I loved the privacy features. My photo remained blurred to general visitors, and I had control over who could view my details. We are very happy."
-                    imageIndex={2}
-                  />
-                </div>
-              </div>
-            </section>
-
             {/* Premium Teaser Section */}
             <section style={{ backgroundColor: 'var(--soft-cream)', padding: '80px 0' }}>
               <div className="container">
@@ -959,7 +935,7 @@ export default function HomeClient() {
                     ctaText="Buy Monthly Membership"
                     onActivate={() => handleRazorpayCheckout('monthly_membership', 300, 'Standard Monthly Membership')}
                     onInquire={() => setInquiryPackage('₹300 Monthly Membership')}
-                    whatsappMessage="Assalamu Alaikum, I want to know more about the ₹300 monthly membership on Rishte Forever."
+                    whatsappMessage="Assalamu Alaikum, I want to know more about the ₹300 monthly membership on Asan Nikah."
                     imageUrl="/images/monthly_active.png"
                     hidePrices={!isFormComplete}
                     isLoggedIn={isLoggedIn}
@@ -976,7 +952,7 @@ export default function HomeClient() {
                     ctaText="Buy Good Profile Package"
                     onActivate={() => handleRazorpayCheckout('good_profile_package', 5500, 'Good Profile Package')}
                     onInquire={() => setInquiryPackage('₹5,500 Good Profiles Package')}
-                    whatsappMessage="Assalamu Alaikum, I am interested in the ₹5,500 Good Profiles Package on Rishte Forever. Please guide me."
+                    whatsappMessage="Assalamu Alaikum, I am interested in the ₹5,500 Good Profiles Package on Asan Nikah. Please guide me."
                     badgeText="Starter"
                     planTier="basic"
                     imageUrl="/images/good_profile.png"
@@ -986,7 +962,7 @@ export default function HomeClient() {
                     onShowLogin={() => setShowLoginModal(true)}
                   />
                   <PremiumPlanCard
-                    title="Silver Plan"
+                    title="Basic Access"
                     price={11000}
                     gstRate={0.18}
                     billingText="one-time fee"
@@ -1001,10 +977,10 @@ export default function HomeClient() {
                       '1 year service validity'
                     ]}
                     isActive={simulatedPackages.includes('second_marriage_package')}
-                    ctaText="Buy Silver Plan"
-                    onActivate={() => handleRazorpayCheckout('second_marriage_package', 11000, 'Silver Plan')}
-                    onInquire={() => setInquiryPackage('₹11,000 Silver Plan')}
-                    whatsappMessage="Assalamu Alaikum, I am interested in the ₹11,000 Silver Plan on Rishte Forever. Please guide me."
+                    ctaText="Buy Basic Access"
+                    onActivate={() => handleRazorpayCheckout('second_marriage_package', 11000, 'Basic Access')}
+                    onInquire={() => setInquiryPackage('₹11,000 Basic Access')}
+                    whatsappMessage="Assalamu Alaikum, I am interested in the ₹11,000 Basic Access on Asan Nikah. Please guide me."
                     badgeText="Most Balanced"
                     planTier="silver"
                     imageUrl="/images/second_marriage.png"
@@ -1014,12 +990,12 @@ export default function HomeClient() {
                     onShowLogin={() => setShowLoginModal(true)}
                   />
                   <PremiumPlanCard
-                    title="Gold Package"
+                    title="Premium Match Access"
                     price={21000}
                     gstRate={0.18}
                     billingText="one-time base"
                     features={[
-                      'Everything in Silver Plan',
+                      'Everything in Basic Access',
                       'Premium verified profile suggestions',
                       'High-priority matchmaking assistance',
                       'Personalized profile shortlisting',
@@ -1031,10 +1007,10 @@ export default function HomeClient() {
                       '1 year service validity'
                     ]}
                     isActive={simulatedPackages.includes('high_profile_package')}
-                    ctaText="Buy Gold Package"
-                    onActivate={() => handleRazorpayCheckout('high_profile_package', 21000, 'Gold Package')}
-                    onInquire={() => setInquiryPackage('₹21,000 Gold Package')}
-                    whatsappMessage="Assalamu Alaikum, I am interested in the ₹21,000 Gold Package on Rishte Forever. Please guide me."
+                    ctaText="Buy Premium Match Access"
+                    onActivate={() => handleRazorpayCheckout('high_profile_package', 21000, 'Premium Match Access')}
+                    onInquire={() => setInquiryPackage('₹21,000 Premium Match Access')}
+                    whatsappMessage="Assalamu Alaikum, I am interested in the ₹21,000 Premium Match Access on Asan Nikah. Please guide me."
                     badgeText="Premium Choice"
                     planTier="gold"
                     imageUrl="/images/high_profile.png"
@@ -1186,7 +1162,7 @@ export default function HomeClient() {
 
             <div style={{ textAlign: 'center', padding: '10px 0' }}>
               <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '24px', color: 'var(--deep-maroon)', marginBottom: '12px', fontWeight: 'bold' }}>
-                Join Rishte Forever
+                Join Asan Nikah
               </h3>
               <p style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: '24px', lineHeight: '1.5' }}>
                 Create a profile or log in securely using your Google account to get verified.

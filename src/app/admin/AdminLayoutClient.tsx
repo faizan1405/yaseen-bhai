@@ -32,7 +32,7 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
           </button>
           <Image
             src="/images/rishte-forever-logo.png"
-            alt="Rishte Forever"
+            alt="Asan Nikah"
             width={130}
             height={49}
             style={{ height: '28px', width: 'auto', background: 'var(--white)', padding: '5px 7px', borderRadius: '7px' }}

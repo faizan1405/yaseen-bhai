@@ -11,9 +11,9 @@ export async function generateMetadata(): Promise<Metadata> {
     console.error("Failed to load settings in metadata", e);
   }
   
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://rishteforever.in';
-  const title = "Rishte Forever — Trusted Muslim Matrimonial Website & Marriage Bureau";
-  const description = "Rishte Forever is India's premium halal Muslim matrimonial website & marriage bureau. Browse verified Muslim profiles and rishta services with manual verification and complete privacy control.";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://asannikah.com';
+  const title = "Asan Nikah — Trusted Muslim Matrimonial Website & Marriage Bureau";
+  const description = "Asan Nikah is India's premium halal Muslim matrimonial website & marriage bureau. Browse verified Muslim profiles and rishta services with manual verification and complete privacy control.";
   const previewImage = settings?.defaultPreviewImage || "/images/nikah-1.jpeg";
   const imageUrl = previewImage.startsWith('http') ? previewImage : `${siteUrl}${previewImage}`;
 
@@ -24,12 +24,12 @@ export async function generateMetadata(): Promise<Metadata> {
     keywords: [
       "Muslim matrimonial website",
       "Muslim marriage bureau",
-      "Rishte Forever",
+      "Asan Nikah",
       "Muslim rishta service",
       "Islamic matrimonial platform",
       "Verified Muslim profiles",
-      "Muslim silver plan matches",
-      "Muslim gold package matchmaking",
+      "Muslim basic access matches",
+      "Muslim premium match access matchmaking",
       "Muslim marriage profiles in India"
     ],
     alternates: {
@@ -39,13 +39,13 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       url: '/',
-      siteName: "Rishte Forever",
+      siteName: "Asan Nikah",
       images: [
         {
           url: imageUrl,
           width: 1200,
           height: 630,
-          alt: "Rishte Forever Muslim Matrimonial Platform",
+          alt: "Asan Nikah Muslim Matrimonial Platform",
         }
       ],
       type: "website",
@@ -63,31 +63,31 @@ export default function Home() {
   const orgSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "Rishte Forever",
-    "url": "https://rishteforever.in",
-    "logo": "https://rishteforever.in/images/rishte-forever-logo.png",
+    "name": "Asan Nikah",
+    "url": "https://asannikah.com",
+    "logo": "https://asannikah.com/images/rishte-forever-logo.png",
     "contactPoint": {
       "@type": "ContactPoint",
       "telephone": "+91-96754-83125",
       "contactType": "customer support"
     },
     "sameAs": [
-      "https://www.facebook.com/rishteforever",
-      "https://www.instagram.com/rishteforever",
-      "https://www.youtube.com/rishteforever",
-      "https://www.linkedin.com/company/rishteforever",
-      "https://x.com/rishteforever"
+      "https://www.facebook.com/asannikah",
+      "https://www.instagram.com/asannikah",
+      "https://www.youtube.com/asannikah",
+      "https://www.linkedin.com/company/asannikah",
+      "https://x.com/asannikah"
     ]
   };
 
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "Rishte Forever",
-    "url": "https://rishteforever.in",
+    "name": "Asan Nikah",
+    "url": "https://asannikah.com",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://rishteforever.in/search?q={search_term_string}",
+      "target": "https://asannikah.com/search?q={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   };

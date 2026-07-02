@@ -58,7 +58,7 @@ export default function HowItWorksClient() {
       <main className="flex-grow">
         <div className="container font-sans" style={{ padding: '40px 0 80px 0' }}>
           <SectionHeading
-            title="How Rishte Forever Works"
+            title="How Asan Nikah Works"
             subtitle="Discover how our platform ensures family safety, Shariah compatibility, and verified introductions."
             scriptText="Step-by-Step Guide"
             as="h1"

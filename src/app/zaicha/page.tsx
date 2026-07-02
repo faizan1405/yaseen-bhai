@@ -11,8 +11,8 @@ export async function generateMetadata(): Promise<Metadata> {
     console.error("Failed to load settings in metadata", e);
   }
   
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://rishteforever.in';
-  const title = "Zaicha | Rishte Forever";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://asannikah.com';
+  const title = "Zaicha | Asan Nikah";
   const description = "Traditional Zaicha compatibility guidance for Muslim matrimonial matches. Optional supportive family guidance based on deen and character.";
   const previewImage = settings?.defaultPreviewImage || "/images/commitment.png";
   const imageUrl = previewImage.startsWith('http') ? previewImage : `${siteUrl}${previewImage}`;
@@ -26,7 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
       "Islamic matrimonial compatibility",
       "Zaicha guidance",
       "Muslim matchmaking support",
-      "Rishte Forever Zaicha compatibility"
+      "Asan Nikah Zaicha compatibility"
     ],
     alternates: {
       canonical: '/zaicha',
@@ -35,13 +35,13 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       url: '/zaicha',
-      siteName: "Rishte Forever",
+      siteName: "Asan Nikah",
       images: [
         {
           url: imageUrl,
           width: 1200,
           height: 630,
-          alt: "Rishte Forever Zaicha Guidance",
+          alt: "Asan Nikah Zaicha Guidance",
         }
       ],
       type: "website",
@@ -64,13 +64,13 @@ export default function ZaichaPage() {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://rishteforever.in"
+        "item": "https://asannikah.com"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Zaicha Guidance",
-        "item": "https://rishteforever.in/zaicha"
+        "item": "https://asannikah.com/zaicha"
       }
     ]
   };

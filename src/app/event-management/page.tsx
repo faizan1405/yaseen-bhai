@@ -1,10 +1,10 @@
 import { Metadata } from 'next';
 import EventManagementClient from './EventManagementClient';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://rishteforever.in';
-const title = 'Event Management | Rishte Forever';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://asannikah.com';
+const title = 'Event Management | Asan Nikah';
 const description =
-  'Rishte Forever helps families connect with trusted wedding and event service partners for Nikah, Walima, engagement, decoration, venues, catering, photography, makeup, and more.';
+  'Asan Nikah helps families connect with trusted wedding and event service partners for Nikah, Walima, engagement, decoration, venues, catering, photography, makeup, and more.';
 
 export const metadata: Metadata = {
   title,
@@ -19,20 +19,20 @@ export const metadata: Metadata = {
     'Mehendi artists',
     'Wedding venues Muslim',
     'Wedding planning India',
-    'Rishte Forever events',
+    'Asan Nikah events',
   ],
   alternates: { canonical: '/event-management' },
   openGraph: {
     title,
     description,
     url: '/event-management',
-    siteName: 'Rishte Forever',
+    siteName: 'Asan Nikah',
     images: [
       {
         url: `${SITE_URL}/images/nikah-1.jpeg`,
         width: 1200,
         height: 630,
-        alt: 'Rishte Forever Event Management',
+        alt: 'Asan Nikah Event Management',
       },
     ],
     type: 'website',

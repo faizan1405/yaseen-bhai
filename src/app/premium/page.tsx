@@ -11,9 +11,9 @@ export async function generateMetadata(): Promise<Metadata> {
     console.error("Failed to load settings in metadata", e);
   }
   
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://rishteforever.in';
-  const title = "Premium Matrimonial Packages — Rishte Forever";
-  const description = "Select from our standard monthly membership, curated good profiles, silver plan matches, or exclusive gold package matrimonial matching options.";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://asannikah.com';
+  const title = "Premium Matrimonial Packages — Asan Nikah";
+  const description = "Select from our standard monthly membership, curated good profiles, basic access matches, or exclusive premium match access matrimonial matching options.";
   const previewImage = settings?.defaultPreviewImage || "/images/commitment.png";
   const imageUrl = previewImage.startsWith('http') ? previewImage : `${siteUrl}${previewImage}`;
 
@@ -24,10 +24,10 @@ export async function generateMetadata(): Promise<Metadata> {
     keywords: [
       "Muslim matrimonial packages",
       "Muslim marriage bureau rates",
-      "Rishte Forever pricing",
+      "Asan Nikah pricing",
       "Premium Muslim matchmaking services",
-      "Silver plan matrimonial packages",
-      "Gold package Muslim matchmaking cost"
+      "Basic Access matrimonial packages",
+      "Premium Match Access Muslim matchmaking cost"
     ],
     alternates: {
       canonical: '/premium',
@@ -36,13 +36,13 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       url: '/premium',
-      siteName: "Rishte Forever",
+      siteName: "Asan Nikah",
       images: [
         {
           url: imageUrl,
           width: 1200,
           height: 630,
-          alt: "Rishte Forever Premium Packages",
+          alt: "Asan Nikah Premium Packages",
         }
       ],
       type: "website",
@@ -65,13 +65,13 @@ export default function PremiumPage() {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://rishteforever.in"
+        "item": "https://asannikah.com"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Premium Packages",
-        "item": "https://rishteforever.in/premium"
+        "item": "https://asannikah.com/premium"
       }
     ]
   };

@@ -11,9 +11,9 @@ export async function generateMetadata(): Promise<Metadata> {
     console.error("Failed to load settings in metadata", e);
   }
   
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://rishteforever.in';
-  const title = "Safety & Privacy Guidelines — Rishte Forever Matrimonial";
-  const description = "Learn how Rishte Forever keeps your Muslim matrimonial search safe. Manual verification, telephone check, photo protection, and strict anti-dating policies.";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://asannikah.com';
+  const title = "Safety & Privacy Guidelines — Asan Nikah Matrimonial";
+  const description = "Learn how Asan Nikah keeps your Muslim matrimonial search safe. Manual verification, telephone check, photo protection, and strict anti-dating policies.";
   const previewImage = settings?.defaultPreviewImage || "/images/nikah-2.jpeg";
   const imageUrl = previewImage.startsWith('http') ? previewImage : `${siteUrl}${previewImage}`;
 
@@ -27,7 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
       "Muslim matchmaking privacy",
       "Shariah compliant matrimonial site",
       "Verified Muslim profiles safety",
-      "Rishte Forever trust safety guidelines"
+      "Asan Nikah trust safety guidelines"
     ],
     alternates: {
       canonical: '/safety',
@@ -36,13 +36,13 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       url: '/safety',
-      siteName: "Rishte Forever",
+      siteName: "Asan Nikah",
       images: [
         {
           url: imageUrl,
           width: 1200,
           height: 630,
-          alt: "Rishte Forever Trust and Safety",
+          alt: "Asan Nikah Trust and Safety",
         }
       ],
       type: "website",
@@ -65,13 +65,13 @@ export default function SafetyPage() {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://rishteforever.in"
+        "item": "https://asannikah.com"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Safety & Privacy Guidelines",
-        "item": "https://rishteforever.in/safety"
+        "item": "https://asannikah.com/safety"
       }
     ]
   };

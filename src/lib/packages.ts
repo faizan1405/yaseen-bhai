@@ -10,8 +10,8 @@ export type PackageType = 'monthly_membership' | 'good_profile_package' | 'secon
  * Always reference the key, never the label, in logic:
  *   monthly_membership      → "Monthly Membership"
  *   good_profile_package    → "Good Profile Package"
- *   second_marriage_package → "Silver Plan"      (NOT a separate "silver_plan" key)
- *   high_profile_package    → "Gold Package"     (NOT a separate "gold_package" key)
+ *   second_marriage_package → "Basic Access"      (NOT a separate "silver_plan" key)
+ *   high_profile_package    → "Premium Match Access"     (NOT a separate "gold_package" key)
  */
 export const PACKAGE_KEYS = {
   MONTHLY: 'monthly_membership',
@@ -66,7 +66,7 @@ export const PREMIUM_PACKAGES: Record<PackageType, PackageDefinition> = {
   },
   second_marriage_package: {
     type: 'second_marriage_package',
-    name: 'Silver Plan',
+    name: 'Basic Access',
     basePrice: 11000,
     gstRate: 0.18,
     totalAmount: 12980,
@@ -85,14 +85,14 @@ export const PREMIUM_PACKAGES: Record<PackageType, PackageDefinition> = {
   },
   high_profile_package: {
     type: 'high_profile_package',
-    name: 'Gold Package',
+    name: 'Premium Match Access',
     basePrice: 21000,
     gstRate: 0.18,
     totalAmount: 24780,
     billingType: 'ONE_TIME',
     successFeeAmount: 25000,
     benefits: [
-      'Everything in Silver Plan',
+      'Everything in Basic Access',
       'Premium verified profile suggestions',
       'High-priority matchmaking assistance',
       'Personalized profile shortlisting',

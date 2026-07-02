@@ -491,7 +491,7 @@ export default function EventManagementClient() {
         <section style={{ backgroundColor: 'var(--soft-cream)', padding: '80px 0' }}>
           <div className="container">
             <SectionHeading
-              title="Why Choose Rishte Forever Events"
+              title="Why Choose Asan Nikah Events"
               subtitle="We combine our matrimonial expertise with trusted vendor relationships to provide families a seamless experience."
               scriptText="Our Promise"
             />

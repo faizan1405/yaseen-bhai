@@ -14,7 +14,7 @@ export function getFallbackResponse(message: string): string {
     msg.includes('quran') ||
     msg.includes('hadith')
   ) {
-    return "For religious rulings, please consult a qualified scholar. I can only explain how Rishte Forever works as a matrimonial platform.";
+    return "For religious rulings, please consult a qualified scholar. I can only explain how Asan Nikah works as a matrimonial platform.";
   }
 
   // 2. Photo / Phone blur / Privacy check
@@ -55,11 +55,11 @@ export function getFallbackResponse(message: string): string {
     msg.includes('rupees') ||
     msg.includes('charge')
   ) {
-    return "Assalamu Alaikum! Rishte Forever offers 4 matrimonial packages (all prices + GST):\n\n" +
+    return "Assalamu Alaikum! Asan Nikah offers 4 matrimonial packages (all prices + GST):\n\n" +
       "1. **Standard Monthly Membership**: ₹300 + GST/month. Allows searching matches, filtering, and unblurring photos/phone numbers on normal profiles.\n" +
       "2. **Good Profiles Package**: ₹5,500 + GST. Access to curated profiles, valid for 1 year + ₹21,000 success fee after marriage confirmation.\n" +
-      "3. **Silver Plan**: ₹11,000 + GST. Tailored search category, valid for 1 year. No success fee.\n" +
-      "4. **Gold Package**: ₹21,000 + GST. For doctors, engineers, premium families, and candidates earning ₹10 Lakhs+ annually, valid for 1 year + ₹25,000 success fee after marriage.";
+      "3. **Basic Access**: ₹11,000 + GST. Tailored search category, valid for 1 year. No success fee.\n" +
+      "4. **Premium Match Access**: ₹21,000 + GST. For doctors, engineers, premium families, and candidates earning ₹10 Lakhs+ annually, valid for 1 year + ₹25,000 success fee after marriage.";
   }
 
   // 4. Verification check
@@ -73,7 +73,7 @@ export function getFallbackResponse(message: string): string {
     msg.includes('approve') ||
     msg.includes('status')
   ) {
-    return "Every profile on Rishte Forever is manually reviewed. An admin will call you on your registered phone number to verify your identity and intent. Once approved, your profile status will change to APPROVED, making you visible in the match directory.";
+    return "Every profile on Asan Nikah is manually reviewed. An admin will call you on your registered phone number to verify your identity and intent. Once approved, your profile status will change to APPROVED, making you visible in the match directory.";
   }
 
   // 5. Registration check
@@ -113,11 +113,11 @@ export function getFallbackResponse(message: string): string {
     msg.includes('admin') ||
     msg.includes('reach')
   ) {
-    return "You can contact Rishte Forever support by navigating to the Contact page or by emailing support@rishteforever.in. Our support team is active Monday to Saturday, 9:00 AM to 6:00 PM.";
+    return "You can contact Asan Nikah support by navigating to the Contact page or by emailing support@asannikah.com. Our support team is active Monday to Saturday, 9:00 AM to 6:00 PM.";
   }
 
   // 8. General greeting/unknown fallback response
-  return "Assalamu Alaikum! I'm the Rishte Forever support assistant (demo mode).\n\n" +
+  return "Assalamu Alaikum! I'm the Asan Nikah support assistant (demo mode).\n\n" +
     "I can answer your questions about:\n" +
     "• **Packages & Pricing** (₹300/₹5.5k/₹11k/₹21k)\n" +
     "• **Photo & Contact Privacy** (Blurring details)\n" +

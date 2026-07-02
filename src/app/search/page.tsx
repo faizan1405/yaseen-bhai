@@ -12,8 +12,8 @@ export async function generateMetadata(): Promise<Metadata> {
     console.error("Failed to load settings in metadata", e);
   }
   
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://rishteforever.in';
-  const title = "Muslim Matrimonial Directory — Rishte Forever";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://asannikah.com';
+  const title = "Muslim Matrimonial Directory — Asan Nikah";
   const description = "Search call-verified Muslim brides and grooms by sect, maslak, education, occupation, and family background. Safe and privacy-focused.";
   const previewImage = settings?.defaultPreviewImage || "/images/nikah-2.jpeg";
   const imageUrl = previewImage.startsWith('http') ? previewImage : `${siteUrl}${previewImage}`;
@@ -25,7 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
     keywords: [
       "Muslim matrimonial website",
       "Muslim marriage bureau",
-      "Rishte Forever search",
+      "Asan Nikah search",
       "Verified Muslim profiles",
       "Muslim marriage profiles in India",
       "Muslim rishta service"
@@ -37,13 +37,13 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       url: '/search',
-      siteName: "Rishte Forever",
+      siteName: "Asan Nikah",
       images: [
         {
           url: imageUrl,
           width: 1200,
           height: 630,
-          alt: "Search Rishte Forever Matrimonials",
+          alt: "Search Asan Nikah Matrimonials",
         }
       ],
       type: "website",
@@ -66,13 +66,13 @@ export default function SearchPage() {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://rishteforever.in"
+        "item": "https://asannikah.com"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Matrimonial Search Directory",
-        "item": "https://rishteforever.in/search"
+        "item": "https://asannikah.com/search"
       }
     ]
   };

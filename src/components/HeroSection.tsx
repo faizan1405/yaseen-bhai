@@ -28,74 +28,124 @@ export const HeroSection: React.FC = () => {
   };
 
   return (
-    <div className="font-sans">
-      {/* SECTION 1: Full-width sharp banner photo */}
-      <section style={{ position: 'relative', width: '100%', height: '75vh', overflow: 'hidden' }}>
-        <Image
-          src="/images/hero-couple.png"
-          alt="Happy Muslim couple after Nikah"
-          fill
-          sizes="100vw"
-          style={{ objectFit: 'cover', objectPosition: 'center 25%' }}
-          priority
-        />
-      </section>
-
-      {/* SECTION 2: Text card content section */}
-      <section style={{ backgroundColor: 'var(--cream-bg)', padding: '80px 20px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <div className="container" style={{ display: 'flex', justifyContent: 'center' }}>
+    <section style={{ backgroundColor: 'var(--color-bg)', padding: '60px 20px', minHeight: '85vh', display: 'flex', alignItems: 'center' }}>
+      <div className="container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '60px', alignItems: 'center' }}>
+        
+        {/* Left Side: Text and CTAs */}
+        <div style={{ maxWidth: '600px' }}>
           <div style={{
-            maxWidth: '820px',
-            width: '100%',
-            padding: '48px 36px',
-            textAlign: 'center',
-            background: 'rgba(255, 253, 248, 0.93)',
-            backdropFilter: 'blur(12px)',
-            border: '2px solid var(--gold-accent)',
-            borderRadius: 'var(--border-radius-xl)',
-            boxShadow: 'var(--shadow-hover)',
-            position: 'relative'
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            backgroundColor: 'var(--color-primary-light)',
+            color: 'var(--color-primary-dark)',
+            padding: '6px 16px',
+            borderRadius: '20px',
+            fontSize: '14px',
+            fontWeight: 600,
+            marginBottom: '24px'
           }}>
-            {/* Floral Corners */}
-            <div style={{ position: 'absolute', top: '12px', left: '12px', width: '20px', height: '20px', borderTop: '2px solid var(--gold-accent)', borderLeft: '2px solid var(--gold-accent)' }} />
-            <div style={{ position: 'absolute', top: '12px', right: '12px', width: '20px', height: '20px', borderTop: '2px solid var(--gold-accent)', borderRight: '2px solid var(--gold-accent)' }} />
-            <div style={{ position: 'absolute', bottom: '12px', left: '12px', width: '20px', height: '20px', borderBottom: '2px solid var(--gold-accent)', borderLeft: '2px solid var(--gold-accent)' }} />
-            <div style={{ position: 'absolute', bottom: '12px', right: '12px', width: '20px', height: '20px', borderBottom: '2px solid var(--gold-accent)', borderRight: '2px solid var(--gold-accent)' }} />
+            <span style={{ width: '8px', height: '8px', backgroundColor: 'var(--color-primary)', borderRadius: '50%' }}></span>
+            Trusted by thousands of families
+          </div>
 
-            <div className="hero-subtitle" style={{ color: 'var(--gold-dark)', fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontWeight: 700, fontSize: '20px', marginBottom: '16px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '10px', width: '100%' }}>
-              Halal & Safe Matrimonial Invitations
+          <h1 style={{ color: 'var(--color-text)', fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 800, lineHeight: 1.1, marginBottom: '24px', letterSpacing: '-0.02em' }}>
+            Find Your Perfect <span style={{ color: 'var(--color-primary)' }}>Nikah Match</span>, The Simple Way
+          </h1>
+          
+          <p style={{ color: 'var(--color-muted)', fontSize: '1.125rem', lineHeight: 1.6, marginBottom: '40px' }}>
+            Asan Nikah helps families discover verified, privacy-safe matrimonial profiles with easy search, trusted verification, and simple membership plans.
+          </p>
+          
+          <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginBottom: '40px' }}>
+            <button 
+              onClick={handleFindMatch} 
+              className="btn btn-primary" 
+              style={{ padding: '16px 32px', fontSize: '16px', borderRadius: '12px' }}
+            >
+              Start Finding Matches
+            </button>
+            <button
+              onClick={handleCreateProfile}
+              className="btn btn-secondary"
+              style={{ padding: '16px 32px', fontSize: '16px', borderRadius: '12px' }}
+            >
+              View Verified Profiles
+            </button>
+          </div>
+
+          <div style={{ display: 'flex', gap: '24px', color: 'var(--color-text)', fontSize: '14px', fontWeight: 500, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" strokeWidth="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              Verified profiles
             </div>
-            
-            <h1 className="hero-title font-serif" style={{ color: 'var(--deep-maroon)', lineHeight: '1.25', fontWeight: '800', fontSize: '46px', margin: '0 0 20px 0', letterSpacing: '-0.5px' }}>
-              A Beautiful Beginning Starts With the Right Match
-            </h1>
-            
-            <p className="hero-description" style={{ color: 'var(--text-dark)', fontWeight: 500, fontSize: '16px', lineHeight: '1.8', marginBottom: '36px', maxWidth: '700px', marginLeft: 'auto', marginRight: 'auto' }}>
-              Discover verified matrimonial profiles through a respectful, family-friendly platform designed to help you begin your Nikah journey with confidence.
-            </p>
-            
-            <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '30px' }}>
-              <button onClick={handleFindMatch} className="btn btn-gold" style={{ padding: '14px 32px', fontSize: '14px', minWidth: '180px' }}>
-                Find Your Match
-              </button>
-              <button
-                onClick={handleCreateProfile}
-                className="btn btn-primary"
-                style={{ padding: '14px 32px', fontSize: '14px', minWidth: '180px' }}
-              >
-                Create Your Profile
-              </button>
-            </div>
-            
-            <div style={{ fontSize: '13px', color: 'var(--text-muted)', display: 'flex', justifyContent: 'center', gap: '20px', flexWrap: 'wrap', fontWeight: 600, borderTop: '1px solid var(--border-color)', paddingTop: '20px' }}>
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}><span style={{ color: 'var(--gold-accent)' }}>✓</span> Manually Verified Profiles</span>
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}><span style={{ color: 'var(--gold-accent)' }}>✓</span> Complete Privacy Controls</span>
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}><span style={{ color: 'var(--gold-accent)' }}>✓</span> Family-Friendly Community</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              Privacy-first platform
             </div>
           </div>
         </div>
-      </section>
-    </div>
+
+        {/* Right Side: Visual/Cards */}
+        <div style={{ position: 'relative', height: '100%', minHeight: '500px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          {/* Decorative background shape */}
+          <div style={{ position: 'absolute', width: '100%', height: '100%', background: 'linear-gradient(135deg, #d1fae5 0%, #fef3c7 100%)', borderRadius: '50%', opacity: 0.5, filter: 'blur(40px)', zIndex: 0 }}></div>
+          
+          {/* Main profile card preview */}
+          <div style={{
+            position: 'relative',
+            zIndex: 2,
+            background: 'var(--color-surface)',
+            padding: '24px',
+            borderRadius: 'var(--radius-card)',
+            boxShadow: 'var(--shadow-card)',
+            width: '100%',
+            maxWidth: '360px',
+            border: '1px solid var(--border-color)',
+            transform: 'rotate(-2deg)'
+          }}>
+            <div style={{ width: '100%', height: '240px', backgroundColor: '#e2e8f0', borderRadius: '16px', marginBottom: '20px', position: 'relative', overflow: 'hidden' }}>
+              <Image src="/images/nikah-1.jpeg" alt="Profile match" fill style={{ objectFit: 'cover' }} />
+              <div style={{ position: 'absolute', top: '12px', right: '12px', background: 'rgba(255,255,255,0.9)', padding: '4px 8px', borderRadius: '20px', fontSize: '12px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--color-primary)' }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                Verified
+              </div>
+            </div>
+            <div style={{ marginBottom: '16px' }}>
+              <h3 style={{ margin: '0 0 4px 0', fontSize: '1.25rem', color: 'var(--color-text)' }}>Looking for a match</h3>
+              <p style={{ margin: 0, color: 'var(--color-muted)', fontSize: '14px' }}>28 yrs, 5'6", Software Engineer</p>
+              <p style={{ margin: '4px 0 0 0', color: 'var(--color-muted)', fontSize: '14px' }}>Mumbai, Maharashtra</p>
+            </div>
+            <button className="btn btn-primary" style={{ width: '100%', padding: '12px', borderRadius: '8px' }}>Send Request</button>
+          </div>
+
+          {/* Secondary floating card */}
+          <div style={{
+            position: 'absolute',
+            bottom: '20px',
+            left: '-20px',
+            zIndex: 3,
+            background: 'var(--color-surface)',
+            padding: '16px',
+            borderRadius: '16px',
+            boxShadow: 'var(--shadow-card)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            border: '1px solid var(--border-color)'
+          }}>
+            <div style={{ width: '48px', height: '48px', backgroundColor: 'var(--color-accent)', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#fff' }}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            </div>
+            <div>
+              <p style={{ margin: 0, fontWeight: 'bold', fontSize: '14px', color: 'var(--color-text)' }}>100% Secure</p>
+              <p style={{ margin: 0, fontSize: '12px', color: 'var(--color-muted)' }}>Family-friendly platform</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
   );
 };
 

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useSimulator } from '../context/SimulatorContext';
+import { siteConfig } from '../config/site';
 
 export const Navbar: React.FC = () => {
   const pathname = usePathname();
@@ -109,27 +110,11 @@ export const Navbar: React.FC = () => {
             <div className="nav-left-divider nav-menu-desktop"></div>
           </div>
 
-          {/* Center Column (Spans Row 1 & 2): Centered logo inside a Mughal arch cutout */}
-          <div className="logo-arch-wrapper">
-            <svg className="logo-arch-bg" viewBox="0 0 280 120" preserveAspectRatio="none">
-              <path d="M 0,120 L 0,60 C 0,38 22,28 47,28 C 87,28 97,5 140,5 C 183,5 193,28 233,28 C 258,28 280,38 280,60 L 280,120 Z" fill="var(--warm-ivory)" />
-              <path d="M 0,120 L 0,60 C 0,38 22,28 47,28 C 87,28 97,5 140,5 C 183,5 193,28 233,28 C 258,28 280,38 280,60 L 280,120" fill="none" stroke="var(--gold-accent)" strokeWidth="1.5" />
-              {/* Gold Ornament Peak detail */}
-              <circle cx="140" cy="2" r="2.5" fill="var(--gold-accent)" />
-              <path d="M 136,5 L 140,0 L 144,5 Z" fill="var(--gold-accent)" />
-            </svg>
-            <div className="logo-arch-content">
-              <Link href="/" className="logo-link" id="header-logo-link">
-                <Image
-                  src="/images/rishte-forever-logo.png"
-                  alt="Rishte Forever — Where Faith Meets Forever"
-                  width={190}
-                  height={70}
-                  priority
-                  style={{ display: 'block', height: 'auto', width: '100%', maxWidth: '190px' }}
-                />
-              </Link>
-            </div>
+          {/* Center Column: Logo */}
+          <div className="logo-wrapper" style={{ gridColumn: 2, justifySelf: 'center', zIndex: 10, display: 'flex', alignItems: 'center' }}>
+            <Link href="/" className="logo-link" id="header-logo-link" style={{ display: 'flex', alignItems: 'center' }}>
+              <span style={{ fontSize: '28px', fontWeight: 'bold', color: 'var(--color-primary)' }}>{siteConfig.logoText}</span>
+            </Link>
           </div>
 
           {/* Right Column: Premium/Safety/Zaicha nav links */}
@@ -276,7 +261,7 @@ export const Navbar: React.FC = () => {
               <span className="logo">
                 <Image
                   src="/images/rishte-forever-logo.png"
-                  alt="Rishte Forever — Where Faith Meets Forever"
+                  alt="Asan Nikah — Where Faith Meets Forever"
                   width={180}
                   height={68}
                 />

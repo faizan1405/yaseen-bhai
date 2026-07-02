@@ -90,7 +90,7 @@ export default function HighProfileClient() {
 
             <div className="card-theme-wrapper" style={{ padding: '24px', position: 'sticky', top: '100px', border: '2.5px solid var(--gold-accent)', boxShadow: 'var(--gold-glow-shadow)' }}>
               <h3 style={{ fontFamily: 'var(--font-serif)', color: 'var(--deep-maroon)', fontSize: '22px', marginBottom: '16px', fontWeight: 800 }}>
-                Gold Package
+                Premium Match Access
               </h3>
               {isFormComplete ? (
                 <div style={{ fontSize: '36px', fontWeight: '800', color: 'var(--deep-maroon)', marginBottom: '8px', fontFamily: 'var(--font-serif)' }}>
@@ -107,7 +107,7 @@ export default function HighProfileClient() {
               </p>
 
               <ul style={{ paddingLeft: '20px', marginBottom: '24px', fontSize: '13.5px', color: 'var(--text-dark)' }}>
-                <li style={{ marginBottom: '8px' }}>Everything in Silver Plan</li>
+                <li style={{ marginBottom: '8px' }}>Everything in Basic Access</li>
                 <li style={{ marginBottom: '8px' }}>Premium verified profile suggestions</li>
                 <li style={{ marginBottom: '8px' }}>High-priority matchmaking assistance</li>
                 <li style={{ marginBottom: '8px' }}>Personalized profile shortlisting</li>
@@ -123,10 +123,10 @@ export default function HighProfileClient() {
                 <button
                   className="btn btn-gold"
                   style={{ width: '100%', padding: '12px', fontSize: '15px' }}
-                  onClick={() => handleRazorpayCheckout('high_profile_package', 21000, 'Gold Package')}
+                  onClick={() => handleRazorpayCheckout('high_profile_package', 21000, 'Premium Match Access')}
                   disabled={isPackageActive}
                 >
-                  {isPackageActive ? 'Package Active ✅' : 'Buy Gold Package'}
+                  {isPackageActive ? 'Package Active ✅' : 'Buy Premium Match Access'}
                 </button>
               ) : (
                 <button
@@ -148,7 +148,7 @@ export default function HighProfileClient() {
                     Inquire & Ask Call back
                   </button>
                   <a
-                    href={`https://wa.me/919675483125?text=${encodeURIComponent("Assalamu Alaikum, I am interested in the ₹21,000 Gold Package on Rishte Forever. Please guide me.")}`}
+                    href={`https://wa.me/919675483125?text=${encodeURIComponent("Assalamu Alaikum, I am interested in the ₹21,000 Premium Match Access on Asan Nikah. Please guide me.")}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn"
@@ -206,7 +206,7 @@ export default function HighProfileClient() {
               Package Inquiry & Callback
             </h3>
             <PackageInquiryForm
-              defaultPackage="₹21,000 Gold Package"
+              defaultPackage="₹21,000 Premium Match Access"
               onSuccess={() => setShowInquiry(false)}
               onCancel={() => setShowInquiry(false)}
             />

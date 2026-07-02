@@ -201,7 +201,7 @@ export const QuranVerseBlock: React.FC = () => {
         <div className="quran-verse-image-panel">
           <Image
             src="/images/couple.png"
-            alt="Elegant Islamic matrimonial - Rishte Forever"
+            alt="Elegant Islamic matrimonial - Asan Nikah"
             fill
             sizes="(max-width: 640px) 100vw, 900px"
             style={{ objectFit: 'cover', objectPosition: 'center' }}
@@ -322,10 +322,10 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
     unlockCta = 'Good Profile Package · ₹5,500';
     showUpgradeCta = true;
   } else if (isLockedCategory === 'second_marriage_package' && !hasSecMarriageAccess) {
-    unlockCta = 'Silver Plan · ₹11,000';
+    unlockCta = 'Basic Access · ₹11,000';
     showUpgradeCta = true;
   } else if (isLockedCategory === 'high_profile_package' && !hasHighProfAccess) {
-    unlockCta = 'Gold Package · ₹21,000';
+    unlockCta = 'Premium Match Access · ₹21,000';
     showUpgradeCta = true;
   }
 
@@ -370,7 +370,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
         backgroundColor: 'var(--white)',
         borderRadius: 'var(--border-radius-xl)',
         boxShadow: 'var(--shadow-premium)',
-        border: '1.5px solid rgba(184, 146, 74, 0.22)',
+        border: '1px solid var(--border-color)',
         overflow: 'hidden',
         transition: 'var(--transition-smooth)',
         height: '100%',
@@ -483,7 +483,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
         }}>
           {profile.verificationStatus === 'APPROVED' && (
             <span style={{
-              background: '#059669',
+              background: 'var(--color-primary)',
               color: '#fff',
               fontSize: '11px',
               fontWeight: 700,
@@ -526,7 +526,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               boxShadow: '0 2px 8px rgba(184,146,74,0.35)',
               backdropFilter: 'blur(4px)',
             }}>
-              ⭐ Gold Package
+              ⭐ Premium Match Access
             </span>
           )}
           {isSecMarriage && (
@@ -540,7 +540,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               boxShadow: '0 2px 8px rgba(111,29,53,0.3)',
               backdropFilter: 'blur(4px)',
             }}>
-              ↺ Silver Plan
+              ↺ Basic Access
             </span>
           )}
           {isLockedCategory && (
@@ -925,8 +925,7 @@ export const PremiumPlanCard: React.FC<PremiumPlanCardProps> = ({
         </div>
       )}
 
-      {!imageUrl && <FloralCorner position="tl" color="var(--gold-light)" />}
-      {!imageUrl && <FloralCorner position="tr" color="var(--gold-light)" />}
+
 
       <h3 className="pkg-title" style={{ fontFamily: 'var(--font-serif)', fontSize: '26px', color: 'var(--primary-brand)', fontWeight: 800, marginBottom: '20px' }}>
         {title}
@@ -1031,10 +1030,10 @@ export const PremiumPlanCard: React.FC<PremiumPlanCardProps> = ({
             else if (title.toLowerCase().includes('high')) path = '/packages/high-profile';
 
             const shareUrl = `${window.location.origin}${path}`;
-            const shareText = `Check out the ${title} on Rishte Forever matrimonial site:`;
+            const shareText = `Check out the ${title} on Asan Nikah matrimonial site:`;
             if (navigator.share) {
               navigator.share({
-                title: `Rishte Forever - ${title}`,
+                title: `Asan Nikah - ${title}`,
                 text: shareText,
                 url: shareUrl
               }).catch(() => { });
@@ -1113,8 +1112,8 @@ export const SuccessStoryCard: React.FC<SuccessStoryCardProps> = ({
       justifyContent: 'space-between',
       position: 'relative'
     }}>
-      <FloralCorner position="tl" color="var(--gold-light)" />
-      <FloralCorner position="br" color="var(--gold-light)" />
+      
+      
 
       <div>
         <div style={{ position: 'relative', width: '100%', height: '180px', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--gold-light)', marginBottom: '20px' }}>
@@ -1134,11 +1133,11 @@ export const SuccessStoryCard: React.FC<SuccessStoryCardProps> = ({
         </div>
         <button
           onClick={() => {
-            const shareText = `Read the beautiful matrimonial success story of ${names} on Rishte Forever!`;
+            const shareText = `Read the beautiful matrimonial success story of ${names} on Asan Nikah!`;
             const shareUrl = `${window.location.origin}/success-stories`;
             if (navigator.share) {
               navigator.share({
-                title: 'Rishte Forever Success Story',
+                title: 'Asan Nikah Success Story',
                 text: shareText,
                 url: shareUrl
               }).catch(() => { });
@@ -1279,10 +1278,10 @@ export const ZaichaPromoCard: React.FC = () => {
             </svg>
           </div>
           
-          <FloralCorner position="tl" color="var(--gold-accent)" />
-          <FloralCorner position="tr" color="var(--gold-accent)" />
-          <FloralCorner position="bl" color="var(--gold-accent)" />
-          <FloralCorner position="br" color="var(--gold-accent)" />
+          
+          
+          
+          
 
           <div style={{
             backgroundColor: 'var(--white)',
@@ -1338,10 +1337,10 @@ export const FinalCTA: React.FC<FinalCTAProps> = ({ onRegister, onBrowse, isLogg
     <section style={{ backgroundColor: 'var(--soft-cream)', borderTop: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)', padding: '80px 0', position: 'relative' }}>
       <div className="container" style={{ position: 'relative', zIndex: 5 }}>
         <div className="arch-container max-w-4xl mx-auto text-center" style={{ maxWidth: '800px', margin: '0 auto', padding: '60px 40px', textAlign: 'center' }}>
-          <FloralCorner position="tl" color="var(--gold-accent)" />
-          <FloralCorner position="tr" color="var(--gold-accent)" />
-          <FloralCorner position="bl" color="var(--gold-accent)" />
-          <FloralCorner position="br" color="var(--gold-accent)" />
+          
+          
+          
+          
 
           <span className="script-accent block mb-2" style={{ display: 'block', marginBottom: '12px' }}>Start Your Blessed Future</span>
           <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '36px', color: 'var(--deep-maroon)', fontWeight: 'bold', marginBottom: '20px' }}>
@@ -1407,7 +1406,7 @@ export const PremiumFooter: React.FC<PremiumFooterProps> = ({ onNavigate }) => {
             <div className="footer-logo" style={{ marginBottom: '18px', display: 'inline-block', background: 'var(--white)', padding: '12px 16px', borderRadius: '12px', boxShadow: '0 4px 14px rgba(0,0,0,0.25)' }}>
               <Image
                 src="/images/rishte-forever-logo.png"
-                alt="Rishte Forever — Where Faith Meets Forever"
+                alt="Asan Nikah — Where Faith Meets Forever"
                 width={260}
                 height={98}
                 style={{ height: '60px', width: 'auto' }}
@@ -1420,35 +1419,35 @@ export const PremiumFooter: React.FC<PremiumFooterProps> = ({ onNavigate }) => {
             {location && (location.facebookUrl || location.instagramUrl || location.youtubeUrl || location.linkedinUrl || location.twitterUrl) && (
               <div style={{ display: 'flex', gap: '14px', marginBottom: '20px', flexWrap: 'wrap' }}>
                 {location.facebookUrl && (
-                  <a href={location.facebookUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold-accent)', transition: 'var(--transition-smooth)', display: 'flex', alignItems: 'center' }} aria-label="Visit Rishte Forever on Facebook">
+                  <a href={location.facebookUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold-accent)', transition: 'var(--transition-smooth)', display: 'flex', alignItems: 'center' }} aria-label="Visit Asan Nikah on Facebook">
                     <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24" style={{ display: 'block' }}>
                       <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z" />
                     </svg>
                   </a>
                 )}
                 {location.instagramUrl && (
-                  <a href={location.instagramUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold-accent)', transition: 'var(--transition-smooth)', display: 'flex', alignItems: 'center' }} aria-label="Visit Rishte Forever on Instagram">
+                  <a href={location.instagramUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold-accent)', transition: 'var(--transition-smooth)', display: 'flex', alignItems: 'center' }} aria-label="Visit Asan Nikah on Instagram">
                     <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24" style={{ display: 'block' }}>
                       <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
                     </svg>
                   </a>
                 )}
                 {location.youtubeUrl && (
-                  <a href={location.youtubeUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold-accent)', transition: 'var(--transition-smooth)', display: 'flex', alignItems: 'center' }} aria-label="Visit Rishte Forever on YouTube">
+                  <a href={location.youtubeUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold-accent)', transition: 'var(--transition-smooth)', display: 'flex', alignItems: 'center' }} aria-label="Visit Asan Nikah on YouTube">
                     <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24" style={{ display: 'block' }}>
                       <path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.11C19.517 3.545 12 3.545 12 3.545s-7.517 0-9.388.508a3.003 3.003 0 0 0-2.11 2.11C0 8.033 0 12 0 12s0 3.967.502 5.837a3.003 3.003 0 0 0 2.11 2.11C4.483 20.455 12 20.455 12 20.455s7.517 0 9.388-.508a3.003 3.003 0 0 0 2.11-2.11C24 15.967 24 12 24 12s0-3.967-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
                     </svg>
                   </a>
                 )}
                 {location.linkedinUrl && (
-                  <a href={location.linkedinUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold-accent)', transition: 'var(--transition-smooth)', display: 'flex', alignItems: 'center' }} aria-label="Visit Rishte Forever on LinkedIn">
+                  <a href={location.linkedinUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold-accent)', transition: 'var(--transition-smooth)', display: 'flex', alignItems: 'center' }} aria-label="Visit Asan Nikah on LinkedIn">
                     <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24" style={{ display: 'block' }}>
                       <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                     </svg>
                   </a>
                 )}
                 {location.twitterUrl && (
-                  <a href={location.twitterUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold-accent)', transition: 'var(--transition-smooth)', display: 'flex', alignItems: 'center' }} aria-label="Visit Rishte Forever on X">
+                  <a href={location.twitterUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold-accent)', transition: 'var(--transition-smooth)', display: 'flex', alignItems: 'center' }} aria-label="Visit Asan Nikah on X">
                     <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24" style={{ display: 'block' }}>
                       <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                     </svg>
@@ -1487,7 +1486,7 @@ export const PremiumFooter: React.FC<PremiumFooterProps> = ({ onNavigate }) => {
           </div>
         </div>
         <div className="footer-bottom" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: '30px', marginTop: '50px', fontSize: '13px', color: 'rgba(248, 241, 231, 0.6)', textAlign: 'center' }}>
-          &copy; Rishte Forever. All rights reserved.
+          &copy; Asan Nikah. All rights reserved.
         </div>
       </div>
     </footer>

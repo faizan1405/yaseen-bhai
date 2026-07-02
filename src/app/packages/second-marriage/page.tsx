@@ -11,9 +11,9 @@ export async function generateMetadata(): Promise<Metadata> {
     console.error("Failed to load settings in metadata", e);
   }
   
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://rishteforever.in';
-  const title = "Silver Plan Matrimonial Directory — Rishte Forever";
-  const description = "Browse verified silver plan matches on Rishte Forever. Tailored private matrimonial directory for divorced, widowed, and serious candidates seeking life partners.";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://asannikah.com';
+  const title = "Basic Access Matrimonial Directory — Asan Nikah";
+  const description = "Browse verified basic access matches on Asan Nikah. Tailored private matrimonial directory for divorced, widowed, and serious candidates seeking life partners.";
   const previewImage = settings?.defaultPreviewImage || "/images/nikah-2.jpeg";
   const imageUrl = previewImage.startsWith('http') ? previewImage : `${siteUrl}${previewImage}`;
 
@@ -22,11 +22,11 @@ export async function generateMetadata(): Promise<Metadata> {
     description,
     metadataBase: new URL(siteUrl),
     keywords: [
-      "Muslim silver plan profiles",
+      "Muslim basic access profiles",
       "Divorced Muslim matrimonial",
       "Widowed Muslim matrimonial",
-      "Silver plan marriage bureau",
-      "Rishte Forever Silver Plan"
+      "Basic Access marriage bureau",
+      "Asan Nikah Basic Access"
     ],
     alternates: {
       canonical: '/packages/second-marriage',
@@ -35,13 +35,13 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       url: '/packages/second-marriage',
-      siteName: "Rishte Forever",
+      siteName: "Asan Nikah",
       images: [
         {
           url: imageUrl,
           width: 1200,
           height: 630,
-          alt: "Rishte Forever Silver Plan",
+          alt: "Asan Nikah Basic Access",
         }
       ],
       type: "website",
@@ -64,19 +64,19 @@ export default function SecondMarriagePage() {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://rishteforever.in"
+        "item": "https://asannikah.com"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Premium Packages",
-        "item": "https://rishteforever.in/premium"
+        "item": "https://asannikah.com/premium"
       },
       {
         "@type": "ListItem",
         "position": 3,
-        "name": "Silver Plan Matches",
-        "item": "https://rishteforever.in/packages/second-marriage"
+        "name": "Basic Access Matches",
+        "item": "https://asannikah.com/packages/second-marriage"
       }
     ]
   };

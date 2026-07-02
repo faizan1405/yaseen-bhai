@@ -93,7 +93,7 @@ export default function ZaichaClient() {
             <div style={{ height: '1.5px', background: 'linear-gradient(90deg, transparent, var(--gold-accent) 50%, transparent)', margin: '24px 0' }} />
 
             <p style={{ fontSize: '15px', color: 'var(--text-muted)', lineHeight: '1.75', textAlign: 'center', fontStyle: 'italic', fontWeight: 500 }}>
-              “At Rishte Forever, we present Zaicha as supportive guidance only. Final marriage decisions should always be based on deen, character, family understanding, mutual consent, and proper communication. We do not treat Zaicha as a guarantee or final decision-maker, but as an additional support for families who value this process.”
+              “At Asan Nikah, we present Zaicha as supportive guidance only. Final marriage decisions should always be based on deen, character, family understanding, mutual consent, and proper communication. We do not treat Zaicha as a guarantee or final decision-maker, but as an additional support for families who value this process.”
             </p>
           </div>
 
@@ -110,7 +110,7 @@ export default function ZaichaClient() {
                 Contact Us for Zaicha
               </Link>
               <a
-                href={`https://wa.me/919675483125?text=${encodeURIComponent("Assalamu Alaikum, I would like to inquire about Zaicha compatibility guidance for matchmaking on Rishte Forever.")}`}
+                href={`https://wa.me/919675483125?text=${encodeURIComponent("Assalamu Alaikum, I would like to inquire about Zaicha compatibility guidance for matchmaking on Asan Nikah.")}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn"

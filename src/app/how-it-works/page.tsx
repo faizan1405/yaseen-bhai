@@ -11,9 +11,9 @@ export async function generateMetadata(): Promise<Metadata> {
     console.error("Failed to load settings in metadata", e);
   }
   
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://rishteforever.in';
-  const title = "How It Works — Rishte Forever Muslim Matrimonial Process";
-  const description = "Learn how Rishte Forever matching process works. Create matrimonial biodata, complete manual telephone check verification, and start halal family introductions.";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://asannikah.com';
+  const title = "How It Works — Asan Nikah Muslim Matrimonial Process";
+  const description = "Learn how Asan Nikah matching process works. Create matrimonial biodata, complete manual telephone check verification, and start halal family introductions.";
   const previewImage = settings?.defaultPreviewImage || "/images/nikah-1.jpeg";
   const imageUrl = previewImage.startsWith('http') ? previewImage : `${siteUrl}${previewImage}`;
 
@@ -22,7 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
     description,
     metadataBase: new URL(siteUrl),
     keywords: [
-      "How Rishte Forever Works",
+      "How Asan Nikah Works",
       "Muslim matrimonial process",
       "Muslim matchmaking verification",
       "Islamic matrimonial guidelines",
@@ -35,13 +35,13 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       url: '/how-it-works',
-      siteName: "Rishte Forever",
+      siteName: "Asan Nikah",
       images: [
         {
           url: imageUrl,
           width: 1200,
           height: 630,
-          alt: "Rishte Forever Matrimonial Process Guide",
+          alt: "Asan Nikah Matrimonial Process Guide",
         }
       ],
       type: "website",
@@ -87,13 +87,13 @@ export default function HowItWorksPage() {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://rishteforever.in"
+        "item": "https://asannikah.com"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "How It Works",
-        "item": "https://rishteforever.in/how-it-works"
+        "item": "https://asannikah.com/how-it-works"
       }
     ]
   };

@@ -25,7 +25,7 @@ export function getWhatsAppLink(phone: string, message: string): string {
 }
 
 /**
- * Returns a WhatsApp link to the Rishte Forever support number.
+ * Returns a WhatsApp link to the Asan Nikah support number.
  */
 export function getSupportWhatsAppLink(message: string): string {
   return getWhatsAppLink(WHATSAPP_NUMBER, message);

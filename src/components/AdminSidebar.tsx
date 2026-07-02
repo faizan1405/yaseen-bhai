@@ -19,7 +19,7 @@ export const AdminSidebar: React.FC = () => {
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px', paddingLeft: '12px' }}>
         <Image
           src="/images/rishte-forever-logo.png"
-          alt="Rishte Forever"
+          alt="Asan Nikah"
           width={150}
           height={57}
           style={{ height: '36px', width: 'auto', background: 'var(--white)', padding: '6px 8px', borderRadius: '8px' }}

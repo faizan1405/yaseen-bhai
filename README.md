@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Asan Nikah — Matrimonial Platform
 
-## Getting Started
+This repository contains the complete Next.js application for Asan Nikah, a verified and privacy-first matrimonial platform.
 
-First, run the development server:
+## Project Overview
+- **Tech Stack:** Next.js 16 (App Router), React 19, TypeScript, TailwindCSS/Custom CSS.
+- **Database:** MongoDB via Prisma ORM.
+- **Authentication:** NextAuth.js (Auth.js) via Google OAuth.
+- **Payments:** Razorpay integration.
+- **Storage:** Vercel Blob.
 
+## Setup Steps
+1. Clone the repository and install dependencies:
+   ```bash
+   npm install
+   ```
+2. Copy the `.env.example` to `.env` and fill in your secrets.
+3. Generate Prisma client:
+   ```bash
+   npx prisma generate
+   ```
+
+## Environment Variables
+Key `.env` variables required for production:
+- `DATABASE_URL`: MongoDB connection string (pointing to `asannikah` DB).
+- `AUTH_SECRET`: Generate using `openssl rand -base64 32`.
+- `AUTH_GOOGLE_ID` & `AUTH_GOOGLE_SECRET`: Google OAuth credentials.
+- `NEXT_PUBLIC_SITE_URL`: Set to `https://asannikah.com`.
+- `NEXT_PUBLIC_DEMO_MODE`: **Must be `false` in production**.
+- `RAZORPAY_KEY_ID` & `RAZORPAY_KEY_SECRET`: Razorpay live keys.
+
+## Local Development
+Run the development server:
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+Access the application at `http://localhost:3000`.
+
+## Production Build
+To create a production build:
+```bash
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Deployment Steps
+1. Deploy to Vercel or any Node.js hosting.
+2. Ensure all environment variables are added in the hosting platform's settings.
+3. Run `npx prisma db push` (or generate) during the build step.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Admin Usage
+Access the admin panel at `/admin/login`. 
+In production, you must use valid credentials from the database to access the dashboard. 
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Important Production Safety Notes
+- Ensure `NEXT_PUBLIC_DEMO_MODE=false`.
+- The `.env` file is in `.gitignore` and should never be committed.
+- Replace any remaining dummy Razorpay keys with live client keys before launch.
+- Real emails and SMS notifications require valid API keys (Resend, SMS Provider) set in `.env`.

@@ -107,7 +107,7 @@ export const PackageInquiryForm: React.FC<PackageInquiryFormProps> = ({
           </p>
           <div style={{ marginTop: '16px' }}>
             <a
-              href={`https://wa.me/919675483125?text=${encodeURIComponent(`Assalamu Alaikum, I have submitted an inquiry for the ${interestedPackage} on Rishte Forever. Name: ${fullName}, Phone: ${phone}. Please guide me.`)}`}
+              href={`https://wa.me/919675483125?text=${encodeURIComponent(`Assalamu Alaikum, I have submitted an inquiry for the ${interestedPackage} on Asan Nikah. Name: ${fullName}, Phone: ${phone}. Please guide me.`)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="btn"
@@ -222,8 +222,8 @@ export const PackageInquiryForm: React.FC<PackageInquiryFormProps> = ({
             >
               <option value="₹300 Monthly Membership">₹300 Monthly Membership</option>
               <option value="₹5,500 Good Profiles Package">₹5,500 Good Profiles Package</option>
-              <option value="₹11,000 Silver Plan">₹11,000 Silver Plan</option>
-              <option value="₹21,000 Gold Package">₹21,000 Gold Package</option>
+              <option value="₹11,000 Basic Access">₹11,000 Basic Access</option>
+              <option value="₹21,000 Premium Match Access">₹21,000 Premium Match Access</option>
             </select>
           </div>
 

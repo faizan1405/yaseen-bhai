@@ -11,9 +11,9 @@ export async function generateMetadata(): Promise<Metadata> {
     console.error("Failed to load settings in metadata", e);
   }
   
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://rishteforever.in';
-  const title = "Good Profile Matches — Rishte Forever Muslim Matrimonial";
-  const description = "Explore verified good profile matrimonial matches on Rishte Forever. Designed for serious candidates seeking handsome and beautiful matrimonial matches with manual phone check verification.";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://asannikah.com';
+  const title = "Good Profile Matches — Asan Nikah Muslim Matrimonial";
+  const description = "Explore verified good profile matrimonial matches on Asan Nikah. Designed for serious candidates seeking handsome and beautiful matrimonial matches with manual phone check verification.";
   const previewImage = settings?.defaultPreviewImage || "/images/nikah-1.jpeg";
   const imageUrl = previewImage.startsWith('http') ? previewImage : `${siteUrl}${previewImage}`;
 
@@ -24,7 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
     keywords: [
       "Verified Muslim profiles",
       "Muslim matrimonial website",
-      "Rishte Forever Good Profiles",
+      "Asan Nikah Good Profiles",
       "Handsome Muslim groom profiles",
       "Beautiful Muslim bride profiles"
     ],
@@ -35,13 +35,13 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       url: '/packages/good-profiles',
-      siteName: "Rishte Forever",
+      siteName: "Asan Nikah",
       images: [
         {
           url: imageUrl,
           width: 1200,
           height: 630,
-          alt: "Rishte Forever Good Profile Package",
+          alt: "Asan Nikah Good Profile Package",
         }
       ],
       type: "website",
@@ -64,19 +64,19 @@ export default function GoodProfilesPage() {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://rishteforever.in"
+        "item": "https://asannikah.com"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Premium Packages",
-        "item": "https://rishteforever.in/premium"
+        "item": "https://asannikah.com/premium"
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": "Good Profiles Match",
-        "item": "https://rishteforever.in/packages/good-profiles"
+        "item": "https://asannikah.com/packages/good-profiles"
       }
     ]
   };

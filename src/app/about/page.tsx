@@ -11,9 +11,9 @@ export async function generateMetadata(): Promise<Metadata> {
     console.error("Failed to load settings in metadata", e);
   }
   
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://rishteforever.in';
-  const title = "About Us — Rishte Forever Muslim Matrimonial Platform";
-  const description = "Learn about Rishte Forever, India's trusted Muslim matrimonial platform & marriage bureau enabling serious, call-verified, and Shariah-compliant Muslim matchmaking.";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://asannikah.com';
+  const title = "About Us — Asan Nikah Muslim Matrimonial Platform";
+  const description = "Learn about Asan Nikah, India's trusted Muslim matrimonial platform & marriage bureau enabling serious, call-verified, and Shariah-compliant Muslim matchmaking.";
   const previewImage = settings?.defaultPreviewImage || "/images/nikah-1.jpeg";
   const imageUrl = previewImage.startsWith('http') ? previewImage : `${siteUrl}${previewImage}`;
 
@@ -24,7 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
     keywords: [
       "Muslim matrimonial website",
       "Muslim marriage bureau",
-      "Rishte Forever About Us",
+      "Asan Nikah About Us",
       "Islamic matrimonial platform",
       "Verified Muslim profiles",
       "Halal Muslim matchmaking"
@@ -36,13 +36,13 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       url: '/about',
-      siteName: "Rishte Forever",
+      siteName: "Asan Nikah",
       images: [
         {
           url: imageUrl,
           width: 1200,
           height: 630,
-          alt: "About Rishte Forever Matrimonial",
+          alt: "About Asan Nikah Matrimonial",
         }
       ],
       type: "website",
@@ -65,13 +65,13 @@ export default function AboutPage() {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://rishteforever.in"
+        "item": "https://asannikah.com"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "About Us",
-        "item": "https://rishteforever.in/about"
+        "item": "https://asannikah.com/about"
       }
     ]
   };

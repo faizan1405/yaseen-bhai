@@ -75,7 +75,7 @@ export default function AdminLoginPage() {
         <div style={{ marginBottom: '24px' }}>
           <Image
             src="/images/rishte-forever-logo.png"
-            alt="Rishte Forever"
+            alt="Asan Nikah"
             width={160}
             height={60}
             style={{ height: '44px', width: 'auto', margin: '0 auto' }}
@@ -95,7 +95,7 @@ export default function AdminLoginPage() {
           Admin Portal
         </h1>
         <p style={{ color: 'var(--text-muted)', fontSize: '13.5px', marginBottom: '32px' }}>
-          Secure access for Rishte Forever team members only.
+          Secure access for Asan Nikah team members only.
         </p>
 
         {/* Divider */}

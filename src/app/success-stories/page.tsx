@@ -11,9 +11,9 @@ export async function generateMetadata(): Promise<Metadata> {
     console.error("Failed to load settings in metadata", e);
   }
   
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://rishteforever.in';
-  const title = "Success Stories — Rishte Forever Muslim Matrimonials";
-  const description = "Alhamdulillah! Read inspiring success stories of marriage from blessed couples who found their life partners on Rishte Forever.";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://asannikah.com';
+  const title = "Success Stories — Asan Nikah Muslim Matrimonials";
+  const description = "Alhamdulillah! Read inspiring success stories of marriage from blessed couples who found their life partners on Asan Nikah.";
   const previewImage = settings?.defaultPreviewImage || "/images/nikah-4.jpeg";
   const imageUrl = previewImage.startsWith('http') ? previewImage : `${siteUrl}${previewImage}`;
 
@@ -26,7 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
       "Halal marriage stories India",
       "Islamic matrimonial testimonials",
       "Blessed Nikah stories",
-      "Rishte Forever success stories"
+      "Asan Nikah success stories"
     ],
     alternates: {
       canonical: '/success-stories',
@@ -35,13 +35,13 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       url: '/success-stories',
-      siteName: "Rishte Forever",
+      siteName: "Asan Nikah",
       images: [
         {
           url: imageUrl,
           width: 1200,
           height: 630,
-          alt: "Rishte Forever Matrimonial Success Stories",
+          alt: "Asan Nikah Matrimonial Success Stories",
         }
       ],
       type: "website",
@@ -64,13 +64,13 @@ export default function SuccessStoriesPage() {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://rishteforever.in"
+        "item": "https://asannikah.com"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Success Stories",
-        "item": "https://rishteforever.in/success-stories"
+        "item": "https://asannikah.com/success-stories"
       }
     ]
   };

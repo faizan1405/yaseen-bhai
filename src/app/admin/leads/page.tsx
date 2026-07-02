@@ -196,8 +196,8 @@ export default function AdminLeadsPage() {
               <option value="">All Packages</option>
               <option value="₹300 Monthly Membership">₹300 Monthly Membership</option>
               <option value="₹5,500 Good Profiles Package">₹5,500 Good Profiles</option>
-              <option value="₹11,000 Silver Plan">₹11,000 Silver Plan</option>
-              <option value="₹21,000 Gold Package">₹21,000 Gold Package</option>
+              <option value="₹11,000 Basic Access">₹11,000 Basic Access</option>
+              <option value="₹21,000 Premium Match Access">₹21,000 Premium Match Access</option>
             </select>
           </div>
         </div>
@@ -289,7 +289,7 @@ export default function AdminLeadsPage() {
                         </button>
                         {lead.phone && (
                           <a
-                            href={getWhatsAppLink(lead.phone, `Assalamu Alaikum ${lead.fullName}, this is Rishte Forever support. We received your inquiry and would like to guide you further.`)}
+                            href={getWhatsAppLink(lead.phone, `Assalamu Alaikum ${lead.fullName}, this is Asan Nikah support. We received your inquiry and would like to guide you further.`)}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="btn"
@@ -422,7 +422,7 @@ export default function AdminLeadsPage() {
                 📞 Call Client
               </a>
               <a
-                href={getWhatsAppLink(selectedLead.phone, `Assalamu Alaikum ${selectedLead.fullName}, this is Rishte Forever support. We received your inquiry and would like to guide you further.`)}
+                href={getWhatsAppLink(selectedLead.phone, `Assalamu Alaikum ${selectedLead.fullName}, this is Asan Nikah support. We received your inquiry and would like to guide you further.`)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-primary"
