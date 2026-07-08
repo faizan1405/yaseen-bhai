@@ -995,6 +995,13 @@ const en = {
     h11: '11. Contact & Support',
     p11: 'If you have any questions about these Terms, please reach out to us via our Support or Contact pages.',
   },
+
+  combobox: {
+    popularOptions: '⭐ Popular Options',
+    allOptions: 'All Options',
+    notListedPre: '✍️ Not listed? Click to enter:',
+    noOptions: 'No options available.',
+  },
 };
 
 export default en;

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { useI18n } from '../i18n/I18nProvider';
 
 interface ComboboxOption {
   value: string;
@@ -29,6 +30,7 @@ export const SearchableCombobox: React.FC<SearchableComboboxProps> = ({
   allowCustom = true,
   required = false,
 }) => {
+  const { t } = useI18n();
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState('');
   const containerRef = useRef<HTMLDivElement>(null);
@@ -140,7 +142,7 @@ export const SearchableCombobox: React.FC<SearchableComboboxProps> = ({
           {popularOptions.length > 0 && (
             <div>
               <div style={{ padding: '6px 12px', fontSize: '11px', fontWeight: 'bold', color: 'var(--gold-accent)', backgroundColor: 'var(--warm-ivory)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                ⭐ Popular Options
+                {t('combobox.popularOptions')}
               </div>
               {popularOptions.map(opt => (
                 <div
@@ -161,7 +163,7 @@ export const SearchableCombobox: React.FC<SearchableComboboxProps> = ({
             <div>
               {popularOptions.length > 0 && (
                 <div style={{ padding: '6px 12px', fontSize: '11px', fontWeight: 'bold', color: 'var(--text-muted)', backgroundColor: '#fafafa', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                  All Options
+                  {t('combobox.allOptions')}
                 </div>
               )}
               {regularOptions.map(opt => (
@@ -194,13 +196,13 @@ export const SearchableCombobox: React.FC<SearchableComboboxProps> = ({
               onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--soft-cream)'}
               onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(212,163,89,0.08)'}
             >
-              ✍️ Not listed? Click to enter: &quot;{search}&quot;
+              {t('combobox.notListedPre')} &quot;{search}&quot;
             </div>
           )}
 
           {filtered.length === 0 && !search.trim() && (
             <div style={{ padding: '12px 16px', fontSize: '13px', color: 'var(--text-muted)', textAlign: 'center' }}>
-              No options available.
+              {t('combobox.noOptions')}
             </div>
           )}
         </div>
