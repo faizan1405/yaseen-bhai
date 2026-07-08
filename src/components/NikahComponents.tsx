@@ -995,7 +995,7 @@ export const PremiumPlanCard: React.FC<PremiumPlanCardProps> = ({
         )}
         {!hidePrices && whatsappMessage && !isActive && (
           <a
-            href={`https://wa.me/919675483125?text=${encodeURIComponent(whatsappMessage)}`}
+            href={`https://wa.me/919170975535?text=${encodeURIComponent(whatsappMessage)}`}
             target="_blank"
             rel="noopener noreferrer"
             className="btn"
@@ -1457,7 +1457,7 @@ export const PremiumFooter: React.FC<PremiumFooterProps> = ({ onNavigate }) => {
             )}
             <div style={{ fontSize: '13px', color: 'rgba(248, 241, 231, 0.9)', marginBottom: '18px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
               <div>📍 {location ? location.address : 'Innov8 44 Regal Building, 2nd Floor, Connaught Place, New Delhi - 110001'}</div>
-              <div>📞 Call: <a href={`tel:${location ? location.phoneRaw : '+919675483125'}`} style={{ color: 'var(--gold-accent)', fontWeight: 'bold', textDecoration: 'underline' }}>{location ? location.phone : '+91 96754 83125'}</a></div>
+              <div>📞 Call: <a href={`tel:${location ? location.phoneRaw : '+919170975535'}`} style={{ color: 'var(--gold-accent)', fontWeight: 'bold', textDecoration: 'underline' }}>{location ? location.phone : '+91 91709 75535'}</a></div>
             </div>
             {/* Dua closing phrase */}
             <div style={{ fontStyle: 'italic', fontSize: '12px', color: 'var(--gold-light)', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '12px' }}>

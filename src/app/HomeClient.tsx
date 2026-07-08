@@ -1117,7 +1117,7 @@ export default function HomeClient() {
                     Explore Event Services
                   </button>
                   <a
-                    href={`https://wa.me/919675483125?text=${encodeURIComponent('Assalamu Alaikum, I am interested in Event Management support. Please share details for trusted wedding/event vendors.')}`}
+                    href={`https://wa.me/919170975535?text=${encodeURIComponent('Assalamu Alaikum, I am interested in Event Management support. Please share details for trusted wedding/event vendors.')}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn btn-secondary"

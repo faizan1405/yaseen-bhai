@@ -110,7 +110,7 @@ export default function ZaichaClient() {
                 Contact Us for Zaicha
               </Link>
               <a
-                href={`https://wa.me/919675483125?text=${encodeURIComponent("Assalamu Alaikum, I would like to inquire about Zaicha compatibility guidance for matchmaking on Asan Nikah.")}`}
+                href={`https://wa.me/919170975535?text=${encodeURIComponent("Assalamu Alaikum, I would like to inquire about Zaicha compatibility guidance for matchmaking on Asan Nikah.")}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn"
