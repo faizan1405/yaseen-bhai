@@ -1,10 +1,11 @@
 'use client';
 
 import React from 'react';
-import { useSimulator } from '../context/SimulatorContext';
+import { useApp } from '../context/AppContext';
 import { Profile } from '../types';
 import { ProfileCard } from './NikahComponents';
 import { getProfileImage, getThemeClass } from '../lib/helpers';
+import { useI18n } from '../i18n/I18nProvider';
 
 interface ProfileGridProps {
   filteredProfiles: Profile[];
@@ -15,15 +16,16 @@ export const ProfileGrid: React.FC<ProfileGridProps> = ({ filteredProfiles, isFi
   const {
     isLoggedIn,
     hasPaid300,
-    simulatedPackages,
-    simulatedHighProfileApproved,
+    activePackages,
+    highProfileApproved,
     savedProfiles,
     toggleSaveProfile,
     setSelectedProfileForDetails,
     setShowLoginModal,
     handleViewProfile,
     userProfile,
-  } = useSimulator();
+  } = useApp();
+  const { t } = useI18n();
 
   const isFormComplete = userProfile?.profileCompletionStatus === 'COMPLETE';
 
@@ -50,10 +52,10 @@ export const ProfileGrid: React.FC<ProfileGridProps> = ({ filteredProfiles, isFi
             marginBottom: '10px',
             fontWeight: 700,
           }}>
-            Profiles Coming Soon
+            {t('profileGrid.comingSoonTitle')}
           </h3>
           <p style={{ color: 'var(--text-muted)', fontSize: '14.5px', lineHeight: 1.6, marginBottom: '28px' }}>
-            We are adding verified profiles. Be the first to register and get discovered by compatible matches.
+            {t('profileGrid.comingSoonBody')}
           </p>
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <a
@@ -70,7 +72,7 @@ export const ProfileGrid: React.FC<ProfileGridProps> = ({ filteredProfiles, isFi
                 boxShadow: '0 4px 14px rgba(111,29,53,0.22)',
               }}
             >
-              Register Free
+              {t('profileGrid.registerFree')}
             </a>
           </div>
         </div>
@@ -97,10 +99,10 @@ export const ProfileGrid: React.FC<ProfileGridProps> = ({ filteredProfiles, isFi
           marginBottom: '10px',
           fontWeight: 700,
         }}>
-          No Profiles Match Your Filters
+          {t('profileGrid.noMatchTitle')}
         </h3>
         <p style={{ color: 'var(--text-muted)', fontSize: '14.5px', lineHeight: 1.6, marginBottom: '28px' }}>
-          Try widening your search — adjust the age range, location, or community filters to discover more compatible matches.
+          {t('profileGrid.noMatchBody')}
         </p>
         <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
           <a
@@ -117,7 +119,7 @@ export const ProfileGrid: React.FC<ProfileGridProps> = ({ filteredProfiles, isFi
               boxShadow: '0 4px 14px rgba(111,29,53,0.22)',
             }}
           >
-            Clear All Filters
+            {t('profileGrid.clearAllFilters')}
           </a>
           <a
             href="/register"
@@ -133,7 +135,7 @@ export const ProfileGrid: React.FC<ProfileGridProps> = ({ filteredProfiles, isFi
               border: '1.5px solid rgba(111,29,53,0.3)',
             }}
           >
-            Register Free
+            {t('profileGrid.registerFree')}
           </a>
         </div>
       </div>
@@ -150,8 +152,8 @@ export const ProfileGrid: React.FC<ProfileGridProps> = ({ filteredProfiles, isFi
           isLoggedIn={isLoggedIn}
           isFormComplete={isFormComplete}
           hasPaid300={hasPaid300}
-          simulatedPackages={simulatedPackages}
-          simulatedHighProfileApproved={simulatedHighProfileApproved}
+          activePackages={activePackages}
+          highProfileApproved={highProfileApproved}
           savedProfiles={savedProfiles}
           onToggleSave={toggleSaveProfile}
           onViewDetails={setSelectedProfileForDetails}

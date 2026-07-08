@@ -8,9 +8,7 @@ import { VerificationStatus } from '@prisma/client';
 // Helper to check if admin
 async function isAdmin(req: NextRequest) {
   const session = await auth();
-  const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
-  const simulatedAdmin = isDemoMode && req.headers.get('x-simulator-admin') === 'true';
-  return session?.user?.role === 'ADMIN' || simulatedAdmin;
+  return session?.user?.role === 'ADMIN';
 }
 
 // Get all verification requests
@@ -44,8 +42,7 @@ export async function POST(req: NextRequest) {
     }
 
     const session = await auth();
-    const simulatedAdminId = req.headers.get('x-simulator-admin-id') || 'simulated-admin-id';
-    const adminUserId = session?.user?.id || simulatedAdminId;
+    const adminUserId = session?.user?.id ?? '';
 
     const body = await req.json();
     const { profileId, status, notes } = body;

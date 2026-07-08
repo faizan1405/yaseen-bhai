@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { useI18n } from '../i18n/I18nProvider';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -12,15 +13,15 @@ interface ChatbotWindowProps {
 }
 
 export default function ChatbotWindow({ onClose }: ChatbotWindowProps) {
+  const { t } = useI18n();
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: 'Assalamu Alaikum! I’m here to help you understand Asan Nikah packages, profile privacy, verification, and how the platform works. How can I help you?'
+      content: t('chatbot.greeting')
     }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isDemo, setIsDemo] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -39,7 +40,7 @@ export default function ChatbotWindow({ onClose }: ChatbotWindowProps) {
     const cleanInput = input.trim();
     if (!cleanInput) return;
     if (cleanInput.length > 1000) {
-      setErrorMsg('Message is too long (maximum 1000 characters).');
+      setErrorMsg(t('chatbot.messageTooLong'));
       return;
     }
 
@@ -68,21 +69,19 @@ export default function ChatbotWindow({ onClose }: ChatbotWindowProps) {
       }
 
       const data = await response.json();
-      setIsDemo(!!data.isDemo);
 
       // 3. Add Assistant Reply
       setMessages((prev) => [
         ...prev,
-        { role: 'assistant', content: data.text || 'I could not process that message. Please try again.' }
+        { role: 'assistant', content: data.text || t('chatbot.couldNotProcess') }
       ]);
     } catch (err) {
       console.error('Error communicating with chatbot API:', err);
-      setErrorMsg('Could not reach the assistant. Reverting to fallback answers...');
+      setErrorMsg(t('chatbot.connectionError'));
       
       // Graceful local client fallback if API is fully down
       const { getFallbackResponse } = require('../lib/chatbotFallback');
       const offlineReply = getFallbackResponse(cleanInput);
-      setIsDemo(true);
       setMessages((prev) => [
         ...prev,
         { role: 'assistant', content: offlineReply }
@@ -96,7 +95,7 @@ export default function ChatbotWindow({ onClose }: ChatbotWindowProps) {
     setMessages([
       {
         role: 'assistant',
-        content: 'Assalamu Alaikum! I’m here to help you understand Asan Nikah packages, profile privacy, verification, and how the platform works. How can I help you?'
+        content: t('chatbot.greeting')
       }
     ]);
     setErrorMsg(null);
@@ -109,28 +108,28 @@ export default function ChatbotWindow({ onClose }: ChatbotWindowProps) {
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div className="chatbot-header-avatar">❀</div>
           <div>
-            <h4 className="chatbot-header-title">Asan Nikah Assistant</h4>
+            <h4 className="chatbot-header-title">{t('chatbot.windowTitle')}</h4>
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
               <span className="chatbot-status-indicator"></span>
               <span className="chatbot-status-text">
-                {isDemo ? 'Demo Mode' : 'Online'}
+                {t('chatbot.online')}
               </span>
             </div>
           </div>
         </div>
-        
+
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <button 
-            onClick={handleClearChat} 
-            className="chatbot-clear-btn" 
-            title="Clear conversation"
+          <button
+            onClick={handleClearChat}
+            className="chatbot-clear-btn"
+            title={t('chatbot.clearTitle')}
           >
-            Clear
+            {t('chatbot.clear')}
           </button>
           <button
             onClick={onClose}
             className="chatbot-close-btn"
-            aria-label="Close chat window"
+            aria-label={t('chatbot.closeAriaLabel')}
           >
             ✕
           </button>
@@ -189,7 +188,7 @@ export default function ChatbotWindow({ onClose }: ChatbotWindowProps) {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Ask about packages, privacy, verification..."
+          placeholder={t('chatbot.inputPlaceholder')}
           className="chatbot-input-field"
           disabled={isLoading}
           maxLength={1000}
@@ -198,7 +197,7 @@ export default function ChatbotWindow({ onClose }: ChatbotWindowProps) {
           type="submit"
           className="chatbot-send-btn"
           disabled={isLoading || !input.trim()}
-          aria-label="Send message"
+          aria-label={t('chatbot.sendAriaLabel')}
         >
           <svg 
             viewBox="0 0 24 24" 

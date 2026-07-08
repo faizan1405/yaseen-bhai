@@ -7,8 +7,7 @@ import { getProfileByUserId, createPackagePurchase } from '@/lib/profileStore';
 export async function POST(req: NextRequest) {
   try {
     const session = await auth();
-    const simulatedUserId = req.headers.get('x-simulator-user-id');
-    const activeUserId = session?.user?.id || simulatedUserId;
+    const activeUserId = session?.user?.id ?? null;
 
     if (!activeUserId) {
       return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
@@ -39,27 +38,7 @@ export async function POST(req: NextRequest) {
     const keySecret = process.env.RAZORPAY_KEY_SECRET;
 
     if (!keyId || !keySecret || keyId.includes('dummy') || keySecret.includes('dummy')) {
-      console.warn('⚠️ [SIMULATOR MODE] Real Razorpay keys missing. Using Simulator Payment for testing only. Not real Razorpay payment.');
-      // Create pending purchase in simulator mode
-      await createPackagePurchase({
-        profileId: profile.id,
-        packageType: packageTypeInput,
-        basePrice: baseAmount,
-        gstRate: pkgDef.gstRate,
-        totalAmount: totalAmount,
-        billingType: pkgDef.billingType,
-        successFeeAmount: pkgDef.successFeeAmount,
-        razorpayOrderId: `order_sim_${Date.now()}_${packageTypeInput.toLowerCase()}`,
-      });
-
-      return NextResponse.json({
-        success: true,
-        isSimulated: true,
-        orderId: `order_sim_${Date.now()}_${packageTypeInput.toLowerCase()}`,
-        amount: totalAmountPaise,
-        currency: 'INR',
-        keyId: 'rzp_test_dummyKeyId123',
-      });
+      return NextResponse.json({ error: 'Payment gateway is not configured. Please contact support.' }, { status: 503 });
     }
 
     const razorpayInstance = new Razorpay({
@@ -87,7 +66,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      isSimulated: false,
       orderId: order.id,
       amount: order.amount,
       currency: order.currency,

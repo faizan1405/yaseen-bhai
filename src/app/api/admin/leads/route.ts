@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import { getAllLeads } from '@/lib/profileStore';
+import { resolveLeadPackageLabels } from '@/lib/packages';
 
 async function isAdmin(req: NextRequest) {
   const session = await auth();
-  const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
-  const simulatedAdmin = isDemoMode && req.headers.get('x-simulator-admin') === 'true';
-  return session?.user?.role === 'ADMIN' || simulatedAdmin;
+  return session?.user?.role === 'ADMIN';
 }
 
 export async function GET(req: NextRequest) {
@@ -35,7 +34,12 @@ export async function GET(req: NextRequest) {
     }
 
     if (interestedPackage) {
-      leads = leads.filter((lead: any) => lead.interestedPackage === interestedPackage);
+      // The filter value is the stable internal package key (e.g. second_marriage_package),
+      // which we expand to every stored label — current and legacy — so older leads saved
+      // under a previous customer-facing name (e.g. "₹11,000 Basic Access") still match.
+      // A raw label passed directly still matches itself via resolveLeadPackageLabels.
+      const acceptedLabels = resolveLeadPackageLabels(interestedPackage);
+      leads = leads.filter((lead: any) => acceptedLabels.includes(lead.interestedPackage));
     }
 
     if (search) {

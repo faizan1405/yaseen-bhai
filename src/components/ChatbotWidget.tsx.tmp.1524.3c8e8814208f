@@ -3,11 +3,13 @@
 import React, { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import dynamic from 'next/dynamic';
+import { useI18n } from '../i18n/I18nProvider';
 
 const ChatbotWindow = dynamic(() => import('./ChatbotWindow'), { ssr: false });
 
 export default function ChatbotWidget() {
   const pathname = usePathname();
+  const { t } = useI18n();
   const [isOpen, setIsOpen] = useState(false);
 
   // Do not render the chatbot on admin pages
@@ -22,13 +24,13 @@ export default function ChatbotWidget() {
         <button
           onClick={() => setIsOpen(true)}
           className="chatbot-trigger"
-          title={t('chatbot.triggerTitle')}
-          aria-label={t('chatbot.triggerAriaLabel')}
+          title="Ask Asan Nikah"
+          aria-label="Open matrimonial support assistant"
         >
           <div className="chatbot-trigger-icon">
             ❀
           </div>
-          <span className="chatbot-trigger-text">{t('chatbot.triggerText')}</span>
+          <span className="chatbot-trigger-text">Ask Asan Nikah</span>
         </button>
       )}
 

@@ -6,9 +6,11 @@ import Link from 'next/link';
 import Navbar from '../../components/Navbar';
 import Image from 'next/image';
 import { SectionHeading, FloralCorner, PremiumFooter } from '../../components/NikahComponents';
+import { useI18n } from '../../i18n/I18nProvider';
 
 export default function AboutClient() {
   const router = useRouter();
+  const { t } = useI18n();
 
   const handleNavigate = (view: string) => {
     router.push('/' + (view === 'home' ? '' : view));
@@ -20,16 +22,16 @@ export default function AboutClient() {
       <main className="flex-grow">
         <div className="container font-sans" style={{ padding: '40px 0 80px 0' }}>
           <SectionHeading
-            title="About Asan Nikah"
-            subtitle="Dedicated to enabling serious, respectful, and Shariah-compliant matrimonial connections."
-            scriptText="Our Values"
+            title={t('about.title')}
+            subtitle={t('about.subtitle')}
+            scriptText={t('about.script')}
             as="h1"
           />
 
           <div style={{ maxWidth: '800px', margin: '0 auto 40px auto', borderRadius: 'var(--border-radius-xl)', overflow: 'hidden', height: '300px', position: 'relative', boxShadow: 'var(--shadow-premium)' }}>
             <Image
               src="/images/nikah-1.jpeg"
-              alt="Islamic Marriage Mission"
+              alt={t('about.heroAlt')}
               fill
               style={{ objectFit: 'cover', objectPosition: 'center 40%' }}
             />
@@ -42,22 +44,16 @@ export default function AboutClient() {
             <FloralCorner position="br" color="var(--gold-accent)" />
 
             <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '24px', color: 'var(--deep-maroon)', marginBottom: '16px', textAlign: 'center' }}>
-              Serious Connections. Family Values. Absolute Trust.
+              {t('about.cardHeading')}
             </h3>
-            
+
             <div style={{ color: 'var(--text-dark)', fontSize: '15px', lineHeight: '1.7', display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '20px' }}>
+              <p>{t('about.p1')}</p>
+              <p>{t('about.p2')}</p>
               <p>
-                Welcome to <strong>Asan Nikah</strong>. We created this matrimonial service to bridge the gap between superficial swipe dating apps and traditional arranged matchmaking. Our platform is built for candidates seeking life partners with dignity, family approval, and verified intentions.
+                {t('about.p3pre')}<Link href="/how-it-works" style={{ textDecoration: 'underline', color: 'var(--deep-maroon)', fontWeight: 'bold' }}>{t('about.p3link1')}</Link>{t('about.p3mid')}<Link href="/premium" style={{ textDecoration: 'underline', color: 'var(--deep-maroon)', fontWeight: 'bold' }}>{t('about.p3link2')}</Link>{t('about.p3post')}
               </p>
-              <p>
-                Unlike generic SaaS matrimonial sites, we treat your profile biodata like a physical wedding invitation card—designed with elegance, respect, and utmost discretion.
-              </p>
-              <p>
-                Every single profile on Asan Nikah undergoes a manual <Link href="/how-it-works" style={{ textDecoration: 'underline', color: 'var(--deep-maroon)', fontWeight: 'bold' }}>telephone verification check</Link>. Photos and active phone numbers are fully masked until <Link href="/premium" style={{ textDecoration: 'underline', color: 'var(--deep-maroon)', fontWeight: 'bold' }}>premium access rules</Link> are met and candidates consent to share details.
-              </p>
-              <p>
-                We pray that Allah blesses your matchmaking journey and grants you a compatible, righteous life partner.
-              </p>
+              <p>{t('about.p4')}</p>
             </div>
           </div>
         </div>

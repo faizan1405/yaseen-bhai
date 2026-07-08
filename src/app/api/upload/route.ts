@@ -6,10 +6,7 @@ import { updateProfileImage } from '@/lib/profileStore';
 export async function POST(request: NextRequest) {
   try {
     const session = await auth();
-    const simulatedUserId = request.headers.get('x-simulator-user-id');
-    const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
-    
-    const activeUserId = session?.user?.id || (isDemoMode ? simulatedUserId : null);
+    const activeUserId = session?.user?.id ?? null;
 
     if (!activeUserId) {
       return NextResponse.json({ error: 'Unauthorized. Please log in.' }, { status: 401 });

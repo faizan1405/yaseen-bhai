@@ -5,9 +5,11 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Navbar from '../../components/Navbar';
 import { SectionHeading, SuccessStoryCard, PremiumFooter } from '../../components/NikahComponents';
+import { useI18n } from '../../i18n/I18nProvider';
 
 export default function SuccessStoriesClient() {
   const router = useRouter();
+  const { t } = useI18n();
 
   const handleNavigate = (view: string) => {
     router.push('/' + (view === 'home' ? '' : view));
@@ -21,7 +23,7 @@ export default function SuccessStoriesClient() {
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 0 }}>
           <Image
              src="/images/nikah-4.jpeg"
-             alt="Success Stories Nikah"
+             alt={t('stories.title')}
              fill
              style={{ objectFit: 'cover', objectPosition: 'center' }}
           />
@@ -34,31 +36,31 @@ export default function SuccessStoriesClient() {
 
         <div className="container font-sans" style={{ padding: '60px 0 80px 0', position: 'relative', zIndex: 1 }}>
           <SectionHeading
-            title="Blessed Success Stories"
-            subtitle="Alhamdulillah! Read inspiring stories of marriage from blessed couples."
-            scriptText="Nikah Testimonials"
+            title={t('stories.title')}
+            subtitle={t('stories.subtitle')}
+            scriptText={t('stories.script')}
             as="h1"
           />
 
           <div className="grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '32px' }}>
             <SuccessStoryCard
-              names="Dr. Sarah & Tariq"
-              location="Mumbai"
-              story="We connected on Asan Nikah in 2025. The manual screening call gave us assurance, and our families met within two weeks. We tied the knot in Bandra."
+              names={t('stories.story1Names')}
+              location={t('stories.story1Location')}
+              story={t('stories.story1Story')}
               weddingDate="May 12, 2025"
               imageIndex={0}
             />
             <SuccessStoryCard
-              names="Aisha & Khalid"
-              location="Delhi"
-              story="As a divorcee, finding a compatible match was hard. The Second-Marriage package counseling checked details and connected me with Khalid. We are blessed."
+              names={t('stories.story2Names')}
+              location={t('stories.story2Location')}
+              story={t('stories.story2Story')}
               weddingDate="April 4, 2026"
               imageIndex={1}
             />
             <SuccessStoryCard
-              names="Adnan & Yasmin"
-              location="Bangalore"
-              story="We purchased the standard monthly membership. The photo masking feature kept my privacy intact. I recommend this platform to serious candidates."
+              names={t('stories.story3Names')}
+              location={t('stories.story3Location')}
+              story={t('stories.story3Story')}
               weddingDate="Dec 15, 2024"
               imageIndex={2}
             />

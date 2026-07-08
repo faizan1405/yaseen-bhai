@@ -20,8 +20,8 @@ graph TD
     %% Primary Nodes
     App[Rishte Forever Web Application]:::main
     DB[(MongoDB Atlas via Prisma)]:::database
-    Auth[NextAuth v5 Google Login / Simulator]:::external
-    Razorpay[Razorpay Payments / Sandbox Simulator]:::external
+    Auth[NextAuth v5 Google Login]:::external
+    Razorpay[Razorpay Payments]:::external
 
     %% Relations
     App --> Auth
@@ -77,7 +77,7 @@ graph TD
         direction LR
         BackupScript[backup.ts<br/>Database Backups]
         SeedScript[seed.ts<br/>Seeding 25-30 Profiles]
-        CleanupScript[cleanup.ts<br/>Safe Demo Data Cleanup]
+        CleanupScript[cleanup.ts<br/>Safe Sample Data Cleanup]
     end
 
     DB -.-> SeedScript
@@ -98,7 +98,7 @@ Gulzar bhai/
 ├── public/                   # Static assets (images, icons, theme assets, SVG patterns)
 ├── scripts/                  # Database utility scripts
 │   ├── backup.ts             # Script to backup the database before migrations or seeding
-│   ├── cleanup.ts            # Script to clean up seeded demo data safely
+│   ├── cleanup.ts            # Script to clean up seeded sample data safely
 │   └── seed.ts               # Seeding script populating 25-30 realistic, structured profiles
 ├── src/
 │   ├── app/
@@ -115,9 +115,9 @@ Gulzar bhai/
 │   │   ├── favicon.ico       # Site icon
 │   │   ├── globals.css       # Global styling rules, premium typography, and 8 color theme HSL mappings
 │   │   ├── layout.tsx        # Next.js global layout wrapper with fonts and metadata
-│   │   └── page.tsx          # Core Page Component containing Onboarding Wizard, Directory, Admin Control panel, and Simulator views
+│   │   └── page.tsx          # Core Page Component containing Onboarding Wizard, Directory, and Admin Control panel
 │   ├── components/           # Reusable UI component blocks
-│   │   └── NikahComponents.tsx # Custom components (Header, Footer, Profile Card, Details Modal, Onboarding Wizard steps, Admin Queue, Simulator Controls)
+│   │   └── NikahComponents.tsx # Custom components (Header, Footer, Profile Card, Details Modal, Onboarding Wizard steps, Admin Queue)
 │   ├── auth.ts               # NextAuth.js configurations, provider registration, and middleware helpers
 │   └── lib/                  # Library/Utility functions
 │       ├── db.ts             # Global Prisma Client instance initialization

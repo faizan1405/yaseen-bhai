@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useSimulator } from '../context/SimulatorContext';
+import { useApp } from '../context/AppContext';
+import { useI18n } from '../i18n/I18nProvider';
 
 interface LeadFormProps {
   defaultInquiryType?: string;
@@ -12,7 +13,8 @@ export const LeadForm: React.FC<LeadFormProps> = ({
   defaultInquiryType = 'General Inquiry',
   onSuccess
 }) => {
-  const { userProfile, isLoggedIn, getSimulatorHeaders, setReloadTrigger } = useSimulator();
+  const { userProfile, isLoggedIn, getRequestHeaders, setReloadTrigger } = useApp();
+  const { t } = useI18n();
 
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
@@ -56,7 +58,7 @@ export const LeadForm: React.FC<LeadFormProps> = ({
     }
 
     try {
-      const headers = getSimulatorHeaders();
+      const headers = getRequestHeaders();
       const res = await fetch('/api/leads', {
         method: 'POST',
         headers,
@@ -75,10 +77,10 @@ export const LeadForm: React.FC<LeadFormProps> = ({
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || 'Something went wrong. Please try again.');
+        throw new Error(data.error || t('form.errorGeneric'));
       }
 
-      setSuccessMsg(data.message || 'Alhamdulillah! Inquiry submitted successfully.');
+      setSuccessMsg(data.message || t('form.successDefault'));
       
       // Reset non-prefilled fields
       setMessage('');
@@ -112,7 +114,7 @@ export const LeadForm: React.FC<LeadFormProps> = ({
         }}>
           <span style={{ fontSize: '48px', display: 'block', marginBottom: '16px' }}>🕊️</span>
           <h3 style={{ fontFamily: 'var(--font-serif)', color: 'var(--primary-brand)', fontSize: '22px', marginBottom: '10px' }}>
-            Submission Successful
+            {t('form.successTitle')}
           </h3>
           <p style={{ color: 'var(--text-dark)', fontSize: '14.5px', maxWidth: '380px', margin: '0 auto', lineHeight: '1.6', marginBottom: '20px' }}>
             {successMsg}
@@ -142,7 +144,7 @@ export const LeadForm: React.FC<LeadFormProps> = ({
               <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
                 <path d="M12.012 2c-5.506 0-9.97 4.478-9.97 10.012 0 1.77.458 3.43 1.258 4.887L2 22l5.253-1.378c1.402.766 3 1.2 4.759 1.2 5.506 0 9.97-4.478 9.97-10.012 0-5.534-4.464-10.012-9.97-10.012zm5.795 13.91c-.244.694-1.22 1.268-1.745 1.355-.472.079-.938.293-3.04-.542-2.527-.998-4.14-3.565-4.267-3.731-.127-.166-.991-1.32-.991-2.518 0-1.2.626-1.79.847-2.029.221-.24.479-.3.639-.3a.46.46 0 0 1 .332.155c.105.155.434 1.058.471 1.139.037.081.062.176.009.282-.053.106-.079.171-.157.262-.078.09-.166.2-.236.269-.079.078-.162.162-.07.32.092.158.411.678.88 1.096.604.538 1.111.704 1.267.782.157.078.249.066.342-.04.093-.106.402-.469.511-.627.109-.158.217-.132.366-.077.148.055.942.443 1.103.524.161.081.268.121.308.19.04.069.04.4-.204 1.094z" />
               </svg>
-              Continue on WhatsApp
+              {t('form.continueWhatsapp')}
             </a>
           </div>
         </div>
@@ -167,12 +169,12 @@ export const LeadForm: React.FC<LeadFormProps> = ({
           </div>
 
           <div className="form-group">
-            <label className="form-label" htmlFor="fullName">Full Name <span style={{ color: 'var(--deep-maroon)' }}>*</span></label>
+            <label className="form-label" htmlFor="fullName">{t('form.fullName')} <span style={{ color: 'var(--deep-maroon)' }}>*</span></label>
             <input
               id="fullName"
               type="text"
               className="form-control"
-              placeholder="Enter your name"
+              placeholder={t('form.phFullName')}
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               required
@@ -182,12 +184,12 @@ export const LeadForm: React.FC<LeadFormProps> = ({
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }} className="grid-mobile-1">
             <div className="form-group">
-              <label className="form-label" htmlFor="phone">Phone Number <span style={{ color: 'var(--deep-maroon)' }}>*</span></label>
+              <label className="form-label" htmlFor="phone">{t('form.phone')} <span style={{ color: 'var(--deep-maroon)' }}>*</span></label>
               <input
                 id="phone"
                 type="tel"
                 className="form-control"
-                placeholder="e.g. +91 9876543210"
+                placeholder={t('form.phPhone')}
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 required
@@ -195,12 +197,12 @@ export const LeadForm: React.FC<LeadFormProps> = ({
               />
             </div>
             <div className="form-group">
-              <label className="form-label" htmlFor="email">Email Address <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>(Optional)</span></label>
+              <label className="form-label" htmlFor="email">{t('form.email')} <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{t('form.optional')}</span></label>
               <input
                 id="email"
                 type="email"
                 className="form-control"
-                placeholder="email@example.com"
+                placeholder={t('form.phEmail')}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={isSubmitting}
@@ -210,12 +212,12 @@ export const LeadForm: React.FC<LeadFormProps> = ({
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }} className="grid-mobile-1">
             <div className="form-group">
-              <label className="form-label" htmlFor="city">City Location <span style={{ color: 'var(--deep-maroon)' }}>*</span></label>
+              <label className="form-label" htmlFor="city">{t('form.city')} <span style={{ color: 'var(--deep-maroon)' }}>*</span></label>
               <input
                 id="city"
                 type="text"
                 className="form-control"
-                placeholder="e.g. Mumbai"
+                placeholder={t('form.phCity')}
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 required
@@ -223,7 +225,7 @@ export const LeadForm: React.FC<LeadFormProps> = ({
               />
             </div>
             <div className="form-group">
-              <label className="form-label" htmlFor="inquiryType">Inquiry Purpose <span style={{ color: 'var(--deep-maroon)' }}>*</span></label>
+              <label className="form-label" htmlFor="inquiryType">{t('form.inquiryType')} <span style={{ color: 'var(--deep-maroon)' }}>*</span></label>
               <select
                 id="inquiryType"
                 className="form-control"
@@ -232,24 +234,25 @@ export const LeadForm: React.FC<LeadFormProps> = ({
                 required
                 disabled={isSubmitting}
               >
-                <option value="General Inquiry">General Inquiry</option>
-                <option value="Package Inquiry">Package Inquiry</option>
-                <option value="Profile Help">Profile Help</option>
-                <option value="Verification Help">Verification Help</option>
-                <option value="Callback Request">Callback Request</option>
-                <option value="Other">Other</option>
+                {/* value is the English API contract; label is localized */}
+                <option value="General Inquiry">{t('form.optGeneral')}</option>
+                <option value="Package Inquiry">{t('form.optPackage')}</option>
+                <option value="Profile Help">{t('form.optProfileHelp')}</option>
+                <option value="Verification Help">{t('form.optVerificationHelp')}</option>
+                <option value="Callback Request">{t('form.optCallback')}</option>
+                <option value="Other">{t('form.optOther')}</option>
               </select>
             </div>
           </div>
 
           {inquiryType === 'Callback Request' && (
             <div className="form-group">
-              <label className="form-label" htmlFor="preferredTime">Preferred Time for Call <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>(Optional)</span></label>
+              <label className="form-label" htmlFor="preferredTime">{t('form.preferredTime')} <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{t('form.optional')}</span></label>
               <input
                 id="preferredTime"
                 type="text"
                 className="form-control"
-                placeholder="e.g. 10 AM - 12 PM, Evening, or any specific time"
+                placeholder={t('form.phPreferredTime')}
                 value={preferredTime}
                 onChange={(e) => setPreferredTime(e.target.value)}
                 disabled={isSubmitting}
@@ -258,12 +261,12 @@ export const LeadForm: React.FC<LeadFormProps> = ({
           )}
 
           <div className="form-group">
-            <label className="form-label" htmlFor="message">Message Details <span style={{ color: 'var(--text-muted)' }}>(Optional)</span></label>
+            <label className="form-label" htmlFor="message">{t('form.message')} <span style={{ color: 'var(--text-muted)' }}>{t('form.optional')}</span></label>
             <textarea
               id="message"
               className="form-control"
               rows={4}
-              placeholder="Provide context or details about your request..."
+              placeholder={t('form.phMessage')}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               disabled={isSubmitting}
@@ -294,10 +297,10 @@ export const LeadForm: React.FC<LeadFormProps> = ({
                   borderRadius: '50%',
                   animation: 'spin 0.8s linear infinite'
                 }} />
-                Submitting Request...
+                {t('form.submitting')}
               </>
             ) : (
-              'Send Inquiry Request'
+              t('form.submit')
             )}
           </button>
         </form>

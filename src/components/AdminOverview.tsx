@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useSimulator } from '../context/SimulatorContext';
+import { useApp } from '../context/AppContext';
 
 export const AdminOverview: React.FC = () => {
   const {
@@ -10,7 +10,7 @@ export const AdminOverview: React.FC = () => {
     adminPurchases,
     adminAssignments,
     auditLogs
-  } = useSimulator();
+  } = useApp();
 
   const totalProfiles = profiles.length;
   const pendingVerifications = adminRequests.filter((r) => r.status === 'PENDING').length;
@@ -83,7 +83,7 @@ export const AdminOverview: React.FC = () => {
 
         <div className="stat-card">
           <div>
-            <div className="stat-card-label">Basic Access Cases</div>
+            <div className="stat-card-label">Second Marriage Cases</div>
             <div className="stat-card-value">{secondMarriage}</div>
           </div>
           <div className="stat-card-icon">💍</div>

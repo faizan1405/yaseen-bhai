@@ -12,8 +12,8 @@ export async function generateMetadata(): Promise<Metadata> {
   }
   
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://asannikah.com';
-  const title = "Basic Access Matrimonial Directory — Asan Nikah";
-  const description = "Browse verified basic access matches on Asan Nikah. Tailored private matrimonial directory for divorced, widowed, and serious candidates seeking life partners.";
+  const title = "Second Marriage Matrimonial Directory — Asan Nikah";
+  const description = "Browse verified second marriage matches on Asan Nikah. Tailored private matrimonial directory for divorced, widowed, and serious candidates seeking life partners.";
   const previewImage = settings?.defaultPreviewImage || "/images/nikah-2.jpeg";
   const imageUrl = previewImage.startsWith('http') ? previewImage : `${siteUrl}${previewImage}`;
 
@@ -25,8 +25,8 @@ export async function generateMetadata(): Promise<Metadata> {
       "Muslim basic access profiles",
       "Divorced Muslim matrimonial",
       "Widowed Muslim matrimonial",
-      "Basic Access marriage bureau",
-      "Asan Nikah Basic Access"
+      "Second marriage marriage bureau",
+      "Asan Nikah Second Marriage"
     ],
     alternates: {
       canonical: '/packages/second-marriage',
@@ -41,7 +41,7 @@ export async function generateMetadata(): Promise<Metadata> {
           url: imageUrl,
           width: 1200,
           height: 630,
-          alt: "Asan Nikah Basic Access",
+          alt: "Asan Nikah Second Marriage",
         }
       ],
       type: "website",
@@ -75,7 +75,7 @@ export default function SecondMarriagePage() {
       {
         "@type": "ListItem",
         "position": 3,
-        "name": "Basic Access Matches",
+        "name": "Second Marriage Matches",
         "item": "https://asannikah.com/packages/second-marriage"
       }
     ]

@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useSimulator } from '../../context/SimulatorContext';
+import { useApp } from '../../context/AppContext';
 import AdminSidebar from '../../components/AdminSidebar';
 
 export default function AdminLayoutClient({ children }: { children: React.ReactNode }) {
@@ -12,7 +12,7 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
     isAdminMobileOpen,
     setIsAdminMobileOpen,
     setIsAdminMode
-  } = useSimulator();
+  } = useApp();
 
   const handleExitAdmin = () => {
     setIsAdminMode(false);

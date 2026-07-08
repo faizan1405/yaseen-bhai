@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { useSimulator } from '../context/SimulatorContext';
+import { useApp } from '../context/AppContext';
+import { useI18n } from '../i18n/I18nProvider';
 
 interface ProfileFiltersProps {
   selectedGender: string;
@@ -38,7 +39,8 @@ export const ProfileFilters: React.FC<ProfileFiltersProps> = ({
   setSelectedCaste,
   totalResults
 }) => {
-  const { masterMaslaks, masterCastes, masterLocations } = useSimulator();
+  const { masterMaslaks, masterCastes, masterLocations } = useApp();
+  const { t } = useI18n();
 
   const handleClearFilters = () => {
     setSelectedGender('No preference');
@@ -66,45 +68,45 @@ export const ProfileFilters: React.FC<ProfileFiltersProps> = ({
       {/* Primary Filters Row */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '20px', alignItems: 'flex-end', marginBottom: '24px' }}>
         <div>
-          <label className="form-label" htmlFor="search-gender-select">Preference / Gender</label>
+          <label className="form-label" htmlFor="search-gender-select">{t('filters.genderLabel')}</label>
           <select
             value={selectedGender}
             onChange={(e) => setSelectedGender(e.target.value)}
             className="form-control"
             id="search-gender-select"
           >
-            <option value="No preference">No preference / All</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
+            <option value="No preference">{t('filters.genderAny')}</option>
+            <option value="Male">{t('enums.male')}</option>
+            <option value="Female">{t('enums.female')}</option>
           </select>
         </div>
 
         <div>
-          <label className="form-label" htmlFor="search-minage-select">Minimum Age</label>
+          <label className="form-label" htmlFor="search-minage-select">{t('filters.minAge')}</label>
           <select
             value={minAge}
             onChange={(e) => setMinAge(e.target.value)}
             className="form-control"
             id="search-minage-select"
           >
-            <option value="Any">Any</option>
+            <option value="Any">{t('filters.any')}</option>
             {ageOptions.map(age => (
-              <option key={`min-${age}`} value={age}>{age}</option>
+              <option key={`min-${age}`} value={age} className="ltr-value">{age}</option>
             ))}
           </select>
         </div>
 
         <div>
-          <label className="form-label" htmlFor="search-maxage-select">Maximum Age</label>
+          <label className="form-label" htmlFor="search-maxage-select">{t('filters.maxAge')}</label>
           <select
             value={maxAge}
             onChange={(e) => setMaxAge(e.target.value)}
             className="form-control"
             id="search-maxage-select"
           >
-            <option value="Any">Any</option>
+            <option value="Any">{t('filters.any')}</option>
             {ageOptions.map(age => (
-              <option key={`max-${age}`} value={age}>{age}</option>
+              <option key={`max-${age}`} value={age} className="ltr-value">{age}</option>
             ))}
           </select>
         </div>
@@ -112,7 +114,7 @@ export const ProfileFilters: React.FC<ProfileFiltersProps> = ({
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '20px', alignItems: 'flex-end' }}>
         <div>
-          <label className="form-label">State</label>
+          <label className="form-label">{t('filters.state')}</label>
           <select
             value={selectedState}
             onChange={(e) => {
@@ -121,7 +123,7 @@ export const ProfileFilters: React.FC<ProfileFiltersProps> = ({
             }}
             className="form-control"
           >
-            <option value="All">All States</option>
+            <option value="All">{t('filters.allStates')}</option>
             {states.map(s => (
               <option key={s} value={s}>{s}</option>
             ))}
@@ -129,14 +131,14 @@ export const ProfileFilters: React.FC<ProfileFiltersProps> = ({
         </div>
 
         <div>
-          <label className="form-label">City</label>
+          <label className="form-label">{t('filters.city')}</label>
           <select
             value={selectedCity}
             onChange={(e) => setSelectedCity(e.target.value)}
             className="form-control"
             disabled={selectedState === 'All'}
           >
-            <option value="All">All Cities</option>
+            <option value="All">{t('filters.allCities')}</option>
             {cities.map(c => (
               <option key={c} value={c}>{c}</option>
             ))}
@@ -144,13 +146,13 @@ export const ProfileFilters: React.FC<ProfileFiltersProps> = ({
         </div>
 
         <div>
-          <label className="form-label">Community</label>
+          <label className="form-label">{t('filters.community')}</label>
           <select
             value={selectedCommunity}
             onChange={(e) => setSelectedCommunity(e.target.value)}
             className="form-control"
           >
-            <option value="All">All Communities</option>
+            <option value="All">{t('filters.allCommunities')}</option>
             {activeMaslaks.map(m => (
               <option key={m.id} value={m.label}>{m.label}</option>
             ))}
@@ -158,13 +160,13 @@ export const ProfileFilters: React.FC<ProfileFiltersProps> = ({
         </div>
 
         <div>
-          <label className="form-label">Caste / Biradari</label>
+          <label className="form-label">{t('filters.caste')}</label>
           <select
             value={selectedCaste}
             onChange={(e) => setSelectedCaste(e.target.value)}
             className="form-control"
           >
-            <option value="All">All Castes</option>
+            <option value="All">{t('filters.allCastes')}</option>
             {activeCastes.map(c => (
               <option key={c.id} value={c.label}>{c.label}</option>
             ))}
@@ -177,13 +179,13 @@ export const ProfileFilters: React.FC<ProfileFiltersProps> = ({
             className="btn btn-primary"
             style={{ flexGrow: 1, height: '42px', minWidth: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
           >
-            Reset Filters
+            {t('filters.reset')}
           </button>
         </div>
       </div>
 
       <div style={{ marginTop: '16px', fontSize: '13px', color: 'var(--text-muted)', fontWeight: 500 }}>
-        Found {totalResults} matching matrimonial profiles.
+        {t('filters.foundResults', { count: totalResults })}
       </div>
     </div>
   );

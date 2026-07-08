@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useSimulator } from '../../../context/SimulatorContext';
+import { useApp } from '../../../context/AppContext';
 
 export default function PremiumPackagesPage() {
   const {
@@ -13,7 +13,7 @@ export default function PremiumPackagesPage() {
     handleUpdateHPStatus,
     handleConfirmMarriage,
     handleUpdateSuccessFee
-  } = useSimulator();
+  } = useApp();
 
   const [assignBuyerId, setAssignBuyerId] = useState('');
   const [assignLeadId, setAssignLeadId] = useState('');
@@ -60,12 +60,12 @@ export default function PremiumPackagesPage() {
                 const getPriceDetails = (pkgType: string) => {
                   if (pkgType === 'monthly_membership') return { name: 'Monthly Membership', base: 300, gst: 54, total: 354 };
                   if (pkgType === 'good_profile_package') return { name: 'Good Profile Package', base: 5500, gst: 990, total: 6490 };
-                  if (pkgType === 'second_marriage_package') return { name: 'Basic Access', base: 11000, gst: 1980, total: 12980 };
+                  if (pkgType === 'second_marriage_package') return { name: 'Second Marriage', base: 11000, gst: 1980, total: 12980 };
                   if (pkgType === 'high_profile_package') return { name: 'Premium Match Access', base: 21000, gst: 3780, total: 24780 };
                   return { name: pkgType, base: 0, gst: 0, total: 0 };
                 };
                 const details = getPriceDetails(purchase.packageType);
-                const isDemo = purchase.razorpayOrderId?.startsWith('order_sim_');
+                const isManual = purchase.razorpayOrderId?.startsWith('order_sim_');
 
                 return (
                   <tr key={purchase.id} style={{ borderBottom: '1px solid var(--border-color)', fontSize: '13.5px' }}>
@@ -108,10 +108,10 @@ export default function PremiumPackagesPage() {
                         borderRadius: '4px',
                         fontSize: '11px',
                         fontWeight: 'bold',
-                        backgroundColor: isDemo ? 'rgba(150, 150, 150, 0.1)' : 'rgba(0, 100, 255, 0.1)',
-                        color: isDemo ? '#666' : '#0055ff'
+                        backgroundColor: isManual ? 'rgba(150, 150, 150, 0.1)' : 'rgba(0, 100, 255, 0.1)',
+                        color: isManual ? '#666' : '#0055ff'
                       }}>
-                        {isDemo ? 'Demo (Simulator)' : 'Razorpay'}
+                        {isManual ? 'Manual Entry' : 'Razorpay'}
                       </span>
                     </td>
                     <td style={{ padding: '12px 8px' }}>{new Date(purchase.purchaseDate).toLocaleDateString()}</td>

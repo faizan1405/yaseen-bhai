@@ -10,9 +10,7 @@ import {
   PremiumFooter,
 } from '../../components/NikahComponents';
 import { getSupportWhatsAppLink } from '../../lib/whatsapp';
-
-const WA_EVENT_MSG =
-  'Assalamu Alaikum, I am interested in Event Management support. Please share details for trusted wedding/event vendors.';
+import { useI18n } from '../../i18n/I18nProvider';
 
 // ─── Inline SVG Icons ────────────────────────────────────────────────────────
 
@@ -146,41 +144,64 @@ function SoundIcon() {
 
 // ─── Service Data ──────────────────────────────────────────────────────────
 
+// Config arrays hold translation-key stems (resolved with t() at render) rather
+// than literal English strings, so the whole grid/list stays centrally translatable.
 const EVENT_SERVICES = [
-  { icon: <DecoIcon />,     name: 'Decoration Partners',        desc: 'Floral, thematic & stage décor for your special occasion' },
-  { icon: <VenueIcon />,    name: 'Wedding Venues',             desc: 'Banquet halls, gardens & exclusive wedding event spaces' },
-  { icon: <CateringIcon />, name: 'Catering Services',          desc: 'Authentic halal catering with diverse menu options' },
-  { icon: <PhotoIcon />,    name: 'Photography & Videography',  desc: 'Professional wedding & event photography studios' },
-  { icon: <MakeupIcon />,   name: 'Bridal Makeup',              desc: 'Expert bridal makeup artists for your perfect look' },
-  { icon: <MehendiIcon />,  name: 'Mehendi Artists',            desc: 'Traditional and contemporary mehendi designs' },
-  { icon: <InviteIcon />,   name: 'Invitation Cards',           desc: 'Premium digital & printed wedding invitations' },
-  { icon: <PlanningIcon />, name: 'Wedding Planning',           desc: 'End-to-end wedding coordination & management' },
-  { icon: <QaziIcon />,     name: 'Qazi & Nikah Arrangement',   desc: 'Trusted Qazi services for Nikah ceremonies' },
-  { icon: <SoundIcon />,    name: 'Sound, Lighting & Stage',    desc: 'Professional sound, lighting & stage production' },
+  { icon: <DecoIcon />,     nameKey: 'eventMgmt.svcDecoName',     descKey: 'eventMgmt.svcDecoDesc' },
+  { icon: <VenueIcon />,    nameKey: 'eventMgmt.svcVenueName',    descKey: 'eventMgmt.svcVenueDesc' },
+  { icon: <CateringIcon />, nameKey: 'eventMgmt.svcCateringName', descKey: 'eventMgmt.svcCateringDesc' },
+  { icon: <PhotoIcon />,    nameKey: 'eventMgmt.svcPhotoName',    descKey: 'eventMgmt.svcPhotoDesc' },
+  { icon: <MakeupIcon />,   nameKey: 'eventMgmt.svcMakeupName',   descKey: 'eventMgmt.svcMakeupDesc' },
+  { icon: <MehendiIcon />,  nameKey: 'eventMgmt.svcMehendiName',  descKey: 'eventMgmt.svcMehendiDesc' },
+  { icon: <InviteIcon />,   nameKey: 'eventMgmt.svcInviteName',   descKey: 'eventMgmt.svcInviteDesc' },
+  { icon: <PlanningIcon />, nameKey: 'eventMgmt.svcPlanningName', descKey: 'eventMgmt.svcPlanningDesc' },
+  { icon: <QaziIcon />,     nameKey: 'eventMgmt.svcQaziName',     descKey: 'eventMgmt.svcQaziDesc' },
+  { icon: <SoundIcon />,    nameKey: 'eventMgmt.svcSoundName',    descKey: 'eventMgmt.svcSoundDesc' },
 ];
 
 const HOW_IT_WORKS = [
-  { step: '1', title: 'Share Your Requirement', desc: 'Tell us about your event — Nikah, Walima, engagement, or family function — along with date, location, and services needed.' },
-  { step: '2', title: 'We Connect You with Vendors', desc: 'Our team shortlists trusted, verified vendors from our network who match your event type, budget, and location.' },
-  { step: '3', title: 'Compare & Finalise', desc: 'Review vendor options, ask questions, and finalise the ones that best suit your family\'s vision and requirements.' },
-  { step: '4', title: 'Enjoy a Smooth Event', desc: 'Relax as your trusted vendors handle their part. We stay available for any coordination support you may need.' },
+  { step: '1', titleKey: 'eventMgmt.how1Title', descKey: 'eventMgmt.how1Desc' },
+  { step: '2', titleKey: 'eventMgmt.how2Title', descKey: 'eventMgmt.how2Desc' },
+  { step: '3', titleKey: 'eventMgmt.how3Title', descKey: 'eventMgmt.how3Desc' },
+  { step: '4', titleKey: 'eventMgmt.how4Title', descKey: 'eventMgmt.how4Desc' },
 ];
 
 const WHY_CHOOSE = [
-  { icon: '✓', title: 'Trusted Vendor Network', desc: 'Every vendor partner is screened for reliability, halal compliance, and quality of service before being recommended.' },
-  { icon: '✓', title: 'Family-Friendly Service', desc: 'We understand Islamic sensibilities. All event support is provided with modesty, respect, and family involvement in mind.' },
-  { icon: '✓', title: 'Wedding-Focused Support', desc: 'Specialised in Nikah, Walima, engagement, and Muslim family events — not generic event management.' },
-  { icon: '✓', title: 'Privacy & Professionalism', desc: 'Your event details and family information are kept strictly private and never shared without your explicit consent.' },
-  { icon: '✓', title: 'Complete Occasion Coverage', desc: 'From Nikah and Walima to Aqeeqah, Khatna, and family functions — we assist with a wide range of occasions.' },
+  { icon: '✓', titleKey: 'eventMgmt.why1Title', descKey: 'eventMgmt.why1Desc' },
+  { icon: '✓', titleKey: 'eventMgmt.why2Title', descKey: 'eventMgmt.why2Desc' },
+  { icon: '✓', titleKey: 'eventMgmt.why3Title', descKey: 'eventMgmt.why3Desc' },
+  { icon: '✓', titleKey: 'eventMgmt.why4Title', descKey: 'eventMgmt.why4Desc' },
+  { icon: '✓', titleKey: 'eventMgmt.why5Title', descKey: 'eventMgmt.why5Desc' },
 ];
 
-const EVENT_TYPES = ['Nikah', 'Walima', 'Engagement', 'Reception', 'Family Function', 'Other'];
-const SERVICE_OPTIONS = ['Decoration', 'Venue', 'Catering', 'Photography', 'Makeup', 'Mehendi', 'Invitation Cards', 'Planning Support', 'Other'];
+// value = canonical English string submitted in the lead message (admin-facing);
+// labelKey = translated label shown to the customer.
+const EVENT_TYPES = [
+  { value: 'Nikah', labelKey: 'eventMgmt.typeNikah' },
+  { value: 'Walima', labelKey: 'eventMgmt.typeWalima' },
+  { value: 'Engagement', labelKey: 'eventMgmt.typeEngagement' },
+  { value: 'Reception', labelKey: 'eventMgmt.typeReception' },
+  { value: 'Family Function', labelKey: 'eventMgmt.typeFamilyFunction' },
+  { value: 'Other', labelKey: 'eventMgmt.typeOther' },
+];
+const SERVICE_OPTIONS = [
+  { value: 'Decoration', labelKey: 'eventMgmt.svcOptDecoration' },
+  { value: 'Venue', labelKey: 'eventMgmt.svcOptVenue' },
+  { value: 'Catering', labelKey: 'eventMgmt.svcOptCatering' },
+  { value: 'Photography', labelKey: 'eventMgmt.svcOptPhotography' },
+  { value: 'Makeup', labelKey: 'eventMgmt.svcOptMakeup' },
+  { value: 'Mehendi', labelKey: 'eventMgmt.svcOptMehendi' },
+  { value: 'Invitation Cards', labelKey: 'eventMgmt.svcOptInvitation' },
+  { value: 'Planning Support', labelKey: 'eventMgmt.svcOptPlanning' },
+  { value: 'Other', labelKey: 'eventMgmt.svcOptOther' },
+];
 
 // ─── Main Component ────────────────────────────────────────────────────────
 
 export default function EventManagementClient() {
   const router = useRouter();
+  const { t } = useI18n();
+  const WA_EVENT_MSG = t('eventMgmt.whatsappMsg');
 
   const [form, setForm] = useState({
     fullName: '',
@@ -203,7 +224,7 @@ export default function EventManagementClient() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.fullName || !form.phone) {
-      setErrorMsg('Name and phone number are required.');
+      setErrorMsg(t('eventMgmt.valNamePhone'));
       return;
     }
     setSubmitStatus('submitting');
@@ -237,11 +258,11 @@ export default function EventManagementClient() {
 
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error || 'Submission failed. Please try again.');
+        throw new Error(data.error || t('eventMgmt.submitFailed'));
       }
       setSubmitStatus('success');
     } catch (err: any) {
-      setErrorMsg(err.message || 'Something went wrong. Please try again.');
+      setErrorMsg(err.message || t('eventMgmt.errorGeneric'));
       setSubmitStatus('error');
     }
   };
@@ -275,7 +296,7 @@ export default function EventManagementClient() {
               className="script-accent"
               style={{ display: 'block', marginBottom: '12px', color: 'var(--gold-accent)', fontSize: '2rem' }}
             >
-              Blessed Celebrations
+              {t('eventMgmt.heroScript')}
             </span>
             <h1
               style={{
@@ -287,7 +308,7 @@ export default function EventManagementClient() {
                 lineHeight: 1.2,
               }}
             >
-              Event Management
+              {t('eventMgmt.heroTitle')}
             </h1>
             <p
               style={{
@@ -298,7 +319,7 @@ export default function EventManagementClient() {
                 lineHeight: 1.7,
               }}
             >
-              From finding the right match to planning the perfect celebration — we help families connect with trusted, halal-compliant event service partners for every occasion.
+              {t('eventMgmt.heroBody')}
             </p>
 
             <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -307,7 +328,7 @@ export default function EventManagementClient() {
                 className="btn btn-gold"
                 style={{ minWidth: '190px' }}
               >
-                Get Event Support
+                {t('eventMgmt.getSupport')}
               </a>
               <a
                 href={getSupportWhatsAppLink(WA_EVENT_MSG)}
@@ -328,7 +349,7 @@ export default function EventManagementClient() {
                 <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
                 </svg>
-                Chat on WhatsApp
+                {t('eventMgmt.chatWhatsapp')}
               </a>
             </div>
 
@@ -345,9 +366,9 @@ export default function EventManagementClient() {
         <section style={{ backgroundColor: 'var(--soft-cream)', padding: '80px 0' }}>
           <div className="container">
             <SectionHeading
-              title="Wedding & Event Services"
-              subtitle="We help families connect with reliable, vetted partners across every category of wedding and event support."
-              scriptText="Trusted Vendors"
+              title={t('eventMgmt.servicesTitle')}
+              subtitle={t('eventMgmt.servicesSubtitle')}
+              scriptText={t('eventMgmt.servicesScript')}
             />
 
             <div
@@ -360,7 +381,7 @@ export default function EventManagementClient() {
             >
               {EVENT_SERVICES.map((svc) => (
                 <div
-                  key={svc.name}
+                  key={svc.nameKey}
                   className="event-service-card"
                   style={{
                     backgroundColor: 'var(--white)',
@@ -401,7 +422,7 @@ export default function EventManagementClient() {
                       margin: 0,
                     }}
                   >
-                    {svc.name}
+                    {t(svc.nameKey)}
                   </h3>
                   <p
                     style={{
@@ -411,7 +432,7 @@ export default function EventManagementClient() {
                       margin: 0,
                     }}
                   >
-                    {svc.desc}
+                    {t(svc.descKey)}
                   </p>
                 </div>
               ))}
@@ -423,9 +444,9 @@ export default function EventManagementClient() {
         <section style={{ backgroundColor: 'var(--warm-ivory)', padding: '80px 0' }}>
           <div className="container">
             <SectionHeading
-              title="How It Works"
-              subtitle="A simple four-step process to connect your family with the right event partners."
-              scriptText="Our Process"
+              title={t('eventMgmt.howTitle')}
+              subtitle={t('eventMgmt.howSubtitle')}
+              scriptText={t('eventMgmt.howScript')}
             />
 
             <div
@@ -476,10 +497,10 @@ export default function EventManagementClient() {
                       marginBottom: '10px',
                     }}
                   >
-                    {item.title}
+                    {t(item.titleKey)}
                   </h3>
                   <p style={{ fontSize: '13.5px', color: 'var(--text-muted)', lineHeight: 1.6, margin: 0 }}>
-                    {item.desc}
+                    {t(item.descKey)}
                   </p>
                 </div>
               ))}
@@ -491,9 +512,9 @@ export default function EventManagementClient() {
         <section style={{ backgroundColor: 'var(--soft-cream)', padding: '80px 0' }}>
           <div className="container">
             <SectionHeading
-              title="Why Choose Asan Nikah Events"
-              subtitle="We combine our matrimonial expertise with trusted vendor relationships to provide families a seamless experience."
-              scriptText="Our Promise"
+              title={t('eventMgmt.whyTitle')}
+              subtitle={t('eventMgmt.whySubtitle')}
+              scriptText={t('eventMgmt.whyScript')}
             />
 
             <div
@@ -507,7 +528,7 @@ export default function EventManagementClient() {
             >
               {WHY_CHOOSE.map((item) => (
                 <div
-                  key={item.title}
+                  key={item.titleKey}
                   style={{
                     display: 'flex',
                     gap: '16px',
@@ -546,10 +567,10 @@ export default function EventManagementClient() {
                         marginBottom: '4px',
                       }}
                     >
-                      {item.title}
+                      {t(item.titleKey)}
                     </h4>
                     <p style={{ fontSize: '13px', color: 'var(--text-muted)', lineHeight: 1.55, margin: 0 }}>
-                      {item.desc}
+                      {t(item.descKey)}
                     </p>
                   </div>
                 </div>
@@ -565,9 +586,9 @@ export default function EventManagementClient() {
         >
           <div className="container">
             <SectionHeading
-              title="Plan Your Event"
-              subtitle="Planning a Nikah, Walima, engagement, or family function? Share your requirements and we will connect you with trusted vendors."
-              scriptText="Get in Touch"
+              title={t('eventMgmt.formTitle')}
+              subtitle={t('eventMgmt.formSubtitle')}
+              scriptText={t('eventMgmt.formScript')}
             />
 
             <div
@@ -598,10 +619,10 @@ export default function EventManagementClient() {
                       marginBottom: '12px',
                     }}
                   >
-                    JazakAllahu Khayran!
+                    {t('eventMgmt.successHeading')}
                   </h3>
                   <p style={{ color: 'var(--text-muted)', fontSize: '15px', marginBottom: '28px', lineHeight: 1.6 }}>
-                    Your event inquiry has been received. Our team will contact you shortly with trusted vendor recommendations.
+                    {t('eventMgmt.successBody')}
                   </p>
                   <a
                     href={getSupportWhatsAppLink(WA_EVENT_MSG)}
@@ -609,7 +630,7 @@ export default function EventManagementClient() {
                     rel="noopener noreferrer"
                     className="btn btn-gold"
                   >
-                    Also Chat on WhatsApp
+                    {t('eventMgmt.alsoChatWhatsapp')}
                   </a>
                 </div>
               ) : (
@@ -623,42 +644,42 @@ export default function EventManagementClient() {
                     }}
                   >
                     <div className="form-group" style={{ margin: 0 }}>
-                      <label className="form-label">Full Name *</label>
+                      <label className="form-label">{t('eventMgmt.fullName')}</label>
                       <input
                         type="text"
                         className="form-control"
-                        placeholder="Your name"
+                        placeholder={t('eventMgmt.phFullName')}
                         value={form.fullName}
                         onChange={(e) => setForm({ ...form, fullName: e.target.value })}
                         required
                       />
                     </div>
                     <div className="form-group" style={{ margin: 0 }}>
-                      <label className="form-label">Phone Number *</label>
+                      <label className="form-label">{t('eventMgmt.phone')}</label>
                       <input
                         type="tel"
                         className="form-control"
-                        placeholder="+91 XXXXX XXXXX"
+                        placeholder={t('eventMgmt.phPhone')}
                         value={form.phone}
                         onChange={(e) => setForm({ ...form, phone: e.target.value })}
                         required
                       />
                     </div>
                     <div className="form-group" style={{ margin: 0 }}>
-                      <label className="form-label">Event Type</label>
+                      <label className="form-label">{t('eventMgmt.eventType')}</label>
                       <select
                         className="form-control"
                         value={form.eventType}
                         onChange={(e) => setForm({ ...form, eventType: e.target.value })}
                       >
-                        <option value="">-- Select event type --</option>
-                        {EVENT_TYPES.map((t) => (
-                          <option key={t} value={t}>{t}</option>
+                        <option value="">{t('eventMgmt.optSelectEventType')}</option>
+                        {EVENT_TYPES.map((et) => (
+                          <option key={et.value} value={et.value}>{t(et.labelKey)}</option>
                         ))}
                       </select>
                     </div>
                     <div className="form-group" style={{ margin: 0 }}>
-                      <label className="form-label">Event Date</label>
+                      <label className="form-label">{t('eventMgmt.eventDate')}</label>
                       <input
                         type="date"
                         className="form-control"
@@ -667,28 +688,28 @@ export default function EventManagementClient() {
                       />
                     </div>
                     <div className="form-group" style={{ margin: 0 }}>
-                      <label className="form-label">City / Location</label>
+                      <label className="form-label">{t('eventMgmt.cityLocation')}</label>
                       <input
                         type="text"
                         className="form-control"
-                        placeholder="e.g. Delhi, Mumbai"
+                        placeholder={t('eventMgmt.phCity')}
                         value={form.city}
                         onChange={(e) => setForm({ ...form, city: e.target.value })}
                       />
                     </div>
                     <div className="form-group" style={{ margin: 0 }}>
-                      <label className="form-label">Approx. Guest Count</label>
+                      <label className="form-label">{t('eventMgmt.guestCount')}</label>
                       <select
                         className="form-control"
                         value={form.guestCount}
                         onChange={(e) => setForm({ ...form, guestCount: e.target.value })}
                       >
-                        <option value="">-- Select range --</option>
-                        <option>Under 50</option>
-                        <option>50 – 100</option>
-                        <option>100 – 200</option>
-                        <option>200 – 500</option>
-                        <option>500+</option>
+                        <option value="">{t('eventMgmt.optSelectRange')}</option>
+                        <option>{t('eventMgmt.guestUnder50')}</option>
+                        <option>{t('eventMgmt.guest50to100')}</option>
+                        <option>{t('eventMgmt.guest100to200')}</option>
+                        <option>{t('eventMgmt.guest200to500')}</option>
+                        <option>{t('eventMgmt.guest500plus')}</option>
                       </select>
                     </div>
                   </div>
@@ -696,7 +717,7 @@ export default function EventManagementClient() {
                   {/* Services checkboxes */}
                   <div className="form-group">
                     <label className="form-label" style={{ fontWeight: 'bold', display: 'block', marginBottom: '10px' }}>
-                      Required Services
+                      {t('eventMgmt.requiredServices')}
                     </label>
                     <div
                       style={{
@@ -711,7 +732,7 @@ export default function EventManagementClient() {
                     >
                       {SERVICE_OPTIONS.map((s) => (
                         <label
-                          key={s}
+                          key={s.value}
                           style={{
                             display: 'inline-flex',
                             alignItems: 'center',
@@ -722,21 +743,21 @@ export default function EventManagementClient() {
                         >
                           <input
                             type="checkbox"
-                            checked={selectedServices.includes(s)}
-                            onChange={() => toggleService(s)}
+                            checked={selectedServices.includes(s.value)}
+                            onChange={() => toggleService(s.value)}
                           />
-                          {s}
+                          {t(s.labelKey)}
                         </label>
                       ))}
                     </div>
                   </div>
 
                   <div className="form-group">
-                    <label className="form-label">Additional Notes</label>
+                    <label className="form-label">{t('eventMgmt.additionalNotes')}</label>
                     <textarea
                       className="form-control"
                       rows={3}
-                      placeholder="Any special requirements, budget range, or other details..."
+                      placeholder={t('eventMgmt.phNotes')}
                       value={form.message}
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
                     />
@@ -772,7 +793,7 @@ export default function EventManagementClient() {
                       disabled={submitStatus === 'submitting'}
                       style={{ minWidth: '180px' }}
                     >
-                      {submitStatus === 'submitting' ? 'Sending…' : 'Submit Inquiry'}
+                      {submitStatus === 'submitting' ? t('eventMgmt.sending') : t('eventMgmt.submitInquiry')}
                     </button>
                     <a
                       href={getSupportWhatsAppLink(WA_EVENT_MSG)}
@@ -793,7 +814,7 @@ export default function EventManagementClient() {
                       <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
                       </svg>
-                      WhatsApp Instead
+                      {t('eventMgmt.whatsappInstead')}
                     </a>
                   </div>
                 </form>

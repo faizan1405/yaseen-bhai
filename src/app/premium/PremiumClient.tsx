@@ -2,25 +2,27 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSimulator } from '../../context/SimulatorContext';
+import { useApp } from '../../context/AppContext';
 import Navbar from '../../components/Navbar';
 import Image from 'next/image';
 import { SectionHeading, PremiumPlanCard, PremiumFooter, FloralCorner } from '../../components/NikahComponents';
 import PackageInquiryForm from '../../components/PackageInquiryForm';
+import { useI18n } from '../../i18n/I18nProvider';
 
 export default function PremiumClient() {
   const router = useRouter();
+  const { t, tList } = useI18n();
   const {
     isLoggedIn,
     hasPaid300,
-    simulatedPackages,
+    activePackages,
     handleRazorpayCheckout,
     pendingProfileId,
     userProfile,
     setIsRegistering,
     setRegStep,
     setShowLoginModal,
-  } = useSimulator();
+  } = useApp();
 
   const isFormComplete = isLoggedIn && userProfile?.profileCompletionStatus === 'COMPLETE';
 
@@ -55,21 +57,21 @@ export default function PremiumClient() {
             color: 'var(--deep-maroon)',
             fontWeight: 600,
           }}>
-            You&apos;re one step away! Activate a package below and you&apos;ll be redirected to the selected profile automatically.
+            {t('premium.pendingBanner')}
           </div>
         )}
         <div className="container font-sans" style={{ padding: '40px 0 80px 0' }}>
           <SectionHeading
-            title="Premium Matrimonial Packages"
-            subtitle="Choose a package that fits your matchmaking needs. Keep your monthly membership active to access our search directory."
-            scriptText="Premium Services"
+            title={t('premium.title')}
+            subtitle={t('premium.subtitle')}
+            scriptText={t('premium.script')}
             as="h1"
           />
 
           <div style={{ marginBottom: '40px', borderRadius: 'var(--border-radius-xl)', overflow: 'hidden', boxShadow: 'var(--shadow-premium)', position: 'relative', height: '300px' }}>
             <Image
               src="/images/commitment.png"
-              alt="Premium Matrimonial Journey"
+              alt={t('premium.heroAlt')}
               fill
               style={{ objectFit: 'cover', objectPosition: 'center 40%' }}
             />
@@ -82,10 +84,9 @@ export default function PremiumClient() {
               padding: '0 40px'
             }}>
               <div style={{ color: 'white', maxWidth: '500px' }}>
-                <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '28px', marginBottom: '12px' }}>A Commitment to Trust</h3>
+                <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '28px', marginBottom: '12px' }}>{t('premium.commitmentTitle')}</h3>
                 <p style={{ fontSize: '15px', lineHeight: '1.6', opacity: 0.9 }}>
-                  Our premium packages ensure you connect with verified, serious candidates. 
-                  Invest in a beautiful future with complete privacy and dedicated support.
+                  {t('premium.commitmentBody')}
                 </p>
               </div>
             </div>
@@ -93,16 +94,16 @@ export default function PremiumClient() {
 
           <div className="grid-4" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '32px', marginBottom: '60px' }}>
             <PremiumPlanCard
-              title="Monthly Membership"
+              title={t('premium.monthlyTitle')}
               price={300}
               gstRate={0.18}
               billingText="monthly"
-              features={['Browse normal verified profiles', 'Unblur matrimonial photos', 'Access candidate mobile numbers']}
+              features={tList('premium.monthlyFeatures')}
               isActive={hasPaid300}
-              ctaText="Buy Monthly Membership"
+              ctaText={t('premium.buyMonthly')}
               onActivate={() => handleRazorpayCheckout('monthly_membership', 300, 'Standard Monthly Membership')}
               onInquire={() => setInquiryPackage('₹300 Monthly Membership')}
-              whatsappMessage="Assalamu Alaikum, I want to know more about the ₹300 monthly membership on Asan Nikah."
+              whatsappMessage={t('premium.waMonthly')}
               imageUrl="/images/monthly_active.png"
               hidePrices={!isFormComplete}
               isLoggedIn={isLoggedIn}
@@ -110,17 +111,17 @@ export default function PremiumClient() {
               onShowLogin={() => setShowLoginModal(true)}
             />
             <PremiumPlanCard
-              title="Good Profile Package"
+              title={t('premium.goodTitle')}
               price={5500}
               gstRate={0.18}
               billingText="one-time base"
-              features={['Verified profile suggestions', 'Basic matchmaking support', 'Privacy-safe profile sharing', '1 year service validity']}
-              isActive={simulatedPackages.includes('good_profile_package')}
-              ctaText="Buy Good Profile Package"
+              features={tList('premium.goodFeatures')}
+              isActive={activePackages.includes('good_profile_package')}
+              ctaText={t('premium.buyGood')}
               onActivate={() => handleRazorpayCheckout('good_profile_package', 5500, 'Good Profile Package')}
               onInquire={() => setInquiryPackage('₹5,500 Good Profiles Package')}
-              whatsappMessage="Assalamu Alaikum, I am interested in the ₹5,500 Good Profiles Package on Asan Nikah. Please guide me."
-              badgeText="Starter"
+              whatsappMessage={t('premium.waGood')}
+              badgeText={t('premium.badgeStarter')}
               planTier="basic"
               imageUrl="/images/good_profile.png"
               hidePrices={!isFormComplete}
@@ -129,26 +130,17 @@ export default function PremiumClient() {
               onShowLogin={() => setShowLoginModal(true)}
             />
             <PremiumPlanCard
-              title="Basic Access"
+              title={t('premium.secondTitle')}
               price={11000}
               gstRate={0.18}
               billingText="one-time fee"
-              features={[
-                'Everything in Basic Package',
-                'More verified profile suggestions',
-                'Priority matchmaking support',
-                'Profile shortlisting assistance',
-                'Family coordination support',
-                'Regular follow-up support',
-                'Privacy-safe contact assistance',
-                '1 year service validity'
-              ]}
-              isActive={simulatedPackages.includes('second_marriage_package')}
-              ctaText="Buy Basic Access"
-              onActivate={() => handleRazorpayCheckout('second_marriage_package', 11000, 'Basic Access')}
-              onInquire={() => setInquiryPackage('₹11,000 Basic Access')}
-              whatsappMessage="Assalamu Alaikum, I am interested in the ₹11,000 Basic Access on Asan Nikah. Please guide me."
-              badgeText="Most Balanced"
+              features={tList('premium.secondFeatures')}
+              isActive={activePackages.includes('second_marriage_package')}
+              ctaText={t('premium.buySecond')}
+              onActivate={() => handleRazorpayCheckout('second_marriage_package', 11000, 'Second Marriage')}
+              onInquire={() => setInquiryPackage('₹11,000 Second Marriage')}
+              whatsappMessage={t('premium.waSecond')}
+              badgeText={t('premium.badgeSecond')}
               planTier="silver"
               imageUrl="/images/second_marriage.png"
               hidePrices={!isFormComplete}
@@ -157,28 +149,17 @@ export default function PremiumClient() {
               onShowLogin={() => setShowLoginModal(true)}
             />
             <PremiumPlanCard
-              title="Premium Match Access"
+              title={t('premium.premiumTitle')}
               price={21000}
               gstRate={0.18}
               billingText="one-time base"
-              features={[
-                'Everything in Basic Access',
-                'Premium verified profile suggestions',
-                'High-priority matchmaking assistance',
-                'Personalized profile shortlisting',
-                'Dedicated support assistance',
-                'Family meeting coordination support',
-                'Biodata/profile presentation guidance',
-                'Regular follow-up and progress updates',
-                'Privacy-safe contact assistance',
-                '1 year service validity'
-              ]}
-              isActive={simulatedPackages.includes('high_profile_package')}
-              ctaText="Buy Premium Match Access"
+              features={tList('premium.premiumFeatures')}
+              isActive={activePackages.includes('high_profile_package')}
+              ctaText={t('premium.buyPremium')}
               onActivate={() => handleRazorpayCheckout('high_profile_package', 21000, 'Premium Match Access')}
               onInquire={() => setInquiryPackage('₹21,000 Premium Match Access')}
-              whatsappMessage="Assalamu Alaikum, I am interested in the ₹21,000 Premium Match Access on Asan Nikah. Please guide me."
-              badgeText="Premium Choice"
+              whatsappMessage={t('premium.waPremium')}
+              badgeText={t('premium.badgePremium')}
               planTier="gold"
               imageUrl="/images/high_profile.png"
               hidePrices={!isFormComplete}
@@ -190,68 +171,68 @@ export default function PremiumClient() {
 
           {/* Features Comparison Grid */}
           <div className="card-theme-wrapper" style={{ padding: '36px', marginBottom: '40px' }}>
-            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '22px', color: 'var(--deep-maroon)', marginBottom: '24px', textAlign: 'center' }}>Package Comparison Matrix</h3>
+            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '22px', color: 'var(--deep-maroon)', marginBottom: '24px', textAlign: 'center' }}>{t('premium.matrixTitle')}</h3>
             <div className="table-responsive">
               <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'center', fontSize: '14px' }}>
                 <thead>
                   <tr style={{ borderBottom: '2px solid var(--border-color)', height: '40px', color: 'var(--deep-maroon)', fontWeight: 'bold' }}>
-                    <th style={{ textAlign: 'left', padding: '12px' }}>Feature Benefits</th>
-                    <th>Good Profiles</th>
-                    <th>Basic Access</th>
-                    <th>Premium Match Access</th>
+                    <th style={{ textAlign: 'left', padding: '12px' }}>{t('premium.colFeature')}</th>
+                    <th>{t('premium.colGood')}</th>
+                    <th>{t('premium.colSecond')}</th>
+                    <th>{t('premium.colPremium')}</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr style={{ borderBottom: '1px solid var(--border-color)', height: '48px' }}>
-                    <td style={{ textAlign: 'left', padding: '12px' }}>Directory Search Access</td>
+                    <td style={{ textAlign: 'left', padding: '12px' }}>{t('premium.rowDirectory')}</td>
                     <td>✓</td>
                     <td>✓</td>
                     <td>✓</td>
                   </tr>
                   <tr style={{ borderBottom: '1px solid var(--border-color)', height: '48px' }}>
-                    <td style={{ textAlign: 'left', padding: '12px' }}>Unblurred Normal Profiles</td>
+                    <td style={{ textAlign: 'left', padding: '12px' }}>{t('premium.rowUnblur')}</td>
                     <td>✓</td>
                     <td>✓</td>
                     <td>✓</td>
                   </tr>
                   <tr style={{ borderBottom: '1px solid var(--border-color)', height: '48px' }}>
-                    <td style={{ textAlign: 'left', padding: '12px' }}>1 Year Service Validity</td>
+                    <td style={{ textAlign: 'left', padding: '12px' }}>{t('premium.rowValidity')}</td>
                     <td>✓</td>
                     <td>✓</td>
                     <td>✓</td>
                   </tr>
                   <tr style={{ borderBottom: '1px solid var(--border-color)', height: '48px' }}>
-                    <td style={{ textAlign: 'left', padding: '12px' }}>Basic Access Directory Access</td>
+                    <td style={{ textAlign: 'left', padding: '12px' }}>{t('premium.rowSecondDir')}</td>
                     <td>—</td>
                     <td>✓</td>
                     <td>✓</td>
                   </tr>
                   <tr style={{ borderBottom: '1px solid var(--border-color)', height: '48px' }}>
-                    <td style={{ textAlign: 'left', padding: '12px' }}>Premium Match Access Directory Access</td>
+                    <td style={{ textAlign: 'left', padding: '12px' }}>{t('premium.rowPremiumDir')}</td>
                     <td>—</td>
                     <td>—</td>
                     <td>✓</td>
                   </tr>
                   <tr style={{ borderBottom: '1px solid var(--border-color)', height: '48px' }}>
-                    <td style={{ textAlign: 'left', padding: '12px' }}>Matchmaking Support</td>
-                    <td>Basic Matchmaking</td>
-                    <td>Priority Matchmaking</td>
-                    <td>High-Priority Matchmaking</td>
+                    <td style={{ textAlign: 'left', padding: '12px' }}>{t('premium.rowMatchmaking')}</td>
+                    <td>{t('premium.valBasicMatch')}</td>
+                    <td>{t('premium.valPriorityMatch')}</td>
+                    <td>{t('premium.valHighPriorityMatch')}</td>
                   </tr>
                   <tr style={{ borderBottom: '1px solid var(--border-color)', height: '48px' }}>
-                    <td style={{ textAlign: 'left', padding: '12px' }}>Profile Shortlisting</td>
+                    <td style={{ textAlign: 'left', padding: '12px' }}>{t('premium.rowShortlist')}</td>
                     <td>—</td>
-                    <td>Assistance</td>
-                    <td>Personalized</td>
+                    <td>{t('premium.valAssistance')}</td>
+                    <td>{t('premium.valPersonalized')}</td>
                   </tr>
                   <tr style={{ borderBottom: '1px solid var(--border-color)', height: '48px' }}>
-                    <td style={{ textAlign: 'left', padding: '12px' }}>Family Coordination</td>
+                    <td style={{ textAlign: 'left', padding: '12px' }}>{t('premium.rowFamily')}</td>
                     <td>—</td>
-                    <td>Support</td>
-                    <td>Meeting Support</td>
+                    <td>{t('premium.valSupport')}</td>
+                    <td>{t('premium.valMeetingSupport')}</td>
                   </tr>
                   <tr style={{ borderBottom: '1px solid var(--border-color)', height: '48px' }}>
-                    <td style={{ textAlign: 'left', padding: '12px' }}>Dedicated Support Agent</td>
+                    <td style={{ textAlign: 'left', padding: '12px' }}>{t('premium.rowAgent')}</td>
                     <td>—</td>
                     <td>—</td>
                     <td>✓</td>
@@ -285,7 +266,7 @@ export default function PremiumClient() {
               ×
             </button>
             <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '22px', color: 'var(--deep-maroon)', marginBottom: '16px', textAlign: 'center' }}>
-              Package Inquiry & Callback
+              {t('premium.inquiryModalTitle')}
             </h3>
             <PackageInquiryForm
               defaultPackage={inquiryPackage}

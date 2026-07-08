@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { SimulatorProvider } from "../context/SimulatorContext";
-import { Cormorant_Garamond, Poppins, Great_Vibes, Amiri } from "next/font/google";
+import { AppProvider } from "../context/AppContext";
+import { I18nProvider } from "../i18n/I18nProvider";
+import { Cormorant_Garamond, Poppins, Great_Vibes, Amiri, Noto_Nastaliq_Urdu } from "next/font/google";
 
 const cormorantGaramond = Cormorant_Garamond({
   subsets: ["latin"],
@@ -33,8 +34,16 @@ const amiri = Amiri({
   display: "swap",
 });
 
+// Readable Nastaliq script for Urdu UI text (RTL). Exposed as --font-urdu and
+// applied via [dir="rtl"] rules in globals.css.
+const notoNastaliqUrdu = Noto_Nastaliq_Urdu({
+  subsets: ["arabic"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-urdu",
+  display: "swap",
+});
+
 import {
-  DemoSimulatorBar,
   ProfileDetails,
   ChatbotWidget,
   CallButton,
@@ -56,16 +65,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${cormorantGaramond.variable} ${poppins.variable} ${greatVibes.variable} ${amiri.variable}`}>
+    <html lang="en" dir="ltr" className={`${cormorantGaramond.variable} ${poppins.variable} ${greatVibes.variable} ${amiri.variable} ${notoNastaliqUrdu.variable}`}>
       <body>
-        <SimulatorProvider>
-          <DemoSimulatorBar />
-          <ProfileDetails />
-          {children}
-          <ChatbotWidget />
-          <CallButton />
-          <WhatsAppButton />
-        </SimulatorProvider>
+        <I18nProvider>
+          <AppProvider>
+            <ProfileDetails />
+            {children}
+            <ChatbotWidget />
+            <CallButton />
+            <WhatsAppButton />
+          </AppProvider>
+        </I18nProvider>
       </body>
     </html>
   );

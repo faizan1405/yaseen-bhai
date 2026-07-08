@@ -3,10 +3,12 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { useSimulator } from '../context/SimulatorContext';
+import { useApp } from '../context/AppContext';
 import { getProfileImage } from '../lib/helpers';
 import { VerifiedBadge, FloralCorner } from './NikahComponents';
 import ProfileInterestForm from './ProfileInterestForm';
+import { useI18n } from '../i18n/I18nProvider';
+import { localizeEnum } from '../i18n/enums';
 
 
 export const ProfileDetails: React.FC = () => {
@@ -15,12 +17,13 @@ export const ProfileDetails: React.FC = () => {
     setSelectedProfileForDetails,
     isLoggedIn,
     hasPaid300,
-    simulatedPackages,
-    simulatedHighProfileApproved,
+    activePackages,
+    highProfileApproved,
     setShowLoginModal,
     userProfile,
     handleViewProfile,
-  } = useSimulator();
+  } = useApp();
+  const { t } = useI18n();
 
   const router = useRouter();
   const [showInterestForm, setShowInterestForm] = useState(false);
@@ -49,40 +52,40 @@ export const ProfileDetails: React.FC = () => {
   
   const isGoodProfile = profileCat === 'good_profile';
 
-  const hasPaidMonthly = hasPaid300 || simulatedPackages.includes('monthly_membership');
-  const hasSecMarriageAccess = simulatedPackages.includes('second_marriage_package');
-  const hasHighProfAccess = simulatedPackages.includes('high_profile_package') && simulatedHighProfileApproved;
-  const hasGoodProfileAccess = simulatedPackages.includes('good_profile_package');
+  const hasPaidMonthly = hasPaid300 || activePackages.includes('monthly_membership');
+  const hasSecMarriageAccess = activePackages.includes('second_marriage_package');
+  const hasHighProfAccess = activePackages.includes('high_profile_package') && highProfileApproved;
+  const hasGoodProfileAccess = activePackages.includes('good_profile_package');
   const isFormComplete = isLoggedIn && userProfile?.profileCompletionStatus === 'COMPLETE';
 
   let modalBlur = !isLoggedIn;
   let modalLockReason = '';
-  let modalUnlockText = 'Choose Package';
+  let modalUnlockText = t('profileDetails.choosePackageCta');
 
   if (!isLoggedIn) {
     modalBlur = true;
-    modalLockReason = 'Please login or register to view this profile.';
-    modalUnlockText = 'Log In to View Profile';
+    modalLockReason = t('profileDetails.loginPrompt');
+    modalUnlockText = t('profileDetails.loginCta');
   } else if (!isFormComplete) {
     modalBlur = true;
-    modalLockReason = 'Complete your details first to continue.';
-    modalUnlockText = 'Complete Form & Unlock Profile';
+    modalLockReason = t('profileDetails.completeFormPrompt');
+    modalUnlockText = t('profileDetails.completeFormCta');
   } else if (!hasPaidMonthly) {
     modalBlur = true;
-    modalLockReason = 'Choose a package to unlock full profile details.';
-    modalUnlockText = 'Choose Package';
+    modalLockReason = t('profileDetails.choosePackagePrompt');
+    modalUnlockText = t('profileDetails.choosePackageCta');
   } else if (isGoodProfile && !hasGoodProfileAccess) {
     modalBlur = true;
-    modalLockReason = 'Buy Good Profile Package for ₹5,500 to view these profiles.';
-    modalUnlockText = 'Buy Good Profile Package (₹5,500)';
+    modalLockReason = t('profileDetails.goodProfilePrompt');
+    modalUnlockText = t('profileDetails.goodProfileCta');
   } else if (isSecMarriage && !hasSecMarriageAccess) {
     modalBlur = true;
-    modalLockReason = 'Second-Marriage Candidate. Access requires Basic Access.';
-    modalUnlockText = 'Unlock Basic Access (₹11,000)';
+    modalLockReason = t('profileDetails.secondMarriagePrompt');
+    modalUnlockText = t('profileDetails.secondMarriageCta');
   } else if (isHighProf && !hasHighProfAccess) {
     modalBlur = true;
-    modalLockReason = 'High-Profile Match. Requires Premium Match Access & Admin eligibility approval.';
-    modalUnlockText = 'Unlock Premium Match Access (₹21,000)';
+    modalLockReason = t('profileDetails.highProfilePrompt');
+    modalUnlockText = t('profileDetails.highProfileCta');
   }
 
   const handleUnlockClick = () => {
@@ -102,7 +105,7 @@ export const ProfileDetails: React.FC = () => {
     <div className="modal-overlay font-sans" onClick={() => setSelectedProfileForDetails(null)}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '650px', border: '2px solid var(--gold-accent)' }}>
         <div className="modal-header">
-          <span className="modal-title" style={{ fontFamily: 'var(--font-serif)' }}>Nikkah Biodata details</span>
+          <span className="modal-title" style={{ fontFamily: 'var(--font-serif)' }}>{t('profileDetails.modalTitle')}</span>
           <button className="modal-close-btn" onClick={() => setSelectedProfileForDetails(null)}>×</button>
         </div>
         <div className="modal-body" style={{ position: 'relative', minHeight: '300px' }}>
@@ -112,11 +115,11 @@ export const ProfileDetails: React.FC = () => {
           {showInterestForm ? (
             <div style={{ padding: '10px 0' }}>
               <h3 style={{ fontFamily: 'var(--font-serif)', color: 'var(--deep-maroon)', fontSize: '20px', marginBottom: '16px', textAlign: 'center' }}>
-                Express Interest in Match
+                {t('profileDetails.expressInterestTitle')}
               </h3>
               <ProfileInterestForm
                 profileId={selectedProfileForDetails.id}
-                profileName={modalBlur ? 'Protected Candidate Profile' : selectedProfileForDetails.fullName}
+                profileName={modalBlur ? t('profileDetails.protectedName') : selectedProfileForDetails.fullName}
                 profileCategory={profileCat}
                 onSuccess={() => {
                   setShowInterestForm(false);
@@ -142,10 +145,10 @@ export const ProfileDetails: React.FC = () => {
                 />
                 <div>
                   <h3 style={{ fontFamily: 'var(--font-serif)', color: 'var(--deep-maroon)', fontSize: '24px', fontWeight: 'bold' }}>
-                    {modalBlur ? 'Protected Candidate Profile' : selectedProfileForDetails.fullName}
+                    {modalBlur ? t('profileDetails.protectedName') : selectedProfileForDetails.fullName}
                   </h3>
                   <p style={{ fontSize: '13.5px', color: 'var(--text-muted)', marginTop: '4px', fontWeight: 500 }}>
-                    {selectedProfileForDetails.gender} • {2026 - new Date(selectedProfileForDetails.dateOfBirth).getFullYear()} Yrs Old
+                    {localizeEnum(t, selectedProfileForDetails.gender)} • <span className="ltr-value">{2026 - new Date(selectedProfileForDetails.dateOfBirth).getFullYear()}</span> {t('profileDetails.yrsOld')}
                   </p>
                   <span style={{ display: 'inline-flex', marginTop: '10px' }}>
                     {selectedProfileForDetails.verificationStatus === 'APPROVED' && <VerifiedBadge />}
@@ -155,61 +158,61 @@ export const ProfileDetails: React.FC = () => {
 
               <div className="modal-details-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
                 <div style={{ gridColumn: 'span 2', borderTop: '1px solid var(--border-color)', paddingTop: '16px' }}>
-                  <strong style={{ color: 'var(--deep-maroon)', display: 'block', marginBottom: '4px' }}>Personal Bio & Values</strong>
+                  <strong style={{ color: 'var(--deep-maroon)', display: 'block', marginBottom: '4px' }}>{t('profileDetails.bioLabel')}</strong>
                   <p style={{ color: 'var(--text-dark)', lineHeight: '1.6' }}>
-                    {modalBlur ? `Details Protected: ${modalLockReason}` : selectedProfileForDetails.bio}
+                    {modalBlur ? t('profileDetails.detailsProtected', { reason: modalLockReason }) : selectedProfileForDetails.bio}
                   </p>
                 </div>
                 <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '16px' }}>
-                  <strong style={{ color: 'var(--deep-maroon)', display: 'block', marginBottom: '4px' }}>Education & Career</strong>
+                  <strong style={{ color: 'var(--deep-maroon)', display: 'block', marginBottom: '4px' }}>{t('profileDetails.educationLabel')}</strong>
                   <p style={{ color: 'var(--text-dark)' }}>
-                    {modalBlur ? 'Hidden' : `${selectedProfileForDetails.education} • ${selectedProfileForDetails.occupation}`}
+                    {modalBlur ? t('profileDetails.hidden') : `${selectedProfileForDetails.education} • ${selectedProfileForDetails.occupation}`}
                   </p>
                 </div>
                 <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '16px' }}>
-                  <strong style={{ color: 'var(--deep-maroon)', display: 'block', marginBottom: '4px' }}>Annual Income</strong>
-                  <p style={{ color: 'var(--text-dark)' }}>
-                    {modalBlur ? 'Hidden' : selectedProfileForDetails.annualIncomeRange}
+                  <strong style={{ color: 'var(--deep-maroon)', display: 'block', marginBottom: '4px' }}>{t('profileDetails.incomeLabel')}</strong>
+                  <p className="ltr-value" style={{ color: 'var(--text-dark)' }}>
+                    {modalBlur ? t('profileDetails.hidden') : selectedProfileForDetails.annualIncomeRange}
                   </p>
                 </div>
                 <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '16px' }}>
-                  <strong style={{ color: 'var(--deep-maroon)', display: 'block', marginBottom: '4px' }}>Maslak & Fiqh</strong>
+                  <strong style={{ color: 'var(--deep-maroon)', display: 'block', marginBottom: '4px' }}>{t('profileDetails.maslakLabel')}</strong>
                   <p style={{ color: 'var(--text-dark)' }}>
-                    {modalBlur ? 'Hidden' : (
+                    {modalBlur ? t('profileDetails.hidden') : (
                       [
-                        selectedProfileForDetails.maslak && `Maslak: ${selectedProfileForDetails.maslak}`,
-                        selectedProfileForDetails.fiqh && `Fiqh: ${selectedProfileForDetails.fiqh}`
-                      ].filter(Boolean).join(' • ') || 'Not specified'
+                        selectedProfileForDetails.maslak && t('profileDetails.maslakVal', { value: selectedProfileForDetails.maslak }),
+                        selectedProfileForDetails.fiqh && t('profileDetails.fiqhVal', { value: selectedProfileForDetails.fiqh })
+                      ].filter(Boolean).join(' • ') || t('profileDetails.notSpecified')
                     )}
                   </p>
                 </div>
                 <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '16px' }}>
-                  <strong style={{ color: 'var(--deep-maroon)', display: 'block', marginBottom: '4px' }}>Caste / Biradari</strong>
+                  <strong style={{ color: 'var(--deep-maroon)', display: 'block', marginBottom: '4px' }}>{t('profileDetails.casteLabel')}</strong>
                   <p style={{ color: 'var(--text-dark)' }}>
-                    {modalBlur ? 'Hidden' : (selectedProfileForDetails.biradari || 'Not specified')}
+                    {modalBlur ? t('profileDetails.hidden') : (selectedProfileForDetails.biradari || t('profileDetails.notSpecified'))}
                   </p>
                 </div>
                 <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '16px' }}>
-                  <strong style={{ color: 'var(--deep-maroon)', display: 'block', marginBottom: '4px' }}>Current Location</strong>
+                  <strong style={{ color: 'var(--deep-maroon)', display: 'block', marginBottom: '4px' }}>{t('profileDetails.locationLabel')}</strong>
                   <p style={{ color: 'var(--text-dark)' }}>
-                    {modalBlur ? 'Hidden' : (
+                    {modalBlur ? t('profileDetails.hidden') : (
                       [
                         selectedProfileForDetails.locality,
                         selectedProfileForDetails.district || selectedProfileForDetails.city,
                         selectedProfileForDetails.state
-                      ].filter(Boolean).join(', ') || 'Not specified'
+                      ].filter(Boolean).join(', ') || t('profileDetails.notSpecified')
                     )}
                   </p>
                 </div>
                 <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '16px' }}>
-                  <strong style={{ color: 'var(--deep-maroon)', display: 'block', marginBottom: '4px' }}>Relocation & Preferences</strong>
+                  <strong style={{ color: 'var(--deep-maroon)', display: 'block', marginBottom: '4px' }}>{t('profileDetails.relocationLabel')}</strong>
                   <p style={{ color: 'var(--text-dark)' }}>
-                    {modalBlur ? 'Hidden' : (
+                    {modalBlur ? t('profileDetails.hidden') : (
                       <>
-                        Willing to relocate: {selectedProfileForDetails.willingToRelocate ? 'Yes' : 'No'}
+                        {t('profileDetails.willingToRelocate', { value: selectedProfileForDetails.willingToRelocate ? t('common.yes') : t('common.no') })}
                         {selectedProfileForDetails.preferredLocations && selectedProfileForDetails.preferredLocations.length > 0 && (
                           <span style={{ display: 'block', fontSize: '12px', color: 'var(--text-muted)', marginTop: '2px' }}>
-                            Prefers: {selectedProfileForDetails.preferredLocations.join(', ')}
+                            {t('profileDetails.prefersLocations', { locations: selectedProfileForDetails.preferredLocations.join(', ') })}
                           </span>
                         )}
                       </>
@@ -217,22 +220,22 @@ export const ProfileDetails: React.FC = () => {
                   </p>
                 </div>
                 <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '16px', gridColumn: 'span 2' }}>
-                  <strong style={{ color: 'var(--deep-maroon)', display: 'block', marginBottom: '4px' }}>Family Background</strong>
+                  <strong style={{ color: 'var(--deep-maroon)', display: 'block', marginBottom: '4px' }}>{t('profileDetails.familyLabel')}</strong>
                   <p style={{ color: 'var(--text-dark)', lineHeight: '1.6' }}>
-                    {modalBlur ? 'Hidden' : selectedProfileForDetails.familyInfo}
+                    {modalBlur ? t('profileDetails.hidden') : selectedProfileForDetails.familyInfo}
                   </p>
                 </div>
                 {selectedProfileForDetails.partnerPref && (
                   <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '16px', gridColumn: 'span 2' }}>
-                    <strong style={{ color: 'var(--deep-maroon)', display: 'block', marginBottom: '4px' }}>Partner Preferences</strong>
+                    <strong style={{ color: 'var(--deep-maroon)', display: 'block', marginBottom: '4px' }}>{t('profileDetails.partnerPrefLabel')}</strong>
                     <p style={{ color: 'var(--text-dark)', lineHeight: '1.6' }}>
-                      {modalBlur ? 'Hidden' : selectedProfileForDetails.partnerPref}
+                      {modalBlur ? t('profileDetails.hidden') : selectedProfileForDetails.partnerPref}
                     </p>
                   </div>
                 )}
                 <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '16px', gridColumn: 'span 2' }}>
-                  <strong style={{ color: 'var(--deep-maroon)', display: 'block', marginBottom: '4px' }}>Phone / Contact Information</strong>
-                  <p style={{ color: 'var(--text-dark)', fontWeight: 'bold', fontSize: '16px' }}>
+                  <strong style={{ color: 'var(--deep-maroon)', display: 'block', marginBottom: '4px' }}>{t('profileDetails.contactLabel')}</strong>
+                  <p className="ltr-value" style={{ color: 'var(--text-dark)', fontWeight: 'bold', fontSize: '16px' }}>
                     {modalBlur ? '+91-XXXXX-XXXXX' : selectedProfileForDetails.phoneNumber}
                   </p>
                 </div>
@@ -245,8 +248,8 @@ export const ProfileDetails: React.FC = () => {
             <a
               href={`https://wa.me/919170975535?text=${encodeURIComponent(
                 modalBlur
-                  ? 'Assalamu Alaikum, I am interested in this Asan Nikah profile. Please guide me.'
-                  : `Assalamu Alaikum, I am interested in this Asan Nikah profile (Name: ${selectedProfileForDetails.fullName}, ID: ${selectedProfileForDetails.id}). Please guide me.`
+                  ? t('profileDetails.askWhatsappBlurred')
+                  : t('profileDetails.askWhatsappNamed', { name: selectedProfileForDetails.fullName, id: selectedProfileForDetails.id })
               )}`}
               target="_blank"
               rel="noopener noreferrer"
@@ -270,14 +273,14 @@ export const ProfileDetails: React.FC = () => {
               <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
                 <path d="M12.012 2c-5.506 0-9.97 4.478-9.97 10.012 0 1.77.458 3.43 1.258 4.887L2 22l5.253-1.378c1.402.766 3 1.2 4.759 1.2 5.506 0 9.97-4.478 9.97-10.012 0-5.534-4.464-10.012-9.97-10.012zm5.795 13.91c-.244.694-1.22 1.268-1.745 1.355-.472.079-.938.293-3.04-.542-2.527-.998-4.14-3.565-4.267-3.731-.127-.166-.991-1.32-.991-2.518 0-1.2.626-1.79.847-2.029.221-.24.479-.3.639-.3a.46.46 0 0 1 .332.155c.105.155.434 1.058.471 1.139.037.081.062.176.009.282-.053.106-.079.171-.157.262-.078.09-.166.2-.236.269-.079.078-.162.162-.07.32.092.158.411.678.88 1.096.604.538 1.111.704 1.267.782.157.078.249.066.342-.04.093-.106.402-.469.511-.627.109-.158.217-.132.366-.077.148.055.942.443 1.103.524.161.081.268.121.308.19.04.069.04.4-.204 1.094z" />
               </svg>
-              Ask About This Profile
+              {t('profileDetails.askAboutProfile')}
             </a>
             <button
               onClick={() => setShowInterestForm(true)}
               className="btn btn-gold"
               style={{ padding: '8px 20px', fontSize: '13px' }}
             >
-              Express Interest
+              {t('profileDetails.expressInterest')}
             </button>
             {modalBlur && (
               <button
@@ -291,7 +294,7 @@ export const ProfileDetails: React.FC = () => {
             <button
               onClick={() => {
                 const shareUrl = `${window.location.origin}/search?profile=${selectedProfileForDetails.id}`;
-                const shareText = "Check this profile on Asan Nikah.";
+                const shareText = t('profileDetails.shareText');
                 if (navigator.share) {
                   navigator.share({
                     title: 'Asan Nikah Matrimonial Profile',
@@ -300,17 +303,17 @@ export const ProfileDetails: React.FC = () => {
                   }).catch(() => {});
                 } else {
                   navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
-                  alert('Profile share link copied to clipboard!');
+                  alert(t('profileDetails.shareLinkCopied'));
                 }
               }}
               className="btn btn-secondary"
               style={{ padding: '8px 20px', fontSize: '13px', border: '1px solid var(--gold-accent)' }}
-              title="Copy Profile Link"
+              title={t('profileDetails.shareTitle')}
             >
-              Share Profile 🔗
+              {t('profileDetails.shareProfile')} 🔗
             </button>
             <a
-              href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`Check this profile on Asan Nikah: ${window.location.origin}/search?profile=${selectedProfileForDetails.id}`)}`}
+              href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`${t('profileDetails.shareText')} ${window.location.origin}/search?profile=${selectedProfileForDetails.id}`)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="btn"
@@ -333,10 +336,10 @@ export const ProfileDetails: React.FC = () => {
               <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
                 <path d="M12.012 2c-5.506 0-9.97 4.478-9.97 10.012 0 1.77.458 3.43 1.258 4.887L2 22l5.253-1.378c1.402.766 3 1.2 4.759 1.2 5.506 0 9.97-4.478 9.97-10.012 0-5.534-4.464-10.012-9.97-10.012zm5.795 13.91c-.244.694-1.22 1.268-1.745 1.355-.472.079-.938.293-3.04-.542-2.527-.998-4.14-3.565-4.267-3.731-.127-.166-.991-1.32-.991-2.518 0-1.2.626-1.79.847-2.029.221-.24.479-.3.639-.3a.46.46 0 0 1 .332.155c.105.155.434 1.058.471 1.139.037.081.062.176.009.282-.053.106-.079.171-.157.262-.078.09-.166.2-.236.269-.079.078-.162.162-.07.32.092.158.411.678.88 1.096.604.538 1.111.704 1.267.782.157.078.249.066.342-.04.093-.106.402-.469.511-.627.109-.158.217-.132.366-.077.148.055.942.443 1.103.524.161.081.268.121.308.19.04.069.04.4-.204 1.094z" />
               </svg>
-              Share on WhatsApp
+              {t('profileDetails.shareOnWhatsapp')}
             </a>
             <button className="btn btn-secondary" onClick={() => setSelectedProfileForDetails(null)} style={{ padding: '8px 20px', fontSize: '13px' }}>
-              Close
+              {t('profileDetails.close')}
             </button>
           </div>
         )}

@@ -4,24 +4,32 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useSimulator } from '../context/SimulatorContext';
+import { useApp } from '../context/AppContext';
+import { useI18n } from '../i18n/I18nProvider';
+import { LanguageToggle } from './LanguageToggle';
 import { siteConfig } from '../config/site';
 
 export const Navbar: React.FC = () => {
   const pathname = usePathname();
   const router = useRouter();
+  const { t } = useI18n();
   const {
     isLoggedIn,
     setIsLoggedIn,
     setHasPaid300,
-    setSimulatedPackages,
+    setActivePackages,
     setIsRegistering,
     setRegStep,
     setShowLoginModal,
     isMobileMenuOpen,
     setIsMobileMenuOpen,
     userProfile
-  } = useSimulator();
+  } = useApp();
+
+  const [pkgMenuOpen, setPkgMenuOpen] = React.useState(false);
+  // Premium overview and the dedicated package directories all live under the
+  // Packages menu, so keep the trigger highlighted for any of those routes.
+  const isPackagesActive = pathname === '/premium' || pathname.startsWith('/packages');
 
   const handleEditProfile = () => {
     router.push('/my-account');
@@ -37,7 +45,7 @@ export const Navbar: React.FC = () => {
   const handleLogout = () => {
     setIsLoggedIn(false);
     setHasPaid300(false);
-    setSimulatedPackages([]);
+    setActivePackages([]);
     setIsRegistering(false);
     router.push('/');
   };
@@ -82,7 +90,7 @@ export const Navbar: React.FC = () => {
                       <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                       <polyline points="9 22 9 12 15 12 15 22"></polyline>
                     </svg>
-                    Home
+                    {t('nav.home')}
                   </Link>
                 </li>
                 <li>
@@ -91,7 +99,7 @@ export const Navbar: React.FC = () => {
                       <circle cx="11" cy="11" r="8"></circle>
                       <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
-                    Browse Profiles
+                    {t('nav.browse')}
                   </Link>
                 </li>
                 <li>
@@ -101,7 +109,7 @@ export const Navbar: React.FC = () => {
                       <line x1="12" y1="16" x2="12" y2="12"></line>
                       <line x1="12" y1="8" x2="12.01" y2="8"></line>
                     </svg>
-                    How It Works
+                    {t('nav.howItWorks')}
                   </Link>
                 </li>
               </ul>
@@ -117,35 +125,98 @@ export const Navbar: React.FC = () => {
             </Link>
           </div>
 
-          {/* Right Column: Premium/Safety/Zaicha nav links */}
+          {/* Right Column: Premium/Safety nav links */}
           <div className="nav-section nav-right">
             {/* Vertical separator */}
             <div className="nav-right-divider nav-menu-desktop"></div>
             <nav className="nav-menu-desktop">
               <ul className="nav-menu">
-                  <li>
-                    <Link href="/premium" className={`nav-link ${pathname === '/premium' ? 'active' : ''}`}>
+                  <li
+                    style={{ position: 'relative' }}
+                    onMouseEnter={() => setPkgMenuOpen(true)}
+                    onMouseLeave={() => setPkgMenuOpen(false)}
+                  >
+                    <Link
+                      href="/premium"
+                      className={`nav-link ${isPackagesActive ? 'active' : ''}`}
+                      aria-haspopup="true"
+                      aria-expanded={pkgMenuOpen}
+                      onFocus={() => setPkgMenuOpen(true)}
+                    >
                       <svg className="nav-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7z"></path>
                         <path d="M3 20h18a1 1 0 0 0 1-1v-1a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1z"></path>
                       </svg>
-                      Premium
+                      {t('nav.premium')}
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ marginInlineStart: '2px', transform: pkgMenuOpen ? 'rotate(180deg)' : 'none', transition: 'var(--transition-smooth)' }}>
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
                     </Link>
+                    {pkgMenuOpen && (
+                      <ul
+                        role="menu"
+                        style={{
+                          position: 'absolute',
+                          top: '100%',
+                          insetInlineStart: 0,
+                          marginTop: '6px',
+                          minWidth: '210px',
+                          listStyle: 'none',
+                          padding: '8px',
+                          background: 'var(--cream-bg)',
+                          border: '1px solid var(--border-color)',
+                          borderRadius: '12px',
+                          boxShadow: 'var(--shadow-toast)',
+                          zIndex: 200,
+                        }}
+                      >
+                        <li role="none">
+                          <Link
+                            href="/premium"
+                            role="menuitem"
+                            onClick={() => setPkgMenuOpen(false)}
+                            style={{
+                              display: 'block',
+                              padding: '10px 14px',
+                              fontSize: '13.5px',
+                              fontWeight: 700,
+                              borderRadius: '8px',
+                              textDecoration: 'none',
+                              color: pathname === '/premium' ? 'var(--deep-maroon)' : 'var(--text-dark)',
+                              backgroundColor: pathname === '/premium' ? 'var(--soft-cream)' : 'transparent',
+                            }}
+                          >
+                            {t('nav.allPackages')}
+                          </Link>
+                        </li>
+                        <li role="none">
+                          <Link
+                            href="/packages/second-marriage"
+                            role="menuitem"
+                            onClick={() => setPkgMenuOpen(false)}
+                            style={{
+                              display: 'block',
+                              padding: '10px 14px',
+                              fontSize: '13.5px',
+                              fontWeight: 700,
+                              borderRadius: '8px',
+                              textDecoration: 'none',
+                              color: pathname === '/packages/second-marriage' ? 'var(--deep-maroon)' : 'var(--text-dark)',
+                              backgroundColor: pathname === '/packages/second-marriage' ? 'var(--soft-cream)' : 'transparent',
+                            }}
+                          >
+                            {t('nav.secondMarriage')}
+                          </Link>
+                        </li>
+                      </ul>
+                    )}
                   </li>
                   <li>
                     <Link href="/safety" className={`nav-link ${pathname === '/safety' ? 'active' : ''}`}>
                       <svg className="nav-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                       </svg>
-                      Safety
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/zaicha" className={`nav-link nav-link-zaicha ${pathname === '/zaicha' ? 'active' : ''}`}>
-                      <svg className="nav-icon animate-star" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                      </svg>
-                      Zaicha
+                      {t('nav.safety')}
                     </Link>
                   </li>
                   <li>
@@ -156,7 +227,7 @@ export const Navbar: React.FC = () => {
                         <circle cx="17" cy="5" r="3"></circle>
                         <path d="M15.5 3.5 L18.5 6.5"></path>
                       </svg>
-                      Events
+                      {t('nav.events')}
                     </Link>
                   </li>
                 </ul>
@@ -167,6 +238,7 @@ export const Navbar: React.FC = () => {
           {/* Row 2: Action buttons */}
           <div className="nav-row-2 nav-menu-desktop">
             <div className="nav-actions-wrapper">
+              <LanguageToggle variant="nav" />
               {isLoggedIn && (
                   <Link
                     href="/my-account"
@@ -176,7 +248,7 @@ export const Navbar: React.FC = () => {
                       <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                       <circle cx="12" cy="7" r="4"></circle>
                     </svg>
-                    My Account
+                    {t('nav.myAccount')}
                   </Link>
                 )}
                 <Link
@@ -188,11 +260,11 @@ export const Navbar: React.FC = () => {
                     <circle cx="12" cy="12" r="3"></circle>
                     <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
                   </svg>
-                  {pathname.startsWith('/admin') ? 'View Website' : 'Admin Panel'}
+                  {pathname.startsWith('/admin') ? t('nav.viewWebsite') : t('nav.adminPanel')}
                 </Link>
                 {isLoggedIn ? (
                   <div className="nav-actions-group">
-                    <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--primary-brand)', fontFamily: 'var(--font-serif)', display: 'inline-flex', alignItems: 'center' }}>Salaam!</span>
+                    <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--primary-brand)', fontFamily: 'var(--font-serif)', display: 'inline-flex', alignItems: 'center' }}>{t('nav.greeting')}</span>
                     <button
                       onClick={handleLogout}
                       className="btn btn-primary nav-btn"
@@ -203,7 +275,7 @@ export const Navbar: React.FC = () => {
                         <polyline points="16 17 21 12 16 7"></polyline>
                         <line x1="21" y1="12" x2="9" y2="12"></line>
                       </svg>
-                      Logout
+                      {t('nav.logout')}
                     </button>
                   </div>
                 ) : (
@@ -217,7 +289,7 @@ export const Navbar: React.FC = () => {
                         <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                         <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                       </svg>
-                      Login
+                      {t('nav.login')}
                     </button>
                     <button
                       onClick={handleRegisterFree}
@@ -229,7 +301,7 @@ export const Navbar: React.FC = () => {
                         <line x1="20" y1="8" x2="20" y2="14"></line>
                         <line x1="17" y1="11" x2="23" y2="11"></line>
                       </svg>
-                      Register Free
+                      {t('nav.registerFree')}
                     </button>
                   </div>
                 )}
@@ -269,6 +341,7 @@ export const Navbar: React.FC = () => {
               <button className="modal-close-btn" onClick={() => setIsMobileMenuOpen(false)}>×</button>
             </div>
             <hr style={{ borderColor: 'var(--border-color)' }} />
+            <LanguageToggle variant="block" />
             <Link
               href="/"
               onClick={() => setIsMobileMenuOpen(false)}
@@ -284,7 +357,7 @@ export const Navbar: React.FC = () => {
                 transition: 'var(--transition-smooth)'
               }}
             >
-              Home
+              {t('nav.home')}
             </Link>
             <Link
               href="/search"
@@ -301,7 +374,7 @@ export const Navbar: React.FC = () => {
                 transition: 'var(--transition-smooth)'
               }}
             >
-              Browse Profiles
+              {t('nav.browse')}
             </Link>
             <Link
               href="/how-it-works"
@@ -318,7 +391,7 @@ export const Navbar: React.FC = () => {
                 transition: 'var(--transition-smooth)'
               }}
             >
-              How It Works
+              {t('nav.howItWorks')}
             </Link>
             <Link
               href="/premium"
@@ -335,7 +408,24 @@ export const Navbar: React.FC = () => {
                 transition: 'var(--transition-smooth)'
               }}
             >
-              Pricing & Packages
+              {t('nav.pricing')}
+            </Link>
+            <Link
+              href="/packages/second-marriage"
+              onClick={() => setIsMobileMenuOpen(false)}
+              style={{
+                padding: '10px 16px 10px 32px',
+                fontWeight: '700',
+                fontSize: '14px',
+                color: pathname === '/packages/second-marriage' ? 'var(--deep-maroon)' : 'var(--text-dark)',
+                backgroundColor: pathname === '/packages/second-marriage' ? 'var(--soft-cream)' : 'transparent',
+                borderRadius: '8px',
+                borderLeft: pathname === '/packages/second-marriage' ? '4px solid var(--gold-accent)' : '4px solid transparent',
+                textDecoration: 'none',
+                transition: 'var(--transition-smooth)'
+              }}
+            >
+              ↳ {t('nav.secondMarriage')}
             </Link>
             <Link
               href="/safety"
@@ -352,24 +442,7 @@ export const Navbar: React.FC = () => {
                 transition: 'var(--transition-smooth)'
               }}
             >
-              Safety Guidelines
-            </Link>
-            <Link
-              href="/zaicha"
-              onClick={() => setIsMobileMenuOpen(false)}
-              style={{
-                padding: '10px 16px',
-                fontWeight: '700',
-                fontSize: '15px',
-                color: pathname === '/zaicha' ? 'var(--deep-maroon)' : 'var(--text-dark)',
-                backgroundColor: pathname === '/zaicha' ? 'var(--soft-cream)' : 'transparent',
-                borderRadius: '8px',
-                borderLeft: pathname === '/zaicha' ? '4px solid var(--gold-accent)' : '4px solid transparent',
-                textDecoration: 'none',
-                transition: 'var(--transition-smooth)'
-              }}
-            >
-              Zaicha Guidance
+              {t('nav.safetyGuidelines')}
             </Link>
             <Link
               href="/event-management"
@@ -386,7 +459,7 @@ export const Navbar: React.FC = () => {
                 transition: 'var(--transition-smooth)'
               }}
             >
-              Event Management
+              {t('nav.eventManagement')}
             </Link>
 
             {isLoggedIn && (
@@ -396,7 +469,7 @@ export const Navbar: React.FC = () => {
                 className="btn btn-secondary"
                 style={{ width: '100%', textAlign: 'center', display: 'block' }}
               >
-                My Account
+                {t('nav.myAccount')}
               </Link>
             )}
 
@@ -406,7 +479,7 @@ export const Navbar: React.FC = () => {
               className="btn btn-secondary"
               style={{ width: '100%', textAlign: 'center', display: 'block' }}
             >
-              {pathname.startsWith('/admin') ? 'View Website' : 'Admin Panel'}
+              {pathname.startsWith('/admin') ? t('nav.viewWebsite') : t('nav.adminPanel')}
             </Link>
 
             {isLoggedIn ? (
@@ -418,7 +491,7 @@ export const Navbar: React.FC = () => {
                 className="btn btn-primary"
                 style={{ width: '100%' }}
               >
-                Logout
+                {t('nav.logout')}
               </button>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -430,7 +503,7 @@ export const Navbar: React.FC = () => {
                   className="btn btn-secondary"
                   style={{ width: '100%' }}
                 >
-                  Login
+                  {t('nav.login')}
                 </button>
                 <button
                   onClick={() => {
@@ -440,7 +513,7 @@ export const Navbar: React.FC = () => {
                   className="btn btn-gold"
                   style={{ width: '100%' }}
                 >
-                  Register Free
+                  {t('nav.registerFree')}
                 </button>
               </div>
             )}

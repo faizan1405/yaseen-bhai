@@ -22,9 +22,6 @@ const trustStats = `
 `;
 content = content.replace(/<QuranVerseBlock \/>/, trustStats);
 
-// 3. ZaichaPromoCard -> Remove
-content = content.replace(/<ZaichaPromoCard \/>\n/, '');
-
 // 4. Extract sections to reorder
 const extractSection = (content, startComment, endMarker) => {
   const startIndex = content.indexOf(startComment);

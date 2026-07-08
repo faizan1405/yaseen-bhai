@@ -2,20 +2,22 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSimulator } from '../../../context/SimulatorContext';
+import { useApp } from '../../../context/AppContext';
 import Navbar from '../../../components/Navbar';
 import ProfileGrid from '../../../components/ProfileGrid';
 import { SectionHeading, PremiumFooter, FloralCorner } from '../../../components/NikahComponents';
 import PackageInquiryForm from '../../../components/PackageInquiryForm';
+import { useI18n } from '../../../i18n/I18nProvider';
 
 export default function HighProfileClient() {
-  const { profiles, isLoggedIn, simulatedPackages, handleRazorpayCheckout, userProfile, setIsRegistering, setRegStep, setShowLoginModal } = useSimulator();
+  const { profiles, isLoggedIn, activePackages, handleRazorpayCheckout, userProfile, setIsRegistering, setRegStep, setShowLoginModal } = useApp();
   const router = useRouter();
+  const { t, tList } = useI18n();
   const [searchQuery, setSearchQuery] = useState('');
   const [showInquiry, setShowInquiry] = useState(false);
 
   const isFormComplete = isLoggedIn && userProfile?.profileCompletionStatus === 'COMPLETE';
-  const isPackageActive = simulatedPackages.includes('high_profile_package');
+  const isPackageActive = activePackages.includes('high_profile_package');
 
   const handleCompleteForm = () => {
     if (!isLoggedIn) {
@@ -60,9 +62,9 @@ export default function HighProfileClient() {
       <main className="flex-grow">
         <div className="container font-sans" style={{ padding: '40px 0 80px 0' }}>
           <SectionHeading
-            title="High Profile Matches"
-            subtitle="Browse premium candidates earning ₹10 Lakh+ annually (Doctors, Engineers, Business Owners & Premium Families)."
-            scriptText="Exclusive Premium Directory"
+            title={t('pkgPages.highTitle')}
+            subtitle={t('pkgPages.highSubtitle')}
+            scriptText={t('pkgPages.highScript')}
             as="h1"
           />
 
@@ -77,7 +79,7 @@ export default function HighProfileClient() {
               <div style={{ marginBottom: '24px', display: 'flex', gap: '12px' }}>
                 <input
                   type="text"
-                  placeholder="Search High Profiles (e.g. city, occupation...)"
+                  placeholder={t('pkgPages.highSearchPh')}
                   className="form-control"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -90,33 +92,26 @@ export default function HighProfileClient() {
 
             <div className="card-theme-wrapper" style={{ padding: '24px', position: 'sticky', top: '100px', border: '2.5px solid var(--gold-accent)', boxShadow: 'var(--gold-glow-shadow)' }}>
               <h3 style={{ fontFamily: 'var(--font-serif)', color: 'var(--deep-maroon)', fontSize: '22px', marginBottom: '16px', fontWeight: 800 }}>
-                Premium Match Access
+                {t('premium.premiumTitle')}
               </h3>
               {isFormComplete ? (
-                <div style={{ fontSize: '36px', fontWeight: '800', color: 'var(--deep-maroon)', marginBottom: '8px', fontFamily: 'var(--font-serif)' }}>
-                  ₹21,000 <span style={{ fontSize: '14px', color: 'var(--text-muted)', fontFamily: 'var(--font-sans)', fontWeight: 'normal' }}>+ GST</span>
+                <div className="ltr-value" style={{ fontSize: '36px', fontWeight: '800', color: 'var(--deep-maroon)', marginBottom: '8px', fontFamily: 'var(--font-serif)' }}>
+                  ₹21,000 <span style={{ fontSize: '14px', color: 'var(--text-muted)', fontFamily: 'var(--font-sans)', fontWeight: 'normal' }}>{t('nikah.gst')}</span>
                 </div>
               ) : (
                 <div style={{ background: 'linear-gradient(135deg,rgba(111,29,53,0.06),rgba(184,146,74,0.06))', border: '1.5px dashed var(--gold-accent)', borderRadius: '10px', padding: '14px', marginBottom: '8px', textAlign: 'center' }}>
-                  <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '4px' }}>Pricing available after</div>
-                  <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--deep-maroon)' }}>Complete your profile to view pricing</div>
+                  <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '4px' }}>{t('nikah.pricingAfter')}</div>
+                  <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--deep-maroon)' }}>{t('nikah.completeToView')}</div>
                 </div>
               )}
               <p style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: '20px' }}>
-                Unlock access to our exclusive verified tier of ultra-affluent and highly-educated matches.
+                {t('pkgPages.highCardDesc')}
               </p>
 
               <ul style={{ paddingLeft: '20px', marginBottom: '24px', fontSize: '13.5px', color: 'var(--text-dark)' }}>
-                <li style={{ marginBottom: '8px' }}>Everything in Basic Access</li>
-                <li style={{ marginBottom: '8px' }}>Premium verified profile suggestions</li>
-                <li style={{ marginBottom: '8px' }}>High-priority matchmaking assistance</li>
-                <li style={{ marginBottom: '8px' }}>Personalized profile shortlisting</li>
-                <li style={{ marginBottom: '8px' }}>Dedicated support assistance</li>
-                <li style={{ marginBottom: '8px' }}>Family meeting coordination support</li>
-                <li style={{ marginBottom: '8px' }}>Biodata/profile presentation guidance</li>
-                <li style={{ marginBottom: '8px' }}>Regular follow-up and progress updates</li>
-                <li style={{ marginBottom: '8px' }}>Privacy-safe contact assistance</li>
-                <li style={{ marginBottom: '8px' }}>1 year service validity</li>
+                {tList('premium.premiumFeatures').map((feat, i) => (
+                  <li key={i} style={{ marginBottom: '8px' }}>{feat}</li>
+                ))}
               </ul>
 
               {isFormComplete ? (
@@ -126,7 +121,7 @@ export default function HighProfileClient() {
                   onClick={() => handleRazorpayCheckout('high_profile_package', 21000, 'Premium Match Access')}
                   disabled={isPackageActive}
                 >
-                  {isPackageActive ? 'Package Active ✅' : 'Buy Premium Match Access'}
+                  {isPackageActive ? t('pkgPages.packageActive') : t('premium.buyPremium')}
                 </button>
               ) : (
                 <button
@@ -134,7 +129,7 @@ export default function HighProfileClient() {
                   style={{ width: '100%', padding: '12px', fontSize: '15px' }}
                   onClick={handleCompleteForm}
                 >
-                  Complete Form to View Price
+                  {t('nikah.completeToViewPrice')}
                 </button>
               )}
 
@@ -145,10 +140,10 @@ export default function HighProfileClient() {
                     style={{ width: '100%', padding: '10px', fontSize: '13px', marginTop: '10px' }}
                     onClick={() => setShowInquiry(true)}
                   >
-                    Inquire & Ask Call back
+                    {t('pkgPages.inquireCallback')}
                   </button>
                   <a
-                    href={`https://wa.me/919170975535?text=${encodeURIComponent("Assalamu Alaikum, I am interested in the ₹21,000 Premium Match Access on Asan Nikah. Please guide me.")}`}
+                    href={`https://wa.me/919170975535?text=${encodeURIComponent(t('premium.waPremium'))}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn"
@@ -172,7 +167,7 @@ export default function HighProfileClient() {
                     <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
                       <path d="M12.012 2c-5.506 0-9.97 4.478-9.97 10.012 0 1.77.458 3.43 1.258 4.887L2 22l5.253-1.378c1.402.766 3 1.2 4.759 1.2 5.506 0 9.97-4.478 9.97-10.012 0-5.534-4.464-10.012-9.97-10.012zm5.795 13.91c-.244.694-1.22 1.268-1.745 1.355-.472.079-.938.293-3.04-.542-2.527-.998-4.14-3.565-4.267-3.731-.127-.166-.991-1.32-.991-2.518 0-1.2.626-1.79.847-2.029.221-.24.479-.3.639-.3a.46.46 0 0 1 .332.155c.105.155.434 1.058.471 1.139.037.081.062.176.009.282-.053.106-.079.171-.157.262-.078.09-.166.2-.236.269-.079.078-.162.162-.07.32.092.158.411.678.88 1.096.604.538 1.111.704 1.267.782.157.078.249.066.342-.04.093-.106.402-.469.511-.627.109-.158.217-.132.366-.077.148.055.942.443 1.103.524.161.081.268.121.308.19.04.069.04.4-.204 1.094z" />
                     </svg>
-                    Inquire on WhatsApp
+                    {t('nikah.inquireWhatsapp')}
                   </a>
                 </>
               )}
@@ -203,7 +198,7 @@ export default function HighProfileClient() {
               ×
             </button>
             <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '22px', color: 'var(--deep-maroon)', marginBottom: '16px', textAlign: 'center' }}>
-              Package Inquiry & Callback
+              {t('premium.inquiryModalTitle')}
             </h3>
             <PackageInquiryForm
               defaultPackage="₹21,000 Premium Match Access"

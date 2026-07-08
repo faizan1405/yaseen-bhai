@@ -8,9 +8,11 @@ import { SectionHeading, FloralCorner, PremiumFooter } from '../../components/Ni
 import LeadForm from '../../components/LeadForm';
 import { BusinessLocation, defaultBusinessLocation } from '../../lib/businessLocation';
 import { getSupportWhatsAppLink } from '../../lib/whatsapp';
+import { useI18n } from '../../i18n/I18nProvider';
 
 export default function ContactClient() {
   const router = useRouter();
+  const { t } = useI18n();
   const [location, setLocation] = useState<BusinessLocation>(defaultBusinessLocation);
 
   useEffect(() => {
@@ -36,27 +38,27 @@ export default function ContactClient() {
       <main className="flex-grow">
         <div className="container font-sans" style={{ padding: '40px 0 80px 0' }}>
           <SectionHeading
-            title="Contact Customer Support"
-            subtitle="Have questions about verification or payment? Drop us a message."
-            scriptText="Get in Touch"
+            title={t('contact.title')}
+            subtitle={t('contact.subtitle')}
+            scriptText={t('contact.script')}
             as="h1"
           />
 
           <div className="grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '32px', maxWidth: '1000px', margin: '0 auto' }}>
             <div className="card-theme-wrapper" style={{ padding: '0', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
               <div style={{ position: 'relative', height: '160px' }}>
-                <Image src="/images/nikah-1.jpeg" fill style={{ objectFit: 'cover', objectPosition: 'center 30%' }} alt="Contact Asan Nikah" />
+                <Image src="/images/nikah-1.jpeg" fill style={{ objectFit: 'cover', objectPosition: 'center 30%' }} alt={t('contact.heroAlt')} />
               </div>
               <div style={{ padding: '32px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', color: 'var(--deep-maroon)' }}>Contact Details</h3>
+                <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', color: 'var(--deep-maroon)' }}>{t('contact.detailsTitle')}</h3>
                 <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>📍 {location.address}</p>
                 <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>
-                  📞 Call us: <a href={`tel:${location.phoneRaw}`} style={{ color: 'var(--deep-maroon)', fontWeight: 'bold', textDecoration: 'underline' }}>{location.phone}</a> (10 AM - 6 PM)
+                  📞 {t('contact.callUs')} <a href={`tel:${location.phoneRaw}`} className="ltr-value" style={{ color: 'var(--deep-maroon)', fontWeight: 'bold', textDecoration: 'underline' }}>{location.phone}</a> {t('contact.callHours')}
                 </p>
                 <div style={{ fontSize: '14px', color: 'var(--text-muted)', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  <span>💬 WhatsApp: <strong style={{ color: 'var(--deep-maroon)' }}>+91 96754 83125</strong></span>
+                  <span>💬 {t('contact.whatsappLabel')} <strong className="ltr-value" style={{ color: 'var(--deep-maroon)' }}>+91 96754 83125</strong></span>
                   <a
-                    href={getSupportWhatsAppLink('Assalamu Alaikum, I need support regarding Asan Nikah.')}
+                    href={getSupportWhatsAppLink(t('contact.supportWhatsappMsg'))}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn"
@@ -78,17 +80,17 @@ export default function ContactClient() {
                       marginTop: '2px'
                     }}
                   >
-                    Chat on WhatsApp
+                    {t('contact.chatWhatsapp')}
                   </a>
                 </div>
-                <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>✉️ Verification Dept: support@asannikah.com</p>
+                <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>{t('contact.verificationDept')}</p>
                 
                 {/* Social media connections */}
                 {(location.facebookUrl || location.instagramUrl || location.youtubeUrl || location.linkedinUrl || location.twitterUrl) && (
                   <>
                     <hr style={{ borderColor: 'var(--border-color)' }} />
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                      <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '16px', color: 'var(--deep-maroon)', fontWeight: 600 }}>Follow Us</h4>
+                      <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '16px', color: 'var(--deep-maroon)', fontWeight: 600 }}>{t('contact.followUs')}</h4>
                       <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
                         {location.facebookUrl && (
                           <a
@@ -156,14 +158,14 @@ export default function ContactClient() {
                 )}
                 
                 <hr style={{ borderColor: 'var(--border-color)' }} />
-                <span style={{ fontSize: '12.5px', color: 'var(--gold-accent)', fontWeight: 600 }}>We usually call back within 24 hours of submission.</span>
+                <span style={{ fontSize: '12.5px', color: 'var(--gold-accent)', fontWeight: 600 }}>{t('contact.callbackNote')}</span>
               </div>
             </div>
 
             <div className="card-theme-wrapper" style={{ gridColumn: 'span 2', padding: '32px' }}>
               <FloralCorner position="tl" color="var(--gold-accent)" />
               <FloralCorner position="tr" color="var(--gold-accent)" />
-              <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', color: 'var(--deep-maroon)', marginBottom: '16px' }}>Send Support Message</h3>
+              <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', color: 'var(--deep-maroon)', marginBottom: '16px' }}>{t('contact.formTitle')}</h3>
               <LeadForm defaultInquiryType="General Inquiry" />
             </div>
           </div>

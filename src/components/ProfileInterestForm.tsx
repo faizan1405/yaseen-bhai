@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useSimulator } from '../context/SimulatorContext';
+import { useApp } from '../context/AppContext';
+import { useI18n } from '../i18n/I18nProvider';
 
 interface ProfileInterestFormProps {
   profileId: string;
@@ -13,12 +14,14 @@ interface ProfileInterestFormProps {
 
 export const ProfileInterestForm: React.FC<ProfileInterestFormProps> = ({
   profileId,
-  profileName = 'Protected Profile',
+  profileName,
   profileCategory,
   onSuccess,
   onCancel
 }) => {
-  const { userProfile, isLoggedIn, getSimulatorHeaders, setReloadTrigger } = useSimulator();
+  const { userProfile, isLoggedIn, getRequestHeaders, setReloadTrigger } = useApp();
+  const { t } = useI18n();
+  const resolvedProfileName = profileName ?? t('interestForm.protectedProfile');
 
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
@@ -49,7 +52,7 @@ export const ProfileInterestForm: React.FC<ProfileInterestFormProps> = ({
     if (profileCategory === 'good_profile') {
       setPackageInterest('₹5,500 Good Profiles Package');
     } else if (profileCategory === 'second_marriage') {
-      setPackageInterest('₹11,000 Basic Access');
+      setPackageInterest('₹11,000 Second Marriage');
     } else if (profileCategory === 'high_profile') {
       setPackageInterest('₹21,000 Premium Match Access');
     }
@@ -64,7 +67,7 @@ export const ProfileInterestForm: React.FC<ProfileInterestFormProps> = ({
     const sourcePage = typeof window !== 'undefined' ? `${window.location.pathname}?id=${profileId}` : `/search?id=${profileId}`;
 
     try {
-      const headers = getSimulatorHeaders();
+      const headers = getRequestHeaders();
       const res = await fetch('/api/leads', {
         method: 'POST',
         headers,
@@ -85,10 +88,10 @@ export const ProfileInterestForm: React.FC<ProfileInterestFormProps> = ({
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || 'Something went wrong. Please try again.');
+        throw new Error(data.error || t('interestForm.errorGeneric'));
       }
 
-      setSuccessMsg(data.message || 'Alhamdulillah! Interest request sent successfully.');
+      setSuccessMsg(data.message || t('interestForm.successDefault'));
       setMessage('');
       setReloadTrigger((prev: number) => prev + 1);
 
@@ -116,10 +119,10 @@ export const ProfileInterestForm: React.FC<ProfileInterestFormProps> = ({
         }}>
           <span style={{ fontSize: '36px', display: 'block', marginBottom: '8px' }}>❤️</span>
           <h4 style={{ fontFamily: 'var(--font-serif)', color: 'var(--primary-brand)', fontSize: '18px', marginBottom: '6px' }}>
-            Interest Expressed
+            {t('interestForm.successTitle')}
           </h4>
           <p style={{ color: 'var(--text-dark)', fontSize: '13px', lineHeight: '1.5' }}>
-            {successMsg} Our admin team will verify your request and contact you to proceed.
+            {successMsg} {t('interestForm.successSuffix')}
           </p>
         </div>
       ) : (
@@ -133,9 +136,9 @@ export const ProfileInterestForm: React.FC<ProfileInterestFormProps> = ({
             color: 'var(--text-dark)',
             marginBottom: '8px'
           }}>
-            📍 Expressing interest in candidate: <strong>{profileName}</strong>
+            📍 {t('interestForm.expressingIntro')} <strong>{resolvedProfileName}</strong>
             <span style={{ display: 'block', fontSize: '11px', color: 'var(--text-muted)', marginTop: '2px' }}>
-              Note: Contact information and photos will remain secure. Admin will facilitate contact sharing after eligibility verification.
+              {t('interestForm.note')}
             </span>
           </div>
 
@@ -153,17 +156,17 @@ export const ProfileInterestForm: React.FC<ProfileInterestFormProps> = ({
           )}
 
           <div className="form-group" style={{ display: 'none' }}>
-            <label htmlFor="_honey">Do not fill this out if you are human:</label>
+            <label htmlFor="_honey">{t('interestForm.honeyLabel')}</label>
             <input type="text" id="_honey" name="_honey" value={honey} onChange={(e) => setHoney(e.target.value)} tabIndex={-1} autoComplete="off" />
           </div>
 
           <div className="form-group">
-            <label className="form-label" htmlFor="interestFullName">Your Full Name *</label>
+            <label className="form-label" htmlFor="interestFullName">{t('interestForm.fullName')}</label>
             <input
               id="interestFullName"
               type="text"
               className="form-control"
-              placeholder="Enter your name"
+              placeholder={t('interestForm.phFullName')}
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               required
@@ -173,12 +176,12 @@ export const ProfileInterestForm: React.FC<ProfileInterestFormProps> = ({
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }} className="grid-mobile-1">
             <div className="form-group">
-              <label className="form-label" htmlFor="interestPhone">Phone Number *</label>
+              <label className="form-label" htmlFor="interestPhone">{t('interestForm.phone')}</label>
               <input
                 id="interestPhone"
                 type="tel"
                 className="form-control"
-                placeholder="e.g. +91 9999999999"
+                placeholder={t('interestForm.phPhone')}
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 required
@@ -186,12 +189,12 @@ export const ProfileInterestForm: React.FC<ProfileInterestFormProps> = ({
               />
             </div>
             <div className="form-group">
-              <label className="form-label" htmlFor="interestCity">Your City *</label>
+              <label className="form-label" htmlFor="interestCity">{t('interestForm.city')}</label>
               <input
                 id="interestCity"
                 type="text"
                 className="form-control"
-                placeholder="e.g. Mumbai"
+                placeholder={t('interestForm.phCity')}
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 required
@@ -201,12 +204,12 @@ export const ProfileInterestForm: React.FC<ProfileInterestFormProps> = ({
           </div>
 
           <div className="form-group">
-            <label className="form-label" htmlFor="interestEmail">Email <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>(Optional)</span></label>
+            <label className="form-label" htmlFor="interestEmail">{t('interestForm.email')} <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{t('interestForm.optional')}</span></label>
             <input
               id="interestEmail"
               type="email"
               className="form-control"
-              placeholder="email@example.com"
+              placeholder={t('interestForm.phEmail')}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={isSubmitting}
@@ -214,7 +217,7 @@ export const ProfileInterestForm: React.FC<ProfileInterestFormProps> = ({
           </div>
 
           <div className="form-group">
-            <label className="form-label" htmlFor="interestPackage">Are you interested in any Premium Package? <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>(Optional)</span></label>
+            <label className="form-label" htmlFor="interestPackage">{t('interestForm.interestedPackage')} <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{t('interestForm.optional')}</span></label>
             <select
               id="interestPackage"
               className="form-control"
@@ -222,21 +225,21 @@ export const ProfileInterestForm: React.FC<ProfileInterestFormProps> = ({
               onChange={(e) => setPackageInterest(e.target.value)}
               disabled={isSubmitting}
             >
-              <option value="">-- No Package / Not Interested --</option>
-              <option value="₹300 Monthly Membership">₹300 Monthly Membership</option>
-              <option value="₹5,500 Good Profiles Package">₹5,500 Good Profiles Package</option>
-              <option value="₹11,000 Basic Access">₹11,000 Basic Access</option>
-              <option value="₹21,000 Premium Match Access">₹21,000 Premium Match Access</option>
+              <option value="">{t('interestForm.optNone')}</option>
+              <option value="₹300 Monthly Membership">{t('interestForm.optMonthly')}</option>
+              <option value="₹5,500 Good Profiles Package">{t('interestForm.optGood')}</option>
+              <option value="₹11,000 Second Marriage">{t('interestForm.optSecond')}</option>
+              <option value="₹21,000 Premium Match Access">{t('interestForm.optPremium')}</option>
             </select>
           </div>
 
           <div className="form-group">
-            <label className="form-label" htmlFor="interestMessage">Message to Candidate / Admin <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>(Optional)</span></label>
+            <label className="form-label" htmlFor="interestMessage">{t('interestForm.message')} <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{t('interestForm.optional')}</span></label>
             <textarea
               id="interestMessage"
               className="form-control"
               rows={2}
-              placeholder="Mention your own education/occupation or messages for the family..."
+              placeholder={t('interestForm.phMessage')}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               disabled={isSubmitting}
@@ -252,7 +255,7 @@ export const ProfileInterestForm: React.FC<ProfileInterestFormProps> = ({
                 style={{ flex: 1, padding: '8px' }}
                 disabled={isSubmitting}
               >
-                Cancel
+                {t('interestForm.cancel')}
               </button>
             )}
             <button
@@ -261,7 +264,7 @@ export const ProfileInterestForm: React.FC<ProfileInterestFormProps> = ({
               style={{ flex: 2, padding: '8px' }}
               disabled={isSubmitting}
             >
-              {isSubmitting ? 'Submitting Interest...' : 'Express Interest'}
+              {isSubmitting ? t('interestForm.submitting') : t('interestForm.submit')}
             </button>
           </div>
         </form>

@@ -3,14 +3,14 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('Starting demo database cleanup...');
+  console.log('Starting sample database cleanup...');
   try {
-    // 1. Find all demo users
-    const demoUsers = await prisma.user.findMany({
+    // 1. Find all sample users
+    const sampleUsers = await prisma.user.findMany({
       where: {
         OR: [
-          { email: { endsWith: '@rishteforever.demo' } },
-          { email: 'demo_admin@rishteforever.demo' },
+          { email: { endsWith: '@rishteforever.sample' } },
+          { email: 'sample_admin@rishteforever.sample' },
         ],
       },
       include: {
@@ -22,56 +22,56 @@ async function main() {
       },
     });
 
-    if (demoUsers.length === 0) {
-      console.log('No demo users found to delete.');
+    if (sampleUsers.length === 0) {
+      console.log('No sample users found to delete.');
       return;
     }
 
-    const demoUserIds = demoUsers.map((u) => u.id);
-    const demoProfileIds: string[] = [];
-    const demoPurchaseIds: string[] = [];
+    const sampleUserIds = sampleUsers.map((u) => u.id);
+    const sampleProfileIds: string[] = [];
+    const samplePurchaseIds: string[] = [];
 
-    for (const u of demoUsers) {
+    for (const u of sampleUsers) {
       if (u.profile) {
-        demoProfileIds.push(u.profile.id);
+        sampleProfileIds.push(u.profile.id);
         if (u.profile.purchases) {
-          demoPurchaseIds.push(...u.profile.purchases.map((p) => p.id));
+          samplePurchaseIds.push(...u.profile.purchases.map((p) => p.id));
         }
       }
     }
 
-    console.log(`Found ${demoUserIds.length} demo users, ${demoProfileIds.length} demo profiles, and ${demoPurchaseIds.length} demo package purchases.`);
+    console.log(`Found ${sampleUserIds.length} sample users, ${sampleProfileIds.length} sample profiles, and ${samplePurchaseIds.length} sample package purchases.`);
 
-    // 2. Clean up AuditLogs referencing demo users, profiles, or purchases
+    // 2. Clean up AuditLogs referencing sample users, profiles, or purchases
     const deletedLogs = await prisma.auditLog.deleteMany({
       where: {
         OR: [
-          { actorUserId: { in: demoUserIds } },
+          { actorUserId: { in: sampleUserIds } },
           {
             AND: [
               { targetType: 'MatrimonialProfile' },
-              { targetId: { in: demoProfileIds } },
+              { targetId: { in: sampleProfileIds } },
             ],
           },
           {
             AND: [
               { targetType: 'PackagePurchase' },
-              { targetId: { in: demoPurchaseIds } },
+              { targetId: { in: samplePurchaseIds } },
             ],
           },
         ],
       },
     });
-    console.log(`Deleted ${deletedLogs.count} audit logs referencing demo records.`);
+    console.log(`Deleted ${deletedLogs.count} audit logs referencing sample records.`);
 
-    // 3. Delete demo users (this cascades to profiles, purchases, curated leads, verification requests)
+    // 3. Delete sample users (this cascades to profiles, purchases, curated leads, verification requests)
     const deletedUsers = await prisma.user.deleteMany({
       where: {
-        id: { in: demoUserIds },
+        id: { in: sampleUserIds },
       },
     });
 
-    console.log(`Successfully deleted ${deletedUsers.count} demo users (including cascading profiles, verification requests, purchases, and lead assignments).`);
+    console.log(`Successfully deleted ${deletedUsers.count} sample users (including cascading profiles, verification requests, purchases, and lead assignments).`);
     console.log('Database cleanup completed!');
   } catch (error) {
     console.error('Cleanup failed:', error);

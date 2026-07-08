@@ -1,13 +1,13 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useSimulator } from '../../../context/SimulatorContext';
+import { useApp } from '../../../context/AppContext';
 import { Lead } from '../../../types';
 import { getWhatsAppLink } from '../../../lib/whatsapp';
 import { SectionHeading, FloralCorner } from '../../../components/NikahComponents';
 
 export default function AdminLeadsPage() {
-  const { getSimulatorHeaders, reloadTrigger, setReloadTrigger } = useSimulator();
+  const { getRequestHeaders, reloadTrigger, setReloadTrigger } = useApp();
 
   const [leads, setLeads] = useState<Lead[]>([]);
   const [search, setSearch] = useState('');
@@ -34,7 +34,7 @@ export default function AdminLeadsPage() {
         if (packageFilter) queryParams.set('interestedPackage', packageFilter);
 
         const url = `/api/admin/leads?${queryParams.toString()}`;
-        const headers = getSimulatorHeaders();
+        const headers = getRequestHeaders();
 
         const res = await fetch(url, { headers });
         if (res.ok) {
@@ -48,7 +48,7 @@ export default function AdminLeadsPage() {
       }
     }
     fetchLeads();
-  }, [search, statusFilter, typeFilter, packageFilter, reloadTrigger, getSimulatorHeaders]);
+  }, [search, statusFilter, typeFilter, packageFilter, reloadTrigger, getRequestHeaders]);
 
   // Handle opening lead details
   const handleOpenLead = (lead: Lead) => {
@@ -64,7 +64,7 @@ export default function AdminLeadsPage() {
     try {
       const res = await fetch(`/api/admin/leads/${leadId}`, {
         method: 'PATCH',
-        headers: getSimulatorHeaders(),
+        headers: getRequestHeaders(),
         body: JSON.stringify(updateData)
       });
       const data = await res.json();
@@ -89,7 +89,7 @@ export default function AdminLeadsPage() {
     try {
       const res = await fetch(`/api/admin/leads/${leadId}`, {
         method: 'DELETE',
-        headers: getSimulatorHeaders()
+        headers: getRequestHeaders()
       });
       if (res.ok) {
         if (selectedLead && selectedLead.id === leadId) {
@@ -193,11 +193,13 @@ export default function AdminLeadsPage() {
               value={packageFilter}
               onChange={(e) => setPackageFilter(e.target.value)}
             >
+              {/* Values are stable internal package keys; the API resolves each to
+                  its current + legacy stored labels so old records still match. */}
               <option value="">All Packages</option>
-              <option value="₹300 Monthly Membership">₹300 Monthly Membership</option>
-              <option value="₹5,500 Good Profiles Package">₹5,500 Good Profiles</option>
-              <option value="₹11,000 Basic Access">₹11,000 Basic Access</option>
-              <option value="₹21,000 Premium Match Access">₹21,000 Premium Match Access</option>
+              <option value="monthly_membership">₹300 Monthly Membership</option>
+              <option value="good_profile_package">₹5,500 Good Profiles</option>
+              <option value="second_marriage_package">₹11,000 Second Marriage</option>
+              <option value="high_profile_package">₹21,000 Premium Match Access</option>
             </select>
           </div>
         </div>

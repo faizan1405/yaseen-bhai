@@ -56,7 +56,7 @@ export function initFallbackOptions() {
   }
 }
 
-import { rawDemoProfiles } from './demoProfiles';
+import { sampleProfiles } from './sampleProfiles';
 
 // In-Memory Fallback State (if database is offline/unconfigured)
 const MOCK_PROFILES_DB: Array<{
@@ -98,7 +98,7 @@ const MOCK_PROFILES_DB: Array<{
   noMaslakPreference: boolean;
   willingToRelocate: boolean;
   category?: string | null;
-}> = rawDemoProfiles.map(p => ({
+}> = sampleProfiles.map(p => ({
   id: p.id,
   userId: p.userId,
   fullName: p.fullName,
@@ -344,8 +344,8 @@ export async function getProfileByUserId(userId: string) {
   return globalStore.inMemoryProfiles?.find((p) => p.userId === userId) || null;
 }
 
-// Expose the bundled demo profiles (used as a public showcase fallback)
-export function getDemoProfiles() {
+// Expose the bundled sample profiles (used as a public showcase fallback)
+export function getSampleProfiles() {
   return MOCK_PROFILES_DB;
 }
 
@@ -357,7 +357,7 @@ export async function getAllProfiles() {
         orderBy: { createdAt: 'desc' },
       });
       // If the database is reachable but has no profiles yet (e.g. this
-      // environment was never seeded), serve the bundled demo profiles so the
+      // environment was never seeded), serve the bundled sample profiles so the
       // public directory and featured section are never empty. Once real
       // profiles exist this branch never runs, so nothing is duplicated.
       if (dbProfiles.length === 0) {

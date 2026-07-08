@@ -26,8 +26,7 @@ Key `.env` variables required for production:
 - `AUTH_SECRET`: Generate using `openssl rand -base64 32`.
 - `AUTH_GOOGLE_ID` & `AUTH_GOOGLE_SECRET`: Google OAuth credentials.
 - `NEXT_PUBLIC_SITE_URL`: Set to `https://asannikah.com`.
-- `NEXT_PUBLIC_DEMO_MODE`: **Must be `false` in production**.
-- `RAZORPAY_KEY_ID` & `RAZORPAY_KEY_SECRET`: Razorpay live keys.
+- `RAZORPAY_KEY_ID` & `RAZORPAY_KEY_SECRET`: Razorpay live keys (required — checkout is disabled without valid keys).
 
 ## Local Development
 Run the development server:
@@ -52,7 +51,7 @@ Access the admin panel at `/admin/login`.
 In production, you must use valid credentials from the database to access the dashboard. 
 
 ## Important Production Safety Notes
-- Ensure `NEXT_PUBLIC_DEMO_MODE=false`.
+- Access requires real Google (Auth.js) sign-in; admin access requires an `ADMIN` role on the account.
 - The `.env` file is in `.gitignore` and should never be committed.
 - Replace any remaining dummy Razorpay keys with live client keys before launch.
 - Real emails and SMS notifications require valid API keys (Resend, SMS Provider) set in `.env`.

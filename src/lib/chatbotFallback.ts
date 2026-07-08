@@ -58,7 +58,7 @@ export function getFallbackResponse(message: string): string {
     return "Assalamu Alaikum! Asan Nikah offers 4 matrimonial packages (all prices + GST):\n\n" +
       "1. **Standard Monthly Membership**: ₹300 + GST/month. Allows searching matches, filtering, and unblurring photos/phone numbers on normal profiles.\n" +
       "2. **Good Profiles Package**: ₹5,500 + GST. Access to curated profiles, valid for 1 year + ₹21,000 success fee after marriage confirmation.\n" +
-      "3. **Basic Access**: ₹11,000 + GST. Tailored search category, valid for 1 year. No success fee.\n" +
+      "3. **Second Marriage**: ₹11,000 + GST. Private second-marriage directory for divorcee/widow/widower matches, valid for 1 year. No success fee.\n" +
       "4. **Premium Match Access**: ₹21,000 + GST. For doctors, engineers, premium families, and candidates earning ₹10 Lakhs+ annually, valid for 1 year + ₹25,000 success fee after marriage.";
   }
 
@@ -117,7 +117,7 @@ export function getFallbackResponse(message: string): string {
   }
 
   // 8. General greeting/unknown fallback response
-  return "Assalamu Alaikum! I'm the Asan Nikah support assistant (demo mode).\n\n" +
+  return "Assalamu Alaikum! I'm the Asan Nikah support assistant.\n\n" +
     "I can answer your questions about:\n" +
     "• **Packages & Pricing** (₹300/₹5.5k/₹11k/₹21k)\n" +
     "• **Photo & Contact Privacy** (Blurring details)\n" +

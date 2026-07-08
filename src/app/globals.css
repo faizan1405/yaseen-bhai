@@ -196,10 +196,6 @@ a {
   padding-bottom: 8px;
 }
 
-body:has(.demo-bar) .header {
-  top: 36px;
-}
-
 .header-top-strip {
   height: 16px;
   background: var(--maroon-gradient);
@@ -458,11 +454,6 @@ body:has(.demo-bar) .header {
   background: var(--gold-dark) !important;
   transform: translateY(-1px) !important;
   box-shadow: 0 6px 16px rgba(184, 146, 74, 0.25) !important;
-}
-
-.nav-link-zaicha {
-  color: var(--antique-gold) !important;
-  font-weight: 700 !important;
 }
 
 .animate-star {
@@ -1570,48 +1561,6 @@ select.form-control {
   flex-grow: 1;
 }
 
-/* Demo preview switcher bar (Sticky top) */
-.demo-bar {
-  background-color: hsl(150, 45%, 8%);
-  border-bottom: 1px solid rgba(212, 163, 89, 0.35);
-  color: rgba(255, 255, 255, 0.8);
-  padding: 6px 20px;
-  font-size: 11.5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  z-index: 150;
-  position: sticky;
-  top: 0;
-  box-shadow: var(--shadow-sm);
-  min-height: 36px;
-}
-
-.demo-bar-label {
-  color: var(--gold-accent);
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  font-size: 11px;
-}
-
-.demo-bar-controls {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.demo-bar-checkbox {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  font-weight: 500;
-  font-size: 11px;
-}
-
 /* Admin Panel layout */
 .admin-grid {
   display: grid;
@@ -1876,7 +1825,7 @@ select.form-control {
     grid-template-columns: 1fr;
   }
   .header {
-    top: 0px; /* Adjust if demo bar wraps on mobile */
+    top: 0px;
   }
 }
 
@@ -2088,7 +2037,7 @@ input[type="checkbox"] {
     width: 100%;
   }
   .header {
-    top: 0px; /* Adjust if demo bar wraps on mobile */
+    top: 0px;
   }
   .hero-title {
     font-size: 38px !important;
@@ -2151,15 +2100,6 @@ input[type="checkbox"] {
   }
   .modal-body {
     padding: 20px;
-  }
-  .demo-bar {
-    justify-content: center;
-    padding: 8px 16px;
-  }
-  .demo-bar-controls {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
   }
   .footer {
     padding: 60px 0 30px 0;
@@ -3002,3 +2942,122 @@ input[type="checkbox"] {
     grid-template-columns: none !important;
   }
 }
+
+/* =====================================================================
+   Bilingual (English / Urdu) support
+   - Language toggle button styling
+   - RTL layout mirroring for Urdu
+   - Nastaliq font for Urdu text; Latin/numbers keep the sans stack
+   ===================================================================== */
+
+:root {
+  /* Fallback if the Next.js font variable is unavailable */
+  --font-urdu: "Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", var(--font-sans), serif;
+}
+
+/* ---- Language toggle button ---- */
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  border-radius: 30px;
+  font-weight: 700;
+  transition: var(--transition-smooth);
+  background: var(--soft-cream, #f8fffb);
+  color: var(--deep-maroon, var(--color-primary));
+  border: 1px solid var(--gold-accent);
+  line-height: 1;
+}
+.lang-toggle:hover {
+  background: var(--gold-accent);
+  color: var(--white);
+}
+.lang-toggle-icon { flex-shrink: 0; }
+.lang-toggle-nav {
+  font-size: 13px;
+  padding: 7px 14px;
+}
+.lang-toggle-block {
+  width: 100%;
+  justify-content: center;
+  font-size: 15px;
+  padding: 12px 16px;
+}
+.lang-toggle-label { display: inline-block; }
+
+/* ---- Urdu typography: apply Nastaliq, keep Latin/numbers in the sans stack ---- */
+html[dir="rtl"] body {
+  font-family: var(--font-urdu);
+  line-height: 1.9;
+}
+/* Headings & serif elements also switch to Urdu script in RTL mode */
+html[dir="rtl"] h1,
+html[dir="rtl"] h2,
+html[dir="rtl"] h3,
+html[dir="rtl"] h4,
+html[dir="rtl"] h5,
+html[dir="rtl"] h6,
+html[dir="rtl"] .nav-link,
+html[dir="rtl"] .btn,
+html[dir="rtl"] .form-label,
+html[dir="rtl"] p,
+html[dir="rtl"] li,
+html[dir="rtl"] a,
+html[dir="rtl"] span,
+html[dir="rtl"] label,
+html[dir="rtl"] button,
+html[dir="rtl"] input,
+html[dir="rtl"] textarea,
+html[dir="rtl"] select {
+  font-family: var(--font-urdu), var(--font-sans), sans-serif;
+}
+
+/* Values that must NEVER be reshaped or reversed: prices, phone, email,
+   technical strings. Wrap them in .ltr-value (or a <bdi>) to force LTR. */
+html[dir="rtl"] .ltr-value,
+.ltr-value {
+  direction: ltr;
+  unicode-bidi: isolate;
+  font-family: var(--font-sans), sans-serif !important;
+  display: inline-block;
+}
+
+/* ---- General RTL mirroring ---- */
+html[dir="rtl"] body { text-align: right; }
+
+html[dir="rtl"] .form-control,
+html[dir="rtl"] .form-label { text-align: right; }
+
+/* Keep inputs that hold technical values left-aligned & LTR */
+html[dir="rtl"] input[type="tel"],
+html[dir="rtl"] input[type="email"],
+html[dir="rtl"] input[type="number"],
+html[dir="rtl"] input[type="url"] {
+  direction: ltr;
+  text-align: left;
+}
+
+/* Placeholders align to the reading side */
+html[dir="rtl"] input::placeholder,
+html[dir="rtl"] textarea::placeholder { text-align: right; }
+html[dir="rtl"] input[type="tel"]::placeholder,
+html[dir="rtl"] input[type="email"]::placeholder { text-align: left; }
+
+/* Navigation menus: flip flex direction so items read right-to-left */
+html[dir="rtl"] .nav-menu { flex-direction: row-reverse; }
+html[dir="rtl"] .nav-actions-wrapper,
+html[dir="rtl"] .nav-actions-group { flex-direction: row-reverse; }
+
+/* Mobile drawer opens from the right in RTL */
+html[dir="rtl"] .modal-overlay { justify-content: flex-end !important; }
+
+/* Left-border accents (active nav item in drawer) mirror to the right */
+html[dir="rtl"] .footer ul,
+html[dir="rtl"] .pkg-features { text-align: right; }
+
+/* Icons that imply direction (arrows) flip horizontally */
+html[dir="rtl"] .rtl-flip { transform: scaleX(-1); }
+
+/* Select dropdown arrow / chips spacing behave with logical flow */
+html[dir="rtl"] select.form-control { background-position: left 12px center; }

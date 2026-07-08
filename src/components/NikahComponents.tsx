@@ -1,6 +1,10 @@
+'use client';
+
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useI18n } from '../i18n/I18nProvider';
+import { localizeEnum } from '../i18n/enums';
 
 // Color types matching schema & UI
 import { Profile } from '../types';
@@ -216,6 +220,7 @@ export const QuranVerseBlock: React.FC = () => {
 
 // 7. Verified Badge
 export const VerifiedBadge: React.FC = () => {
+  const { t } = useI18n();
   return (
     <span className="card-badge card-badge-verified font-sans" style={{
       backgroundColor: 'var(--theme-accent, var(--primary-brand))',
@@ -232,7 +237,7 @@ export const VerifiedBadge: React.FC = () => {
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="20 6 9 17 4 12" />
       </svg>
-      Call Verified
+      {t('common.callVerified')}
     </span>
   );
 };
@@ -244,8 +249,8 @@ interface ProfileCardProps {
   isLoggedIn: boolean;
   isFormComplete: boolean;
   hasPaid300: boolean;
-  simulatedPackages: string[];
-  simulatedHighProfileApproved: boolean;
+  activePackages: string[];
+  highProfileApproved: boolean;
   savedProfiles: string[];
   onToggleSave: (id: string) => void;
   onViewDetails: (profile: Profile) => void;
@@ -261,8 +266,8 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
   isLoggedIn,
   isFormComplete,
   hasPaid300,
-  simulatedPackages,
-  simulatedHighProfileApproved,
+  activePackages,
+  highProfileApproved,
   savedProfiles,
   onToggleSave,
   onViewDetails,
@@ -271,6 +276,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
   getProfileImage,
   getThemeClass
 }) => {
+  const { t } = useI18n();
   const profileCat = profile.category || '';
   const isLockedCategory = (profile as any).isLockedCategory || '';
 
@@ -295,10 +301,10 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
 
   const isGoodProfile = profileCat === 'good_profile' || isLockedCategory === 'good_profile_package';
 
-  const hasPaidMonthly = hasPaid300 || simulatedPackages.includes('monthly_membership');
-  const hasSecMarriageAccess = simulatedPackages.includes('second_marriage_package');
-  const hasHighProfAccess = simulatedPackages.includes('high_profile_package') && simulatedHighProfileApproved;
-  const hasGoodProfileAccess = simulatedPackages.includes('good_profile_package');
+  const hasPaidMonthly = hasPaid300 || activePackages.includes('monthly_membership');
+  const hasSecMarriageAccess = activePackages.includes('second_marriage_package');
+  const hasHighProfAccess = activePackages.includes('high_profile_package') && highProfileApproved;
+  const hasGoodProfileAccess = activePackages.includes('good_profile_package');
 
   // Photo visible only when logged in
   const photoVisible = isLoggedIn;
@@ -310,22 +316,22 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
   let unlockCta = '';
   let showUpgradeCta = false;
   if (!isLoggedIn) {
-    unlockCta = 'View Profile';
+    unlockCta = t('common.viewProfile');
     showUpgradeCta = true;
   } else if (!isFormComplete) {
-    unlockCta = 'Complete Form & Unlock Profile';
+    unlockCta = t('nikah.completeFormUnlock');
     showUpgradeCta = true;
   } else if (!hasPaidMonthly) {
-    unlockCta = 'Choose Package';
+    unlockCta = t('common.choosePackage');
     showUpgradeCta = true;
   } else if (isLockedCategory === 'good_profile_package' && !hasGoodProfileAccess) {
-    unlockCta = 'Good Profile Package · ₹5,500';
+    unlockCta = t('nikah.goodProfilePkg');
     showUpgradeCta = true;
   } else if (isLockedCategory === 'second_marriage_package' && !hasSecMarriageAccess) {
-    unlockCta = 'Basic Access · ₹11,000';
+    unlockCta = t('nikah.basicAccessPrice');
     showUpgradeCta = true;
   } else if (isLockedCategory === 'high_profile_package' && !hasHighProfAccess) {
-    unlockCta = 'Premium Match Access · ₹21,000';
+    unlockCta = t('nikah.premiumAccessPrice');
     showUpgradeCta = true;
   }
 
@@ -465,7 +471,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                 padding: '3px 10px',
                 borderRadius: '20px',
               }}>
-                Photo Private
+                {t('common.photoPrivate')}
               </span>
             </div>
           </>
@@ -498,7 +504,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="20 6 9 17 4 12" />
               </svg>
-              Call Verified
+              {t('common.callVerified')}
             </span>
           )}
           {isGoodProfile && (
@@ -512,7 +518,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               boxShadow: '0 2px 8px rgba(46,125,50,0.3)',
               backdropFilter: 'blur(4px)',
             }}>
-              ✦ Good Profile
+              ✦ {t('common.goodProfile')}
             </span>
           )}
           {isHighProf && (
@@ -526,7 +532,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               boxShadow: '0 2px 8px rgba(184,146,74,0.35)',
               backdropFilter: 'blur(4px)',
             }}>
-              ⭐ Premium Match Access
+              ⭐ {t('common.premiumAccess')}
             </span>
           )}
           {isSecMarriage && (
@@ -540,7 +546,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               boxShadow: '0 2px 8px rgba(111,29,53,0.3)',
               backdropFilter: 'blur(4px)',
             }}>
-              ↺ Basic Access
+              ↺ {t('common.basicAccess')}
             </span>
           )}
           {isLockedCategory && (
@@ -553,7 +559,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               borderRadius: '20px',
               backdropFilter: 'blur(6px)',
             }}>
-              🔒 Package Required
+              🔒 {t('common.packageRequired')}
             </span>
           )}
         </div>
@@ -561,7 +567,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
         {/* Save / heart button — top right */}
         <button
           onClick={() => onToggleSave(profile.id)}
-          aria-label={isSaved ? 'Remove from saved' : 'Save profile'}
+          aria-label={isSaved ? t('nikah.saveRemove') : t('nikah.saveAdd')}
           style={{
             position: 'absolute',
             top: '10px',
@@ -624,7 +630,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               borderRadius: '20px',
               border: '1px solid rgba(184,146,74,0.2)',
             }}>
-              {age} yrs
+              <span className="ltr-value">{age}</span> {t('common.years')}
             </span>
           )}
           {profile.gender && (
@@ -636,7 +642,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               padding: '3px 10px',
               borderRadius: '20px',
             }}>
-              {profile.gender}
+              {localizeEnum(t, profile.gender)}
             </span>
           )}
           {profile.maritalStatus && (
@@ -645,7 +651,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               fontSize: '12.5px',
               fontWeight: 500,
             }}>
-              · {profile.maritalStatus}
+              · {localizeEnum(t, profile.maritalStatus)}
             </span>
           )}
         </div>
@@ -755,7 +761,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                 fontFamily: 'var(--font-sans)',
               }}
             >
-              View Preview
+              {t('common.viewPreview')}
             </button>
           </div>
         ) : (
@@ -774,7 +780,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                 border: '1px solid rgba(184,146,74,0.15)',
               }}>
                 <span>📞</span>
-                <span>{profile.phoneNumber}</span>
+                <span className="ltr-value">{profile.phoneNumber}</span>
               </div>
             )}
             <button
@@ -794,7 +800,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                 boxShadow: '0 4px 16px rgba(111,29,53,0.25)',
               }}
             >
-              View Full Profile →
+              {t('common.viewFullProfile')} →
             </button>
           </div>
         )}
@@ -845,7 +851,8 @@ export const PremiumPlanCard: React.FC<PremiumPlanCardProps> = ({
   onCompleteForm,
   onShowLogin,
 }) => {
-  const finalBadge = badgeText || (isPopular ? 'Recommended' : undefined);
+  const { t } = useI18n();
+  const finalBadge = badgeText || (isPopular ? t('nikah.recommended') : undefined);
   const borderStyle = planTier === 'gold' 
     ? '2.5px solid var(--gold-accent)' 
     : planTier === 'silver'
@@ -941,17 +948,17 @@ export const PremiumPlanCard: React.FC<PremiumPlanCardProps> = ({
           textAlign: 'center',
         }}>
           <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '6px', fontFamily: 'var(--font-sans)' }}>
-            Pricing available after
+            {t('nikah.pricingAfter')}
           </div>
           <div style={{ fontSize: '15px', fontWeight: 700, color: 'var(--deep-maroon)', fontFamily: 'var(--font-serif)' }}>
-            Complete your profile to view pricing
+            {t('nikah.completeToView')}
           </div>
         </div>
       ) : (
-        <div className="pkg-price" style={{ fontSize: '42px', fontWeight: '800', color: 'var(--deep-maroon)', marginBottom: '28px', fontFamily: 'var(--font-serif)' }}>
+        <div className="pkg-price ltr-value" style={{ fontSize: '42px', fontWeight: '800', color: 'var(--deep-maroon)', marginBottom: '28px', fontFamily: 'var(--font-serif)' }}>
           ₹{price.toLocaleString()}
-          <span style={{ fontSize: '12.5px', fontWeight: 'normal', color: 'var(--text-muted)', display: 'block', marginTop: '6px', fontFamily: 'var(--font-sans)' }}>
-            + GST
+          <span className="ltr-value" style={{ fontSize: '12.5px', fontWeight: 'normal', color: 'var(--text-muted)', display: 'block', marginTop: '6px', fontFamily: 'var(--font-sans)' }}>
+            {t('nikah.gst')}
           </span>
         </div>
       )}
@@ -971,7 +978,7 @@ export const PremiumPlanCard: React.FC<PremiumPlanCardProps> = ({
             className="btn btn-primary"
             style={{ width: '100%' }}
           >
-            {isLoggedIn ? 'Complete Form to View Price' : 'Register & Complete Profile'}
+            {isLoggedIn ? t('nikah.completeToViewPrice') : t('nikah.registerComplete')}
           </button>
         ) : (
           <button
@@ -980,7 +987,7 @@ export const PremiumPlanCard: React.FC<PremiumPlanCardProps> = ({
             style={{ width: '100%' }}
             disabled={isActive}
           >
-            {isActive ? 'Active Package' : ctaText}
+            {isActive ? t('nikah.activePackage') : ctaText}
           </button>
         )}
         {!hidePrices && onInquire && !isActive && (
@@ -990,7 +997,7 @@ export const PremiumPlanCard: React.FC<PremiumPlanCardProps> = ({
             className="btn btn-secondary"
             style={{ width: '100%', fontSize: '12.5px', padding: '8px 12px' }}
           >
-            Inquire & Request Callback
+            {t('nikah.inquireCallback')}
           </button>
         )}
         {!hidePrices && whatsappMessage && !isActive && (
@@ -1019,7 +1026,7 @@ export const PremiumPlanCard: React.FC<PremiumPlanCardProps> = ({
             <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
               <path d="M12.012 2c-5.506 0-9.97 4.478-9.97 10.012 0 1.77.458 3.43 1.258 4.887L2 22l5.253-1.378c1.402.766 3 1.2 4.759 1.2 5.506 0 9.97-4.478 9.97-10.012 0-5.534-4.464-10.012-9.97-10.012zm5.795 13.91c-.244.694-1.22 1.268-1.745 1.355-.472.079-.938.293-3.04-.542-2.527-.998-4.14-3.565-4.267-3.731-.127-.166-.991-1.32-.991-2.518 0-1.2.626-1.79.847-2.029.221-.24.479-.3.639-.3a.46.46 0 0 1 .332.155c.105.155.434 1.058.471 1.139.037.081.062.176.009.282-.053.106-.079.171-.157.262-.078.09-.166.2-.236.269-.079.078-.162.162-.07.32.092.158.411.678.88 1.096.604.538 1.111.704 1.267.782.157.078.249.066.342-.04.093-.106.402-.469.511-.627.109-.158.217-.132.366-.077.148.055.942.443 1.103.524.161.081.268.121.308.19.04.069.04.4-.204 1.094z" />
             </svg>
-            Inquire on WhatsApp
+            {t('nikah.inquireWhatsapp')}
           </a>
         )}
         <button
@@ -1039,7 +1046,7 @@ export const PremiumPlanCard: React.FC<PremiumPlanCardProps> = ({
               }).catch(() => { });
             } else {
               navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
-              alert(`${title} link copied to clipboard!`);
+              alert(`${title} ${t('nikah.linkCopied')}`);
             }
           }}
           type="button"
@@ -1061,7 +1068,7 @@ export const PremiumPlanCard: React.FC<PremiumPlanCardProps> = ({
             transition: 'var(--transition-smooth)'
           }}
         >
-          <span>Share Package 🔗</span>
+          <span>{t('nikah.sharePackage')} 🔗</span>
         </button>
       </div>
     </div>
@@ -1085,6 +1092,7 @@ export const SuccessStoryCard: React.FC<SuccessStoryCardProps> = ({
   weddingDate,
   imageIndex
 }) => {
+  const { t } = useI18n();
   const successImages = [
     '/images/success_sarah_tariq.jpg',
     '/images/success_aisha_khalid.jpg',
@@ -1128,7 +1136,7 @@ export const SuccessStoryCard: React.FC<SuccessStoryCardProps> = ({
         <div className="testimonial-author" style={{ fontWeight: '800', color: 'var(--deep-maroon)', fontFamily: 'var(--font-serif)', fontSize: '16px' }}>
           {names}
           <div style={{ fontSize: '12.5px', fontWeight: 'normal', color: 'var(--text-muted)', marginTop: '2px' }}>
-            {location} {weddingDate && `• Married ${weddingDate}`}
+            {location} {weddingDate && <>• {t('nikah.married')} <span className="ltr-value">{weddingDate}</span></>}
           </div>
         </div>
         <button
@@ -1143,7 +1151,7 @@ export const SuccessStoryCard: React.FC<SuccessStoryCardProps> = ({
               }).catch(() => { });
             } else {
               navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
-              alert('Success story link copied to clipboard!');
+              alert(t('nikah.storyLinkCopied'));
             }
           }}
           className="btn"
@@ -1161,9 +1169,9 @@ export const SuccessStoryCard: React.FC<SuccessStoryCardProps> = ({
             transition: 'var(--transition-smooth)',
             fontWeight: 600
           }}
-          title="Share Story"
+          title={t('common.share')}
         >
-          <span>Share 🔗</span>
+          <span>{t('common.share')} 🔗</span>
         </button>
       </div>
     </div>
@@ -1230,100 +1238,6 @@ export const SafetyFeatureCard: React.FC<SafetyFeatureCardProps> = ({ title, des
   );
 };
 
-// 12. Zaicha / Kundli Promo Card
-export const ZaichaPromoCard: React.FC = () => {
-  return (
-    <section style={{ padding: '80px 0', backgroundColor: 'var(--white)' }}>
-      <div className="container">
-        <div style={{
-          position: 'relative',
-          backgroundColor: 'var(--soft-cream)',
-          borderRadius: 'var(--border-radius-xl)',
-          border: '1.5px solid var(--gold-accent)',
-          padding: '40px',
-          boxShadow: 'var(--shadow-premium)',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          textAlign: 'center',
-          overflow: 'hidden',
-          transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-        }}
-        className="zaicha-promo-card"
-        >
-          {/* Subtle Islamic pattern or visual element in the background */}
-          <div style={{
-            position: 'absolute',
-            top: '-20px',
-            right: '-20px',
-            opacity: 0.05,
-            transform: 'scale(1.5)',
-            pointerEvents: 'none'
-          }}>
-            <svg width="150" height="150" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
-            </svg>
-          </div>
-          <div style={{
-            position: 'absolute',
-            bottom: '-20px',
-            left: '-20px',
-            opacity: 0.05,
-            transform: 'scale(1.5) rotate(45deg)',
-            pointerEvents: 'none'
-          }}>
-            <svg width="150" height="150" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 21A9 9 0 1 1 21 12A9.01 9.01 0 0 1 12 21ZM12 4.5A7.5 7.5 0 1 0 19.5 12A7.51 7.51 0 0 0 12 4.5Z" />
-              <path d="M12 16.5A4.5 4.5 0 1 1 16.5 12A4.5 4.5 0 0 1 12 16.5ZM12 9A3 3 0 1 0 15 12A3 3 0 0 0 12 9Z" />
-            </svg>
-          </div>
-          
-          
-          
-          
-          
-
-          <div style={{
-            backgroundColor: 'var(--white)',
-            color: 'var(--gold-accent)',
-            padding: '6px 16px',
-            borderRadius: '20px',
-            fontSize: '12px',
-            fontWeight: 'bold',
-            letterSpacing: '1px',
-            textTransform: 'uppercase',
-            marginBottom: '20px',
-            border: '1px solid var(--gold-light)',
-            position: 'relative',
-            zIndex: 1
-          }}>
-            Islamic Perspective
-          </div>
-
-          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '32px', color: 'var(--deep-maroon)', fontWeight: 'bold', marginBottom: '16px', position: 'relative', zIndex: 1 }}>
-            Zaicha / Kundli Guidance
-          </h2>
-          
-          <p style={{ color: 'var(--text-muted)', fontSize: '16px', maxWidth: '600px', lineHeight: '1.6', marginBottom: '32px', position: 'relative', zIndex: 1 }}>
-            Get thoughtful compatibility guidance from an Islamic perspective to help families make informed marriage decisions with care, privacy, and trust.
-          </p>
-
-          <Link href="/zaicha" className="btn btn-gold" style={{ padding: '14px 40px', fontSize: '15px', position: 'relative', zIndex: 1, textDecoration: 'none' }}>
-            Explore Zaicha
-          </Link>
-          
-          <style>{`
-            .zaicha-promo-card:hover {
-              transform: translateY(-5px);
-              box-shadow: 0 12px 24px rgba(0,0,0,0.12) !important;
-            }
-          `}</style>
-        </div>
-      </div>
-    </section>
-  );
-};
-
 // 13. Final CTA Block
 interface FinalCTAProps {
   onRegister: () => void;
@@ -1333,6 +1247,7 @@ interface FinalCTAProps {
 }
 
 export const FinalCTA: React.FC<FinalCTAProps> = ({ onRegister, onBrowse, isLoggedIn, hasProfile }) => {
+  const { t } = useI18n();
   return (
     <section style={{ backgroundColor: 'var(--soft-cream)', borderTop: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)', padding: '80px 0', position: 'relative' }}>
       <div className="container" style={{ position: 'relative', zIndex: 5 }}>
@@ -1342,20 +1257,20 @@ export const FinalCTA: React.FC<FinalCTAProps> = ({ onRegister, onBrowse, isLogg
           
           
 
-          <span className="script-accent block mb-2" style={{ display: 'block', marginBottom: '12px' }}>Start Your Blessed Future</span>
+          <span className="script-accent block mb-2" style={{ display: 'block', marginBottom: '12px' }}>{t('finalCta.script')}</span>
           <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '36px', color: 'var(--deep-maroon)', fontWeight: 'bold', marginBottom: '20px' }}>
-            Begin Your Journey Towards a Meaningful Nikah
+            {t('finalCta.heading')}
           </h2>
           <p style={{ color: 'var(--text-muted)', fontSize: '15.5px', maxWidth: '600px', margin: '0 auto 30px auto', lineHeight: '1.6' }}>
-            Join a respectful, family-focused platform designed to help you discover compatible matches with manual telephone verification checks and complete privacy controls.
+            {t('finalCta.body')}
           </p>
 
           <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <button onClick={onRegister} className="btn btn-gold" style={{ minWidth: '180px' }}>
-              {isLoggedIn ? (hasProfile ? 'Edit Your Profile' : 'Complete Profile') : 'Register Free'}
+              {isLoggedIn ? (hasProfile ? t('finalCta.editProfile') : t('finalCta.completeProfile')) : t('finalCta.registerFree')}
             </button>
             <button onClick={onBrowse} className="btn btn-primary" style={{ minWidth: '180px' }}>
-              Browse Profiles
+              {t('finalCta.browse')}
             </button>
           </div>
         </div>
@@ -1370,6 +1285,7 @@ interface PremiumFooterProps {
 }
 
 export const PremiumFooter: React.FC<PremiumFooterProps> = ({ onNavigate }) => {
+  const { t } = useI18n();
   const [location, setLocation] = React.useState<{
     address: string;
     phone: string;
@@ -1413,7 +1329,7 @@ export const PremiumFooter: React.FC<PremiumFooterProps> = ({ onNavigate }) => {
               />
             </div>
             <p style={{ fontSize: '13.5px', color: 'rgba(248, 241, 231, 0.8)', lineHeight: '1.8', marginBottom: '16px' }}>
-              Trusted Halal Matrimony. Helping single, divorced, and high-profile Muslim candidates find compatible marriage partners. We also provide Zaicha guidance from an Islamic perspective.
+              {t('footer.about')}
             </p>
             {/* Social media icons grid inside footer */}
             {location && (location.facebookUrl || location.instagramUrl || location.youtubeUrl || location.linkedinUrl || location.twitterUrl) && (
@@ -1457,36 +1373,35 @@ export const PremiumFooter: React.FC<PremiumFooterProps> = ({ onNavigate }) => {
             )}
             <div style={{ fontSize: '13px', color: 'rgba(248, 241, 231, 0.9)', marginBottom: '18px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
               <div>📍 {location ? location.address : 'Innov8 44 Regal Building, 2nd Floor, Connaught Place, New Delhi - 110001'}</div>
-              <div>📞 Call: <a href={`tel:${location ? location.phoneRaw : '+919170975535'}`} style={{ color: 'var(--gold-accent)', fontWeight: 'bold', textDecoration: 'underline' }}>{location ? location.phone : '+91 91709 75535'}</a></div>
+              <div>📞 {t('footer.callLabel')} <a href={`tel:${location ? location.phoneRaw : '+919170975535'}`} className="ltr-value" style={{ color: 'var(--gold-accent)', fontWeight: 'bold', textDecoration: 'underline' }}>{location ? location.phone : '+91 91709 75535'}</a></div>
             </div>
             {/* Dua closing phrase */}
             <div style={{ fontStyle: 'italic', fontSize: '12px', color: 'var(--gold-light)', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '12px' }}>
-              May Allah bless your search and grant you a righteous life partner.
+              {t('footer.dua')}
             </div>
           </div>
           <div>
-            <h4 style={{ color: 'var(--gold-accent)', fontSize: '14px', fontWeight: 'bold', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '0.8px' }}>Explore</h4>
+            <h4 style={{ color: 'var(--gold-accent)', fontSize: '14px', fontWeight: 'bold', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '0.8px' }}>{t('footer.exploreHeading')}</h4>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '13.5px', padding: 0 }}>
-              <li><button onClick={() => onNavigate('home')} style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', opacity: 0.8, padding: 0 }}>Home</button></li>
-              <li><button onClick={() => onNavigate('browse')} style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', opacity: 0.8, padding: 0 }}>Browse Profiles</button></li>
-              <li><button onClick={() => onNavigate('premium')} style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', opacity: 0.8, padding: 0 }}>Pricing & Packages</button></li>
-              <li><button onClick={() => onNavigate('how-it-works')} style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', opacity: 0.8, padding: 0 }}>How It Works</button></li>
-              <li><Link href="/event-management" className="footer-link" style={{ opacity: 0.8 }}>Event Management</Link></li>
+              <li><button onClick={() => onNavigate('home')} style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', opacity: 0.8, padding: 0 }}>{t('footer.home')}</button></li>
+              <li><button onClick={() => onNavigate('browse')} style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', opacity: 0.8, padding: 0 }}>{t('footer.browse')}</button></li>
+              <li><button onClick={() => onNavigate('premium')} style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', opacity: 0.8, padding: 0 }}>{t('footer.pricing')}</button></li>
+              <li><button onClick={() => onNavigate('how-it-works')} style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', opacity: 0.8, padding: 0 }}>{t('footer.howItWorks')}</button></li>
+              <li><Link href="/event-management" className="footer-link" style={{ opacity: 0.8 }}>{t('footer.eventManagement')}</Link></li>
             </ul>
           </div>
           <div>
-            <h4 style={{ color: 'var(--gold-accent)', fontSize: '14px', fontWeight: 'bold', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '0.8px' }}>Safety & Support</h4>
+            <h4 style={{ color: 'var(--gold-accent)', fontSize: '14px', fontWeight: 'bold', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '0.8px' }}>{t('footer.supportHeading')}</h4>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '13.5px', padding: 0 }}>
-              <li><Link href="/safety" className="footer-link">Verification & Safety</Link></li>
-              <li><Link href="/zaicha" className="footer-link">Zaicha Guidance</Link></li>
-              <li><Link href="/success-stories" className="footer-link">Success Stories</Link></li>
-              <li><Link href="/about" className="footer-link">About Us</Link></li>
-              <li><Link href="/contact" className="footer-link">Contact Support</Link></li>
+              <li><Link href="/safety" className="footer-link">{t('footer.verificationSafety')}</Link></li>
+              <li><Link href="/success-stories" className="footer-link">{t('footer.successStories')}</Link></li>
+              <li><Link href="/about" className="footer-link">{t('footer.about2')}</Link></li>
+              <li><Link href="/contact" className="footer-link">{t('footer.contact')}</Link></li>
             </ul>
           </div>
         </div>
         <div className="footer-bottom" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: '30px', marginTop: '50px', fontSize: '13px', color: 'rgba(248, 241, 231, 0.6)', textAlign: 'center' }}>
-          &copy; Asan Nikah. All rights reserved.
+          {t('footer.rights')}
         </div>
       </div>
     </footer>

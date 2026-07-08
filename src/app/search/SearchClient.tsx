@@ -3,14 +3,16 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
-import { useSimulator } from '../../context/SimulatorContext';
+import { useApp } from '../../context/AppContext';
 import Navbar from '../../components/Navbar';
 import ProfileFilters from '../../components/ProfileFilters';
 import ProfileGrid from '../../components/ProfileGrid';
 import { SectionHeading, PremiumFooter } from '../../components/NikahComponents';
+import { useI18n } from '../../i18n/I18nProvider';
 
 export default function SearchClient() {
-  const { profiles, isLoggedIn, userProfile, isLoading } = useSimulator();
+  const { profiles, isLoggedIn, userProfile, isLoading } = useApp();
+  const { t } = useI18n();
   
   const searchParams = useSearchParams();
   const queryLocation = searchParams?.get('location');
@@ -22,7 +24,7 @@ export default function SearchClient() {
   const queryCommunity = searchParams?.get('community');
   const queryCaste = searchParams?.get('caste');
 
-  const { masterLocations } = useSimulator();
+  const { masterLocations } = useApp();
 
   // Parse initial state/city: direct params take priority, then legacy location param
   let initialState = 'All';
@@ -194,7 +196,7 @@ export default function SearchClient() {
           <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 0 }}>
             <Image
               src="/images/nikah-2.jpeg"
-              alt="Search Muslim Profiles"
+              alt={t('search.heroAlt')}
               fill
               style={{ objectFit: 'cover', objectPosition: 'center 30%' }}
               priority
@@ -207,9 +209,9 @@ export default function SearchClient() {
           </div>
           <div className="container font-sans" style={{ position: 'relative', zIndex: 1 }}>
             <SectionHeading
-              title="Matrimonial Candidate Directory"
-              scriptText="Browse Profiles"
-              subtitle="Browse call-verified brides and grooms. Use filters to narrow down compatibility matches."
+              title={t('search.title')}
+              scriptText={t('search.script')}
+              subtitle={t('search.subtitle')}
               as="h1"
             />
           </div>
@@ -231,7 +233,7 @@ export default function SearchClient() {
               alignItems: 'center',
               gap: '8px'
             }} className="error-banner">
-              ⚠️ Minimum age cannot be greater than maximum age.
+              ⚠️ {t('search.ageRangeError')}
             </div>
           )}
 
@@ -257,7 +259,7 @@ export default function SearchClient() {
           {isLoading ? (
             <div style={{ textAlign: 'center', padding: '80px 20px' }}>
               <div style={{ fontSize: '36px', marginBottom: '14px', animation: 'spin 1.2s linear infinite', display: 'inline-block' }}>⏳</div>
-              <p style={{ color: 'var(--text-muted)', fontSize: '15px', fontWeight: 500 }}>Loading profiles…</p>
+              <p style={{ color: 'var(--text-muted)', fontSize: '15px', fontWeight: 500 }}>{t('search.loadingProfiles')}</p>
             </div>
           ) : (
             <ProfileGrid filteredProfiles={rankedProfiles} isFiltered={hasActiveFilters()} />

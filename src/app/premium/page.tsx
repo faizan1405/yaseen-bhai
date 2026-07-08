@@ -26,7 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
       "Muslim marriage bureau rates",
       "Asan Nikah pricing",
       "Premium Muslim matchmaking services",
-      "Basic Access matrimonial packages",
+      "Second marriage matrimonial packages",
       "Premium Match Access Muslim matchmaking cost"
     ],
     alternates: {

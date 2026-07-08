@@ -30,9 +30,9 @@ This file tracks the approved decisions, architecture, system design, business r
 ## 3. Technology Stack & Architecture
 * **Frontend**: Next.js 16 (App Router) with TypeScript
 * **Backend & API**: Next.js Server Components & Route Handlers
-* **Database**: MongoDB Atlas accessed via Prisma ORM (client-side simulation fallback is active if database connection is unavailable in development)
-* **Authentication**: Google OAuth 2.0 via Auth.js v5 (with full header-based developer fallback simulator)
-* **Payment Gateway**: Razorpay (with cryptographic signature verification and sandbox/simulator checkout fallbacks)
+* **Database**: MongoDB Atlas accessed via Prisma ORM (bundled sample profiles are served as a read-only showcase fallback if the database is unreachable or unseeded)
+* **Authentication**: Google OAuth 2.0 via Auth.js v5
+* **Payment Gateway**: Razorpay (cryptographic signature verification; checkout is disabled if live keys are not configured)
 * **Styling**: Vanilla CSS (Design tokens, Custom variables)
 
 ### Project Mind Map
@@ -77,7 +77,7 @@ graph TD
 * **Core Public App**: Landing Page, Search & Directory, Interactive Paywall blurs.
 * **Onboarding Module**: Profile Registration Form, verification status locks.
 * **Admin Dashboard**: Member Verification & Call Logs, Referral configurations, Custom Color Theme mappings.
-* **Payment Integration**: Razorpay Webhook listener simulation, dynamic invoice builder (dynamic 18% GST).
+* **Payment Integration**: Razorpay order creation & signature verification, dynamic invoice builder (dynamic 18% GST).
 * **Vendor Marketplace**: Vendor directory, ratings & category listing.
 
 ---
@@ -101,4 +101,5 @@ graph TD
 * **2026-06-13**: Phase 3 completed. Added payment order creation and signature verification routes for Razorpay, implemented standard ₹300 monthly membership with dynamic 18% GST (₹54), added viewer subscription checks to redact profile details, integrated frontend checkout loader, and verified builds/lints cleanly.
 * **2026-06-13**: Complete Frontend Redesign completed. Redesigned layout to use a premium marriage-card invitation aesthetic with soft cream backgrounds, Islamic geometric SVG patterns, and 8 controlled themes. Added sections for How It Works, Testimonials, Safety, Referrals, and Wedding Services. Refined profile preview cards, details modal, mobile navigation drawer, and onboarding registration steps. Validated code and verified builds compile and lint cleanly.
 * **2026-06-13**: Database backend migrated from Neon/PostgreSQL to MongoDB Atlas. Updated schema to conform to MongoDB ObjectIds and mapped relations. Configured connection status health check for MongoDB. Integrated production/preview fallback store safeguards and sanitized database exceptions. Validated builds and linting.
+* **2026-07-08**: Removed the demo/simulator system entirely. Deleted the `DemoSimulatorBar`, the "Continue as Demo User" / "Enter as Demo Admin" shortcuts, and the chatbot "Demo Mode" indicator. Renamed the global `SimulatorContext` to `AppContext` (provider `AppProvider`, hook `useApp`). Stripped all `x-simulator-*` request headers and `NEXT_PUBLIC_DEMO_MODE` gating from every API route — access now relies solely on real Auth.js sessions (admin requires an `ADMIN` role). Removed the Razorpay simulator/mock checkout fallback (checkout requires live keys). Bundled sample profiles are retained as a read-only showcase fallback (renamed `sampleProfiles`, "Demo:" name prefixes removed). Type-check, lint, and production build verified clean.
 

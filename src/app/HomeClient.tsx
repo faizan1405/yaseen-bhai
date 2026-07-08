@@ -4,7 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
-import { useSimulator } from '../context/SimulatorContext';
+import { useApp } from '../context/AppContext';
 import { getProfileImage, getThemeClass } from '../lib/helpers';
 import Navbar from '../components/Navbar';
 import HeroSection from '../components/HeroSection';
@@ -21,27 +21,27 @@ import {
   SafetyFeatureCard,
   FinalCTA,
   PremiumFooter,
-  PremiumPlanCard,
-  ZaichaPromoCard
+  PremiumPlanCard
 } from '../components/NikahComponents';
 import PackageInquiryForm from '../components/PackageInquiryForm';
+import { useI18n } from '../i18n/I18nProvider';
 
 
-// Theme options matching original config
+// Theme options matching original config (nameKey resolved via t() at render)
 const THEME_COLORS = [
-  { name: 'Emerald Green', value: 'emerald' },
-  { name: 'Royal Crimson', value: 'crimson' },
-  { name: 'Gold Accent', value: 'gold' },
-  { name: 'Ocean Navy', value: 'navy' },
-  { name: 'Rose Petal', value: 'rose' },
-  { name: 'Teal Whisper', value: 'teal' },
-  { name: 'Plum Royalty', value: 'plum' },
-  { name: 'Saffron Glow', value: 'saffron' }
+  { nameKey: 'home.themeEmerald', value: 'emerald' },
+  { nameKey: 'home.themeCrimson', value: 'crimson' },
+  { nameKey: 'home.themeGold', value: 'gold' },
+  { nameKey: 'home.themeNavy', value: 'navy' },
+  { nameKey: 'home.themeRose', value: 'rose' },
+  { nameKey: 'home.themeTeal', value: 'teal' },
+  { nameKey: 'home.themePlum', value: 'plum' },
+  { nameKey: 'home.themeSaffron', value: 'saffron' }
 ];
 
 export default function HomeClient() {
   const router = useRouter();
-  const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
+  const { t, tList } = useI18n();
   const [inquiryPackage, setInquiryPackage] = React.useState<string | null>(null);
   const [quickGender, setQuickGender] = React.useState('');
   const [quickAgeMin, setQuickAgeMin] = React.useState('');
@@ -54,11 +54,10 @@ export default function HomeClient() {
   const {
     isLoggedIn,
     hasPaid300,
-    simulatedPackages,
-    simulatedHighProfileApproved,
+    activePackages,
+    highProfileApproved,
     showLoginModal,
     setShowLoginModal,
-    handleGoogleLogin,
     isRegistering,
     setIsRegistering,
     regStep,
@@ -79,7 +78,7 @@ export default function HomeClient() {
     masterMaslaks,
     masterCastes,
     masterLocations,
-  } = useSimulator();
+  } = useApp();
 
   const isFormComplete = isLoggedIn && userProfile?.profileCompletionStatus === 'COMPLETE';
 
@@ -124,7 +123,7 @@ export default function HomeClient() {
   const handleNextStep = () => {
     if (regStep === 1) {
       if (!formData.fullName || !formData.dateOfBirth || !formData.phoneNumber || !formData.bio) {
-        setRegistrationError('Please fill in all personal details.');
+        setRegistrationError(t('home.valPersonalDetails'));
         return;
       }
       const dob = new Date(formData.dateOfBirth);
@@ -133,24 +132,24 @@ export default function HomeClient() {
       const m = today.getMonth() - dob.getMonth();
       if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) age--;
       if (age < 18) {
-        setRegistrationError('Registration is restricted to eligible adults (18 years and older).');
+        setRegistrationError(t('home.valMinAge'));
         return;
       }
     } else if (regStep === 2) {
       if (!formData.city || !formData.state) {
-        setRegistrationError('Please fill in your current state and city.');
+        setRegistrationError(t('home.valStateCity'));
         return;
       }
     } else if (regStep === 3) {
       if (!formData.education || !formData.occupation) {
-        setRegistrationError('Please provide your education and occupation info.');
+        setRegistrationError(t('home.valEducationOccupation'));
         return;
       }
     } else if (regStep === 4) {
       // Community Preferences step has optional inputs, no mandatory validation required
     } else if (regStep === 5) {
       if (!formData.familyInfo) {
-        setRegistrationError('Please enter family background details.');
+        setRegistrationError(t('home.valFamilyInfo'));
         return;
       }
     }
@@ -186,17 +185,17 @@ export default function HomeClient() {
               <FloralCorner position="br" color="var(--gold-accent)" />
 
               <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-                <span className="script-accent" style={{ display: 'block', marginBottom: '4px' }}>Bismillah</span>
+                <span className="script-accent" style={{ display: 'block', marginBottom: '4px' }}>{t('home.bismillah')}</span>
                 <h2 style={{ fontFamily: 'var(--font-serif)', color: 'var(--deep-maroon)', fontSize: '32px', marginBottom: '8px' }}>
-                  {userProfile ? 'Update Matrimonial Profile' : 'Register Matrimonial Profile'}
+                  {userProfile ? t('home.updateProfile') : t('home.registerProfile')}
                 </h2>
                 <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>
-                  Step {regStep} of 6 — {
-                    regStep === 1 ? 'Personal Information' :
-                    regStep === 2 ? 'Location Details' :
-                    regStep === 3 ? 'Professional Details' :
-                    regStep === 4 ? 'Community & Family Preferences' :
-                    regStep === 5 ? 'Family Background & Bio' : 'Consent & Themes'
+                  {t('home.stepOf', { n: regStep })} {
+                    regStep === 1 ? t('home.step1Name') :
+                    regStep === 2 ? t('home.step2Name') :
+                    regStep === 3 ? t('home.step3Name') :
+                    regStep === 4 ? t('home.step4Name') :
+                    regStep === 5 ? t('home.step5Name') : t('home.step6Name')
                   }
                 </p>
               </div>
@@ -220,29 +219,29 @@ export default function HomeClient() {
                 {regStep === 1 && (
                   <div>
                     <div className="form-group">
-                      <label className="form-label">Full Name *</label>
+                      <label className="form-label">{t('home.fullName')}</label>
                       <input
                         type="text"
                         className="form-control"
                         value={formData.fullName}
                         onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                        placeholder="Enter legal full name"
+                        placeholder={t('home.phFullName')}
                         required
                       />
                     </div>
                     <div className="form-group">
-                      <label className="form-label">Gender *</label>
+                      <label className="form-label">{t('home.gender')}</label>
                       <select
                         className="form-control"
                         value={formData.gender}
                         onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
                       >
-                        <option value="Female">Female</option>
-                        <option value="Male">Male</option>
+                        <option value="Female">{t('enums.female')}</option>
+                        <option value="Male">{t('enums.male')}</option>
                       </select>
                     </div>
                     <div className="form-group">
-                      <label className="form-label">Date of Birth (Eligible adults &gt;= 18) *</label>
+                      <label className="form-label">{t('home.dob')}</label>
                       <input
                         type="date"
                         className="form-control"
@@ -252,36 +251,36 @@ export default function HomeClient() {
                       />
                     </div>
                     <div className="form-group">
-                      <label className="form-label">Marital Status *</label>
+                      <label className="form-label">{t('home.maritalStatus')}</label>
                       <select
                         className="form-control"
                         value={formData.maritalStatus}
                         onChange={(e) => setFormData({ ...formData, maritalStatus: e.target.value })}
                       >
-                        <option value="Divorced">Divorced</option>
-                        <option value="Single">Single</option>
-                        <option value="Widowed">Widowed</option>
+                        <option value="Divorced">{t('enums.divorced')}</option>
+                        <option value="Single">{t('enums.single')}</option>
+                        <option value="Widowed">{t('enums.widowed')}</option>
                       </select>
                     </div>
                     <div className="form-group">
-                      <label className="form-label">Phone Number (Call Verification Required) *</label>
+                      <label className="form-label">{t('home.phone')}</label>
                       <input
                         type="tel"
                         className="form-control"
                         value={formData.phoneNumber}
                         onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
-                        placeholder="e.g. +91 9876543210"
+                        placeholder={t('home.phPhone')}
                         required
                       />
                     </div>
                     <div className="form-group">
-                      <label className="form-label">About Me (Bio) *</label>
+                      <label className="form-label">{t('home.bio')}</label>
                       <textarea
                         className="form-control"
                         rows={3}
                         value={formData.bio}
                         onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                        placeholder="Describe your values, hobbies, and outlook on marriage..."
+                        placeholder={t('home.phBio')}
                         required
                       />
                     </div>
@@ -291,8 +290,8 @@ export default function HomeClient() {
                 {regStep === 2 && (
                   <div>
                     <SearchableCombobox
-                      label="State / UT *"
-                      placeholder="Select or search state (e.g. Maharashtra)"
+                      label={t('home.stateLabel')}
+                      placeholder={t('home.phState')}
                       value={formData.state}
                       onChange={(val) => {
                         setFormData({
@@ -313,8 +312,8 @@ export default function HomeClient() {
                     />
 
                     <SearchableCombobox
-                      label="District / City *"
-                      placeholder="Select or search district/city"
+                      label={t('home.districtLabel')}
+                      placeholder={t('home.phDistrict')}
                       value={formData.district}
                       onChange={(val) => {
                         setFormData({
@@ -334,8 +333,8 @@ export default function HomeClient() {
                     />
 
                     <SearchableCombobox
-                      label="Locality / Area"
-                      placeholder="Select or search locality (optional)"
+                      label={t('home.localityLabel')}
+                      placeholder={t('home.phLocality')}
                       value={formData.locality}
                       onChange={(val) => {
                         setFormData({
@@ -351,13 +350,13 @@ export default function HomeClient() {
                     />
 
                     <div className="form-group">
-                      <label className="form-label">Country *</label>
+                      <label className="form-label">{t('home.countryLabel')}</label>
                       <input
                         type="text"
                         className="form-control"
                         value={formData.country}
                         onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-                        placeholder="e.g. India"
+                        placeholder={t('home.phCountry')}
                         required
                       />
                     </div>
@@ -367,29 +366,29 @@ export default function HomeClient() {
                 {regStep === 3 && (
                   <div>
                     <div className="form-group">
-                      <label className="form-label">Education *</label>
+                      <label className="form-label">{t('home.educationLabel')}</label>
                       <input
                         type="text"
                         className="form-control"
                         value={formData.education}
                         onChange={(e) => setFormData({ ...formData, education: e.target.value })}
-                        placeholder="e.g. MBBS, M.Tech, B.Com"
+                        placeholder={t('home.phEducation')}
                         required
                       />
                     </div>
                     <div className="form-group">
-                      <label className="form-label">Occupation *</label>
+                      <label className="form-label">{t('home.occupationLabel')}</label>
                       <input
                         type="text"
                         className="form-control"
                         value={formData.occupation}
                         onChange={(e) => setFormData({ ...formData, occupation: e.target.value })}
-                        placeholder="e.g. Pediatrician, Software Engineer"
+                        placeholder={t('home.phOccupation')}
                         required
                       />
                     </div>
                     <div className="form-group">
-                      <label className="form-label">Annual Income Range *</label>
+                      <label className="form-label">{t('home.incomeLabel')}</label>
                       <select
                         className="form-control"
                         value={formData.annualIncomeRange}
@@ -410,8 +409,8 @@ export default function HomeClient() {
                   <div>
                     <div className="form-group-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
                       <SearchableCombobox
-                        label="Maslak / Sect"
-                        placeholder="Select or search Maslak/Sect"
+                        label={t('home.maslakLabel')}
+                        placeholder={t('home.phMaslak')}
                         value={formData.maslak}
                         onChange={(val) => setFormData({ ...formData, maslak: val })}
                         options={masterMaslaks.map(m => ({
@@ -424,13 +423,13 @@ export default function HomeClient() {
                       />
 
                       <div className="form-group">
-                        <label className="form-label">Fiqh / School of Thought</label>
+                        <label className="form-label">{t('home.fiqhLabel')}</label>
                         <select
                           className="form-control"
                           value={formData.fiqh}
                           onChange={(e) => setFormData({ ...formData, fiqh: e.target.value })}
                         >
-                          <option value="">-- No preference / Not selected --</option>
+                          <option value="">{t('home.optNoFiqhPreference')}</option>
                           {DEFAULT_FIQHS.map(f => (
                             <option key={f} value={f}>{f}</option>
                           ))}
@@ -440,8 +439,8 @@ export default function HomeClient() {
 
                     <div className="form-group-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginTop: '15px' }}>
                       <SearchableCombobox
-                        label="Caste / Biradari"
-                        placeholder="Select or search Caste/Biradari"
+                        label={t('home.casteLabel')}
+                        placeholder={t('home.phCaste')}
                         value={formData.biradari}
                         onChange={(val) => setFormData({ ...formData, biradari: val })}
                         options={masterCastes.map(c => ({
@@ -454,19 +453,19 @@ export default function HomeClient() {
                       />
 
                       <div className="form-group">
-                        <label className="form-label">Family Origin (Ancestral City/Town)</label>
+                        <label className="form-label">{t('home.familyOriginLabel')}</label>
                         <input
                           type="text"
                           className="form-control"
                           value={formData.familyOrigin}
                           onChange={(e) => setFormData({ ...formData, familyOrigin: e.target.value })}
-                          placeholder="e.g. Azamgarh, UP"
+                          placeholder={t('home.phFamilyOrigin')}
                         />
                       </div>
                     </div>
 
                     <div style={{ marginTop: '20px', borderTop: '1px solid var(--border-color)', paddingTop: '20px' }}>
-                      <label className="form-label" style={{ fontWeight: 'bold', display: 'block', marginBottom: '10px' }}>Preferred Match Locations</label>
+                      <label className="form-label" style={{ fontWeight: 'bold', display: 'block', marginBottom: '10px' }}>{t('home.preferredLocationsLabel')}</label>
                       <div className="preferred-locations-checkboxes" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '8px', maxHeight: '160px', overflowY: 'auto', border: '1px solid var(--border-color)', padding: '12px', borderRadius: '8px', backgroundColor: '#fafafa' }}>
                         {[
                           'Jammu & Kashmir', 'Ladakh', 'Lakshadweep', 'Assam', 'West Bengal',
@@ -501,7 +500,7 @@ export default function HomeClient() {
                           checked={formData.sameCastePreference}
                           onChange={(e) => setFormData({ ...formData, sameCastePreference: e.target.checked })}
                         />
-                        <span>Prefer matchmaking within the same Caste/Biradari</span>
+                        <span>{t('home.sameCastePref')}</span>
                       </label>
 
                       <label style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '13.5px', cursor: 'pointer' }}>
@@ -510,7 +509,7 @@ export default function HomeClient() {
                           checked={formData.sameMaslakPreference}
                           onChange={(e) => setFormData({ ...formData, sameMaslakPreference: e.target.checked })}
                         />
-                        <span>Prefer matchmaking within the same Maslak/Sect</span>
+                        <span>{t('home.sameMaslakPref')}</span>
                       </label>
 
                       <label style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '13.5px', cursor: 'pointer' }}>
@@ -519,7 +518,7 @@ export default function HomeClient() {
                           checked={formData.willingToRelocate}
                           onChange={(e) => setFormData({ ...formData, willingToRelocate: e.target.checked })}
                         />
-                        <span>Open / willing to relocate to other regions or states</span>
+                        <span>{t('home.relocatePref')}</span>
                       </label>
                     </div>
                   </div>
@@ -528,24 +527,24 @@ export default function HomeClient() {
                 {regStep === 5 && (
                   <div>
                     <div className="form-group">
-                      <label className="form-label">Family Details (Parents, Siblings background) *</label>
+                      <label className="form-label">{t('home.familyDetailsLabel')}</label>
                       <textarea
                         className="form-control"
                         rows={4}
                         value={formData.familyInfo}
                         onChange={(e) => setFormData({ ...formData, familyInfo: e.target.value })}
-                        placeholder="Provide family background, parents occupation, number of siblings etc..."
+                        placeholder={t('home.phFamilyDetails')}
                         required
                       />
                     </div>
                     <div className="form-group">
-                      <label className="form-label">Partner Preferences Summary</label>
+                      <label className="form-label">{t('home.partnerPrefLabel')}</label>
                       <textarea
                         className="form-control"
                         rows={3}
                         value={formData.partnerPref}
                         onChange={(e) => setFormData({ ...formData, partnerPref: e.target.value })}
-                        placeholder="Preferred age, education, and religiosity..."
+                        placeholder={t('home.phPartnerPref')}
                       />
                     </div>
                   </div>
@@ -554,7 +553,7 @@ export default function HomeClient() {
                 {regStep === 6 && (
                   <div>
                     <div className="form-group">
-                      <label className="form-label">Assigned Profile Theme *</label>
+                      <label className="form-label">{t('home.themeLabel')}</label>
                       <select
                         className="form-control"
                         value={formData.themeColor}
@@ -562,7 +561,7 @@ export default function HomeClient() {
                       >
                         {THEME_COLORS.map((tc) => (
                           <option key={tc.value} value={tc.value}>
-                            {tc.name}
+                            {t(tc.nameKey)}
                           </option>
                         ))}
                       </select>
@@ -577,7 +576,7 @@ export default function HomeClient() {
                         required
                       />
                       <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
-                        I consent to manual phone verification call from Asan Nikah Admin team to confirm these profile details.
+                        {t('home.consentVerification')}
                       </span>
                     </div>
 
@@ -590,7 +589,7 @@ export default function HomeClient() {
                         required
                       />
                       <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
-                        I accept the Asan Nikah Terms of Service and Shariah-compliant match guidelines.
+                        {t('home.consentTerms')}
                       </span>
                     </div>
                   </div>
@@ -605,7 +604,7 @@ export default function HomeClient() {
                       onChange={(e) => setFormData({ ...formData, termsAccepted: e.target.checked })}
                     />
                     <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
-                      I agree to the <a href="/terms-and-conditions" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary-brand)', textDecoration: 'underline' }}>Terms &amp; Conditions</a> and <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary-brand)', textDecoration: 'underline' }}>Privacy Policy</a>.
+                      {t('home.agreeTermsPre')} <a href="/terms-and-conditions" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary-brand)', textDecoration: 'underline' }}>{t('home.termsConditions')}</a> {t('home.and')} <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary-brand)', textDecoration: 'underline' }}>{t('home.privacyPolicy')}</a>.
                     </span>
                   </div>
                 )}
@@ -613,16 +612,16 @@ export default function HomeClient() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '30px' }}>
                   {regStep > 1 && (
                     <button type="button" onClick={handlePrevStep} className="btn btn-secondary">
-                      Back
+                      {t('home.back')}
                     </button>
                   )}
                   {regStep < 6 ? (
                     <button type="button" onClick={handleNextStep} className="btn btn-primary" style={{ marginLeft: 'auto' }}>
-                      Next Step
+                      {t('home.nextStep')}
                     </button>
                   ) : (
                     <button type="submit" className="btn btn-gold" style={{ marginLeft: 'auto' }}>
-                      Save Profile
+                      {t('home.saveProfile')}
                     </button>
                   )}
                 </div>
@@ -639,76 +638,76 @@ export default function HomeClient() {
             {/* Smart Search Quick Action Bar */}
             <div className="container" style={{ position: 'relative', zIndex: '20', marginTop: '-30px' }}>
               <div className="search-panel" style={{ backgroundColor: 'var(--white)', border: '1.5px solid var(--border-color)', borderRadius: 'var(--border-radius-lg)', padding: '24px 36px', boxShadow: 'var(--shadow-premium)' }}>
-                <span className="script-accent" style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>Refined Search</span>
+                <span className="script-accent" style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>{t('home.refinedSearch')}</span>
                 <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', color: 'var(--deep-maroon)', fontWeight: 'bold', marginBottom: '14px' }}>
-                  Quick Match Search
+                  {t('home.quickMatchSearch')}
                 </h3>
 
                 {quickAgeError && (
                   <div style={{ backgroundColor: '#FEF2F2', border: '1px solid #FCA5A5', color: '#991B1B', padding: '10px 14px', borderRadius: '8px', marginBottom: '14px', fontSize: '14px', fontWeight: 500 }}>
-                    Minimum age cannot be greater than maximum age.
+                    {t('home.ageRangeError')}
                   </div>
                 )}
 
                 {/* Row 1: Gender, Min Age, Max Age, State, City */}
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '16px', marginBottom: '16px' }}>
                   <div>
-                    <label className="form-label">Looking For</label>
+                    <label className="form-label">{t('home.lookingFor')}</label>
                     <select
                       className="form-control"
                       style={{ backgroundColor: 'var(--warm-ivory)' }}
                       value={quickGender}
                       onChange={(e) => setQuickGender(e.target.value)}
                     >
-                      <option value="">Any Gender</option>
-                      <option value="Female">Bride (Female)</option>
-                      <option value="Male">Groom (Male)</option>
+                      <option value="">{t('home.anyGender')}</option>
+                      <option value="Female">{t('home.brideFemale')}</option>
+                      <option value="Male">{t('home.groomMale')}</option>
                     </select>
                   </div>
                   <div>
-                    <label className="form-label">Min Age</label>
+                    <label className="form-label">{t('home.minAge')}</label>
                     <select
                       className="form-control"
                       style={{ backgroundColor: 'var(--warm-ivory)' }}
                       value={quickAgeMin}
                       onChange={(e) => { setQuickAgeMin(e.target.value); setQuickAgeError(false); }}
                     >
-                      <option value="">Any</option>
+                      <option value="">{t('home.any')}</option>
                       {Array.from({ length: 53 }, (_, i) => 18 + i).map(age => (
                         <option key={age} value={String(age)}>{age}</option>
                       ))}
                     </select>
                   </div>
                   <div>
-                    <label className="form-label">Max Age</label>
+                    <label className="form-label">{t('home.maxAge')}</label>
                     <select
                       className="form-control"
                       style={{ backgroundColor: 'var(--warm-ivory)' }}
                       value={quickAgeMax}
                       onChange={(e) => { setQuickAgeMax(e.target.value); setQuickAgeError(false); }}
                     >
-                      <option value="">Any</option>
+                      <option value="">{t('home.any')}</option>
                       {Array.from({ length: 53 }, (_, i) => 18 + i).map(age => (
                         <option key={age} value={String(age)}>{age}</option>
                       ))}
                     </select>
                   </div>
                   <div>
-                    <label className="form-label">State</label>
+                    <label className="form-label">{t('home.state')}</label>
                     <select
                       className="form-control"
                       style={{ backgroundColor: 'var(--warm-ivory)' }}
                       value={quickState}
                       onChange={(e) => { setQuickState(e.target.value); setQuickCity(''); }}
                     >
-                      <option value="">All States</option>
+                      <option value="">{t('home.allStates')}</option>
                       {quickStates.map(s => (
                         <option key={s} value={s}>{s}</option>
                       ))}
                     </select>
                   </div>
                   <div>
-                    <label className="form-label">City</label>
+                    <label className="form-label">{t('home.city')}</label>
                     <select
                       className="form-control"
                       style={{ backgroundColor: 'var(--warm-ivory)' }}
@@ -716,7 +715,7 @@ export default function HomeClient() {
                       onChange={(e) => setQuickCity(e.target.value)}
                       disabled={!quickState}
                     >
-                      <option value="">All Cities</option>
+                      <option value="">{t('home.allCities')}</option>
                       {quickCities.map(c => (
                         <option key={c} value={c}>{c}</option>
                       ))}
@@ -727,28 +726,28 @@ export default function HomeClient() {
                 {/* Row 2: Community, Caste, Search Button */}
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '16px', alignItems: 'flex-end' }}>
                   <div>
-                    <label className="form-label">Community</label>
+                    <label className="form-label">{t('home.community')}</label>
                     <select
                       className="form-control"
                       style={{ backgroundColor: 'var(--warm-ivory)' }}
                       value={quickCommunity}
                       onChange={(e) => setQuickCommunity(e.target.value)}
                     >
-                      <option value="">All Communities</option>
+                      <option value="">{t('home.allCommunities')}</option>
                       {activeMaslaks.map(m => (
                         <option key={m.id} value={m.label}>{m.label}</option>
                       ))}
                     </select>
                   </div>
                   <div>
-                    <label className="form-label">Caste / Biradari</label>
+                    <label className="form-label">{t('home.caste')}</label>
                     <select
                       className="form-control"
                       style={{ backgroundColor: 'var(--warm-ivory)' }}
                       value={quickCaste}
                       onChange={(e) => setQuickCaste(e.target.value)}
                     >
-                      <option value="">All Castes</option>
+                      <option value="">{t('home.allCastes')}</option>
                       {activeCastes.map(c => (
                         <option key={c.id} value={c.label}>{c.label}</option>
                       ))}
@@ -759,7 +758,7 @@ export default function HomeClient() {
                     className="btn btn-primary"
                     style={{ width: '100%', alignSelf: 'flex-end' }}
                   >
-                    Search Now
+                    {t('home.searchNow')}
                   </button>
                 </div>
               </div>
@@ -769,9 +768,9 @@ export default function HomeClient() {
             {/* Trust Stats */}
             <section style={{ padding: '40px 0', backgroundColor: 'var(--color-bg)', borderBottom: '1px solid var(--border-color)' }}>
               <div className="container" style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: '20px', textAlign: 'center' }}>
-                <div><h3 style={{ fontSize: '36px', color: 'var(--color-primary)', margin: 0 }}>5,000+</h3><p style={{ margin: 0, color: 'var(--color-muted)' }}>Verified Profiles</p></div>
-                <div><h3 style={{ fontSize: '36px', color: 'var(--color-primary)', margin: 0 }}>100%</h3><p style={{ margin: 0, color: 'var(--color-muted)' }}>Privacy Control</p></div>
-                <div><h3 style={{ fontSize: '36px', color: 'var(--color-primary)', margin: 0 }}>24/7</h3><p style={{ margin: 0, color: 'var(--color-muted)' }}>Admin Support</p></div>
+                <div><h3 className="ltr-value" style={{ fontSize: '36px', color: 'var(--color-primary)', margin: 0 }}>5,000+</h3><p style={{ margin: 0, color: 'var(--color-muted)' }}>{t('home.statVerifiedProfiles')}</p></div>
+                <div><h3 className="ltr-value" style={{ fontSize: '36px', color: 'var(--color-primary)', margin: 0 }}>100%</h3><p style={{ margin: 0, color: 'var(--color-muted)' }}>{t('home.statPrivacyControl')}</p></div>
+                <div><h3 className="ltr-value" style={{ fontSize: '36px', color: 'var(--color-primary)', margin: 0 }}>24/7</h3><p style={{ margin: 0, color: 'var(--color-muted)' }}>{t('home.statAdminSupport')}</p></div>
               </div>
             </section>
 
@@ -780,19 +779,19 @@ export default function HomeClient() {
             <section style={{ backgroundColor: 'var(--soft-cream)', padding: '80px 0' }}>
               <div className="container">
                 <SectionHeading
-                  title="Featured Candidates"
-                  subtitle="Explore recently verified matrimonial profiles. Activate a standard package to unlock details."
-                  scriptText="Nikah Matches"
+                  title={t('home.featuredTitle')}
+                  subtitle={t('home.featuredSubtitle')}
+                  scriptText={t('home.featuredScript')}
                 />
 
                 {isLoading ? (
                   <div style={{ textAlign: 'center', padding: '48px 20px' }}>
                     <div style={{ fontSize: '32px', marginBottom: '12px', animation: 'spin 1.2s linear infinite', display: 'inline-block' }}>⏳</div>
-                    <p style={{ color: 'var(--text-muted)', fontSize: '15px', fontWeight: 500 }}>Loading profiles…</p>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '15px', fontWeight: 500 }}>{t('home.loadingProfiles')}</p>
                   </div>
                 ) : profiles.length > 0 ? (
                   <>
-                    <p className="mobile-swipe-hint" aria-hidden="true">Swipe to explore →</p>
+                    <p className="mobile-swipe-hint" aria-hidden="true">{t('home.swipeExplore')}</p>
                     <div className="grid-3 mobile-swipe-row" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '32px' }}>
                       {profiles.slice(0, 6).map((profile, index) => (
                         <ProfileCard
@@ -802,8 +801,8 @@ export default function HomeClient() {
                           isLoggedIn={isLoggedIn}
                           isFormComplete={isFormComplete}
                           hasPaid300={hasPaid300}
-                          simulatedPackages={simulatedPackages}
-                          simulatedHighProfileApproved={simulatedHighProfileApproved}
+                          activePackages={activePackages}
+                          highProfileApproved={highProfileApproved}
                           savedProfiles={savedProfiles}
                           onToggleSave={toggleSaveProfile}
                           onViewDetails={setSelectedProfileForDetails}
@@ -818,16 +817,16 @@ export default function HomeClient() {
                 ) : (
                   <div style={{ textAlign: 'center', padding: '48px 20px', backgroundColor: 'var(--white)', borderRadius: '12px', border: '1px dashed var(--gold-accent)' }}>
                     <div style={{ fontSize: '32px', marginBottom: '12px', color: 'var(--gold-accent)' }}>🌙</div>
-                    <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', color: 'var(--primary-brand)', marginBottom: '8px' }}>Profiles Coming Soon</h3>
+                    <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', color: 'var(--primary-brand)', marginBottom: '8px' }}>{t('home.comingSoonTitle')}</h3>
                     <p style={{ color: 'var(--text-muted)', fontSize: '15px' }}>
-                      Verified profiles are being added. Register now to be among the first candidates.
+                      {t('home.comingSoonBody')}
                     </p>
                   </div>
                 )}
 
                 <div style={{ textAlign: 'center', marginTop: '48px' }}>
                   <button onClick={() => router.push('/search')} className="btn btn-gold" style={{ padding: '12px 36px' }}>
-                    Explore More Profiles
+                    {t('home.exploreMoreProfiles')}
                   </button>
                 </div>
               </div>
@@ -837,9 +836,9 @@ export default function HomeClient() {
             <section style={{ backgroundColor: 'var(--warm-ivory)', padding: '80px 0' }}>
               <div className="container">
                 <SectionHeading
-                  title="How Asan Nikah Works"
-                  subtitle="Designed from the ground up for pure, respectful, and family-approved matches."
-                  scriptText="Begin Your Journey"
+                  title={t('home.timelineTitle')}
+                  subtitle={t('home.timelineSubtitle')}
+                  scriptText={t('home.timelineScript')}
                 />
 
                 <div className="timeline-container">
@@ -847,18 +846,18 @@ export default function HomeClient() {
                   <div className="timeline-grid">
                     <div className="timeline-step">
                       <div className="timeline-number">1</div>
-                      <h3>Create Your Profile</h3>
-                      <p>Fill in details about your career, education, and family background, and customize your biodata card accent.</p>
+                      <h3>{t('home.timeline1Title')}</h3>
+                      <p>{t('home.timeline1Desc')}</p>
                     </div>
                     <div className="timeline-step">
                       <div className="timeline-number">2</div>
-                      <h3>Phone Verification</h3>
-                      <p>Our dedicated admin desk contacts you by phone to verify credentials and ensure serious intentions.</p>
+                      <h3>{t('home.timeline2Title')}</h3>
+                      <p>{t('home.timeline2Desc')}</p>
                     </div>
                     <div className="timeline-step">
                       <div className="timeline-number">3</div>
-                      <h3>Connect and Propose</h3>
-                      <p>Once verified and approved, browse compatible matches, request contact shares, and involve family members.</p>
+                      <h3>{t('home.timeline3Title')}</h3>
+                      <p>{t('home.timeline3Desc')}</p>
                     </div>
                   </div>
                 </div>
@@ -869,9 +868,9 @@ export default function HomeClient() {
             <section style={{ backgroundColor: 'var(--soft-cream)', padding: '80px 0' }}>
               <div className="container">
                 <SectionHeading
-                  title="Trust & Family Safety"
-                  subtitle="Rest assured that candidate verification and member privacy are our top priorities."
-                  scriptText="Halal & Secure"
+                  title={t('home.trustTitle')}
+                  subtitle={t('home.trustSubtitle')}
+                  scriptText={t('home.trustScript')}
                 />
 
                 <div className="safety-wrapper" style={{ display: 'grid', gridTemplateColumns: '0.9fr 1.1fr', gap: '48px', alignItems: 'center' }}>
@@ -879,7 +878,7 @@ export default function HomeClient() {
                     <div style={{ position: 'relative', width: '100%', paddingBottom: '75%', borderRadius: 'var(--border-radius-lg)', border: '1.5px solid var(--gold-accent)', boxShadow: 'var(--shadow-premium)', overflow: 'hidden' }}>
                       <Image
                         src="/images/trust-safety.jpg"
-                        alt="Verified Muslim profiles and matchmaking safety - Asan Nikah"
+                        alt={t('home.trustImgAlt')}
                         fill
                         sizes="(max-width: 768px) 100vw, 500px"
                         style={{ objectFit: 'cover', objectPosition: 'center' }}
@@ -889,53 +888,46 @@ export default function HomeClient() {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                     <SafetyFeatureCard
                       icon="✓"
-                      title="100% Manual Phone Screening"
-                      desc="We check all users by telephone, confirming details and family preferences before any search publication."
+                      title={t('home.safety1Title')}
+                      desc={t('home.safety1Desc')}
                     />
                     <SafetyFeatureCard
                       icon="✓"
-                      title="Contact & Photo Masking"
-                      desc="Photos and mobile numbers remain blurred to protect candidate integrity until you authorize sharing."
+                      title={t('home.safety2Title')}
+                      desc={t('home.safety2Desc')}
                     />
                     <SafetyFeatureCard
                       icon="✓"
-                      title="Family Inclusion Encouraged"
-                      desc="We encourage candidates to involve parents or guardians in match check calls and meetings."
-                    />
-                    <SafetyFeatureCard
-                      icon="✓"
-                      title="Islamic Compatibility & Zaicha"
-                      desc="We also help families with Zaicha guidance for marriage compatibility, while keeping the final decision based on deen, character, mutual consent, and family understanding."
+                      title={t('home.safety3Title')}
+                      desc={t('home.safety3Desc')}
                     />
                   </div>
                 </div>
               </div>
             </section>
 
-            <ZaichaPromoCard />
-
             {/* Premium Teaser Section */}
             <section style={{ backgroundColor: 'var(--soft-cream)', padding: '80px 0' }}>
               <div className="container">
                 <SectionHeading
-                  title="Tailored Membership Packages"
-                  subtitle="Activate standard view permissions or request curated 1-on-1 matches. Transparent fees with dynamic GST billing."
-                  scriptText="Choose Your Plan"
+                  title={t('home.plansTitle')}
+                  subtitle={t('home.plansSubtitle')}
+                  scriptText={t('home.plansScript')}
                 />
 
-                <p className="mobile-swipe-hint" aria-hidden="true">Swipe to compare plans →</p>
+                <p className="mobile-swipe-hint" aria-hidden="true">{t('home.swipeCompare')}</p>
                 <div className="grid-4 mobile-swipe-row swipe-packages" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '32px' }}>
                   <PremiumPlanCard
-                    title="Monthly Membership"
+                    title={t('premium.monthlyTitle')}
                     price={300}
                     gstRate={0.18}
                     billingText="monthly"
-                    features={['Browse normal verified profiles', 'Unblur matrimonial photos', 'Access candidate mobile numbers']}
+                    features={tList('premium.monthlyFeatures')}
                     isActive={hasPaid300}
-                    ctaText="Buy Monthly Membership"
+                    ctaText={t('premium.buyMonthly')}
                     onActivate={() => handleRazorpayCheckout('monthly_membership', 300, 'Standard Monthly Membership')}
                     onInquire={() => setInquiryPackage('₹300 Monthly Membership')}
-                    whatsappMessage="Assalamu Alaikum, I want to know more about the ₹300 monthly membership on Asan Nikah."
+                    whatsappMessage={t('premium.waMonthly')}
                     imageUrl="/images/monthly_active.png"
                     hidePrices={!isFormComplete}
                     isLoggedIn={isLoggedIn}
@@ -943,17 +935,17 @@ export default function HomeClient() {
                     onShowLogin={() => setShowLoginModal(true)}
                   />
                   <PremiumPlanCard
-                    title="Good Profile Package"
+                    title={t('premium.goodTitle')}
                     price={5500}
                     gstRate={0.18}
                     billingText="one-time base"
-                    features={['Verified profile suggestions', 'Basic matchmaking support', 'Privacy-safe profile sharing', '1 year service validity']}
-                    isActive={simulatedPackages.includes('good_profile_package')}
-                    ctaText="Buy Good Profile Package"
+                    features={tList('premium.goodFeatures')}
+                    isActive={activePackages.includes('good_profile_package')}
+                    ctaText={t('premium.buyGood')}
                     onActivate={() => handleRazorpayCheckout('good_profile_package', 5500, 'Good Profile Package')}
                     onInquire={() => setInquiryPackage('₹5,500 Good Profiles Package')}
-                    whatsappMessage="Assalamu Alaikum, I am interested in the ₹5,500 Good Profiles Package on Asan Nikah. Please guide me."
-                    badgeText="Starter"
+                    whatsappMessage={t('premium.waGood')}
+                    badgeText={t('premium.badgeStarter')}
                     planTier="basic"
                     imageUrl="/images/good_profile.png"
                     hidePrices={!isFormComplete}
@@ -962,26 +954,17 @@ export default function HomeClient() {
                     onShowLogin={() => setShowLoginModal(true)}
                   />
                   <PremiumPlanCard
-                    title="Basic Access"
+                    title={t('premium.secondTitle')}
                     price={11000}
                     gstRate={0.18}
                     billingText="one-time fee"
-                    features={[
-                      'Everything in Basic Package',
-                      'More verified profile suggestions',
-                      'Priority matchmaking support',
-                      'Profile shortlisting assistance',
-                      'Family coordination support',
-                      'Regular follow-up support',
-                      'Privacy-safe contact assistance',
-                      '1 year service validity'
-                    ]}
-                    isActive={simulatedPackages.includes('second_marriage_package')}
-                    ctaText="Buy Basic Access"
-                    onActivate={() => handleRazorpayCheckout('second_marriage_package', 11000, 'Basic Access')}
-                    onInquire={() => setInquiryPackage('₹11,000 Basic Access')}
-                    whatsappMessage="Assalamu Alaikum, I am interested in the ₹11,000 Basic Access on Asan Nikah. Please guide me."
-                    badgeText="Most Balanced"
+                    features={tList('premium.secondFeatures')}
+                    isActive={activePackages.includes('second_marriage_package')}
+                    ctaText={t('premium.buySecond')}
+                    onActivate={() => handleRazorpayCheckout('second_marriage_package', 11000, 'Second Marriage')}
+                    onInquire={() => setInquiryPackage('₹11,000 Second Marriage')}
+                    whatsappMessage={t('premium.waSecond')}
+                    badgeText={t('premium.badgeSecond')}
                     planTier="silver"
                     imageUrl="/images/second_marriage.png"
                     hidePrices={!isFormComplete}
@@ -990,28 +973,17 @@ export default function HomeClient() {
                     onShowLogin={() => setShowLoginModal(true)}
                   />
                   <PremiumPlanCard
-                    title="Premium Match Access"
+                    title={t('premium.premiumTitle')}
                     price={21000}
                     gstRate={0.18}
                     billingText="one-time base"
-                    features={[
-                      'Everything in Basic Access',
-                      'Premium verified profile suggestions',
-                      'High-priority matchmaking assistance',
-                      'Personalized profile shortlisting',
-                      'Dedicated support assistance',
-                      'Family meeting coordination support',
-                      'Biodata/profile presentation guidance',
-                      'Regular follow-up and progress updates',
-                      'Privacy-safe contact assistance',
-                      '1 year service validity'
-                    ]}
-                    isActive={simulatedPackages.includes('high_profile_package')}
-                    ctaText="Buy Premium Match Access"
+                    features={tList('premium.premiumFeatures')}
+                    isActive={activePackages.includes('high_profile_package')}
+                    ctaText={t('premium.buyPremium')}
                     onActivate={() => handleRazorpayCheckout('high_profile_package', 21000, 'Premium Match Access')}
                     onInquire={() => setInquiryPackage('₹21,000 Premium Match Access')}
-                    whatsappMessage="Assalamu Alaikum, I am interested in the ₹21,000 Premium Match Access on Asan Nikah. Please guide me."
-                    badgeText="Premium Choice"
+                    whatsappMessage={t('premium.waPremium')}
+                    badgeText={t('premium.badgePremium')}
                     planTier="gold"
                     imageUrl="/images/high_profile.png"
                     hidePrices={!isFormComplete}
@@ -1027,12 +999,12 @@ export default function HomeClient() {
             <section style={{ backgroundColor: 'var(--soft-cream)', padding: '80px 0' }}>
               <div className="container">
                 <SectionHeading
-                  title="Wedding & Event Support"
-                  subtitle="From finding the right match to planning the perfect celebration — we help families connect with trusted event service partners."
-                  scriptText="Celebrate Together"
+                  title={t('home.eventTitle')}
+                  subtitle={t('home.eventSubtitle')}
+                  scriptText={t('home.eventScript')}
                 />
 
-                <p className="mobile-swipe-hint" aria-hidden="true">Swipe to explore →</p>
+                <p className="mobile-swipe-hint" aria-hidden="true">{t('home.swipeExplore')}</p>
                 <div
                   className="mobile-swipe-row"
                   style={{
@@ -1042,17 +1014,17 @@ export default function HomeClient() {
                   }}
                 >
                   {[
-                    { emoji: '🌸', name: 'Decoration Partners',       desc: 'Floral, thematic & stage décor' },
-                    { emoji: '🏛️', name: 'Wedding Venues',            desc: 'Banquet halls & event spaces' },
-                    { emoji: '🍽️', name: 'Catering Services',         desc: 'Authentic halal menu options' },
-                    { emoji: '📸', name: 'Photography',               desc: 'Professional event studios' },
-                    { emoji: '💄', name: 'Bridal Makeup',             desc: 'Expert bridal artists' },
-                    { emoji: '✋', name: 'Mehendi Artists',           desc: 'Traditional & modern designs' },
-                    { emoji: '📜', name: 'Invitation Cards',          desc: 'Premium printed & digital' },
-                    { emoji: '🕌', name: 'Qazi & Nikah Arrangement',  desc: 'Trusted ceremony services' },
+                    { emoji: '🌸', nameKey: 'home.evtDecoName',     descKey: 'home.evtDecoDesc' },
+                    { emoji: '🏛️', nameKey: 'home.evtVenueName',    descKey: 'home.evtVenueDesc' },
+                    { emoji: '🍽️', nameKey: 'home.evtCateringName', descKey: 'home.evtCateringDesc' },
+                    { emoji: '📸', nameKey: 'home.evtPhotoName',    descKey: 'home.evtPhotoDesc' },
+                    { emoji: '💄', nameKey: 'home.evtMakeupName',   descKey: 'home.evtMakeupDesc' },
+                    { emoji: '✋', nameKey: 'home.evtMehendiName',  descKey: 'home.evtMehendiDesc' },
+                    { emoji: '📜', nameKey: 'home.evtInviteName',  descKey: 'home.evtInviteDesc' },
+                    { emoji: '🕌', nameKey: 'home.evtQaziName',     descKey: 'home.evtQaziDesc' },
                   ].map((svc) => (
                     <div
-                      key={svc.name}
+                      key={svc.nameKey}
                       style={{
                         backgroundColor: 'var(--white)',
                         border: '1px solid var(--border-color)',
@@ -1092,7 +1064,7 @@ export default function HomeClient() {
                           lineHeight: 1.3,
                         }}
                       >
-                        {svc.name}
+                        {t(svc.nameKey)}
                       </h3>
                       <p
                         style={{
@@ -1102,7 +1074,7 @@ export default function HomeClient() {
                           lineHeight: 1.5,
                         }}
                       >
-                        {svc.desc}
+                        {t(svc.descKey)}
                       </p>
                     </div>
                   ))}
@@ -1114,10 +1086,10 @@ export default function HomeClient() {
                     className="btn btn-gold"
                     style={{ padding: '12px 36px' }}
                   >
-                    Explore Event Services
+                    {t('home.exploreEventServices')}
                   </button>
                   <a
-                    href={`https://wa.me/919170975535?text=${encodeURIComponent('Assalamu Alaikum, I am interested in Event Management support. Please share details for trusted wedding/event vendors.')}`}
+                    href={`https://wa.me/919170975535?text=${encodeURIComponent(t('eventMgmt.whatsappMsg'))}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn btn-secondary"
@@ -1126,7 +1098,7 @@ export default function HomeClient() {
                     <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
                     </svg>
-                    WhatsApp Inquiry
+                    {t('home.whatsappInquiry')}
                   </a>
                 </div>
               </div>
@@ -1151,7 +1123,7 @@ export default function HomeClient() {
 
       <PremiumFooter onNavigate={handleNavigate} />
 
-      {/* Google Login Simulator Modal */}
+      {/* Google Login Modal */}
       {showLoginModal && (
         <div className="modal-overlay font-sans">
           <div className="card-theme-wrapper" style={{ maxWidth: '400px', width: '90%', margin: '20px' }}>
@@ -1162,10 +1134,10 @@ export default function HomeClient() {
 
             <div style={{ textAlign: 'center', padding: '10px 0' }}>
               <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '24px', color: 'var(--deep-maroon)', marginBottom: '12px', fontWeight: 'bold' }}>
-                Join Asan Nikah
+                {t('home.joinTitle')}
               </h3>
               <p style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: '24px', lineHeight: '1.5' }}>
-                Create a profile or log in securely using your Google account to get verified.
+                {t('home.joinBody')}
               </p>
 
               <button
@@ -1188,41 +1160,15 @@ export default function HomeClient() {
                   width={20}
                   height={20}
                 />
-                Continue with Google
+                {t('home.continueGoogle')}
               </button>
-
-              {isDemoMode && (
-                <>
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '10px',
-                      margin: '16px 0',
-                      color: 'var(--text-muted)',
-                      fontSize: '12px',
-                    }}
-                  >
-                    <div style={{ flex: 1, height: '1px', background: 'var(--border-color)' }} />
-                    <span>or demo access</span>
-                    <div style={{ flex: 1, height: '1px', background: 'var(--border-color)' }} />
-                  </div>
-                  <button
-                    onClick={handleGoogleLogin}
-                    className="btn btn-gold"
-                    style={{ width: '100%', fontWeight: 600 }}
-                  >
-                    🎭 Continue as Demo User
-                  </button>
-                </>
-              )}
 
               <button
                 onClick={() => setShowLoginModal(false)}
                 className="btn btn-secondary"
                 style={{ width: '100%', marginTop: '12px' }}
               >
-                Cancel
+                {t('home.cancel')}
               </button>
             </div>
           </div>
@@ -1251,7 +1197,7 @@ export default function HomeClient() {
               ×
             </button>
             <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '22px', color: 'var(--deep-maroon)', marginBottom: '16px', textAlign: 'center' }}>
-              Package Inquiry & Callback
+              {t('premium.inquiryModalTitle')}
             </h3>
             <PackageInquiryForm
               defaultPackage={inquiryPackage}

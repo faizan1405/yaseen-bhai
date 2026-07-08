@@ -1,16 +1,16 @@
 export type PackageType = 'monthly_membership' | 'good_profile_package' | 'second_marriage_package' | 'high_profile_package';
 
 /**
- * Single source of truth for the package keys used across the entire app — the
- * demo simulator bar, access-control checks, privacy redaction, the payment
- * flow and the API headers all key off these EXACT strings. They must stay in
- * sync with the Prisma `PackageType` enum and the keys of `PREMIUM_PACKAGES`.
+ * Single source of truth for the package keys used across the entire app —
+ * access-control checks, privacy redaction and the payment flow all key off
+ * these EXACT strings. They must stay in sync with the Prisma `PackageType`
+ * enum and the keys of `PREMIUM_PACKAGES`.
  *
  * IMPORTANT: the customer-facing UI labels intentionally differ from the keys.
  * Always reference the key, never the label, in logic:
  *   monthly_membership      → "Monthly Membership"
  *   good_profile_package    → "Good Profile Package"
- *   second_marriage_package → "Basic Access"      (NOT a separate "silver_plan" key)
+ *   second_marriage_package → "Second Marriage"   (NOT a separate "silver_plan" key)
  *   high_profile_package    → "Premium Match Access"     (NOT a separate "gold_package" key)
  */
 export const PACKAGE_KEYS = {
@@ -66,7 +66,7 @@ export const PREMIUM_PACKAGES: Record<PackageType, PackageDefinition> = {
   },
   second_marriage_package: {
     type: 'second_marriage_package',
-    name: 'Basic Access',
+    name: 'Second Marriage',
     basePrice: 11000,
     gstRate: 0.18,
     totalAmount: 12980,
@@ -92,7 +92,7 @@ export const PREMIUM_PACKAGES: Record<PackageType, PackageDefinition> = {
     billingType: 'ONE_TIME',
     successFeeAmount: 25000,
     benefits: [
-      'Everything in Basic Access',
+      'Everything in Second Marriage',
       'Premium verified profile suggestions',
       'High-priority matchmaking assistance',
       'Personalized profile shortlisting',
@@ -105,3 +105,29 @@ export const PREMIUM_PACKAGES: Record<PackageType, PackageDefinition> = {
     ]
   }
 };
+
+/**
+ * Accepted `interestedPackage` lead-label strings for each package key, in the
+ * exact form they are stored on lead records. Includes historical labels so admin
+ * lead filtering keeps matching older records after a customer-facing rebrand —
+ * WITHOUT migrating or mutating stored data. First entry is the current label;
+ * the rest are legacy aliases kept for backward compatibility.
+ */
+export const PACKAGE_LEAD_LABELS: Record<PackageType, string[]> = {
+  monthly_membership: ['₹300 Monthly Membership'],
+  good_profile_package: ['₹5,500 Good Profiles Package', '₹5,500 Good Profiles'],
+  second_marriage_package: ['₹11,000 Second Marriage', '₹11,000 Basic Access'],
+  high_profile_package: ['₹21,000 Premium Match Access'],
+};
+
+/**
+ * Resolve an admin lead filter value — which may be a stable internal package key
+ * OR a raw label string — into the full set of stored labels that should match it.
+ * Unknown values fall back to matching themselves so free-form filters still work.
+ */
+export function resolveLeadPackageLabels(filterValue: string): string[] {
+  if (Object.prototype.hasOwnProperty.call(PACKAGE_LEAD_LABELS, filterValue)) {
+    return PACKAGE_LEAD_LABELS[filterValue as PackageType];
+  }
+  return [filterValue];
+}

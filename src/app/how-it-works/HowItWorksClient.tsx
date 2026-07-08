@@ -5,48 +5,27 @@ import { useRouter } from 'next/navigation';
 import Navbar from '../../components/Navbar';
 import Image from 'next/image';
 import { SectionHeading, FloralCorner, PremiumFooter } from '../../components/NikahComponents';
+import { useI18n } from '../../i18n/I18nProvider';
 
 interface Step {
   num: number;
-  title: string;
-  desc: string;
+  // Translation-key stems resolved with t() at render time.
+  titleKey: string;
+  descKey: string;
+  altKey: string;
   img: string;
-  alt: string;
 }
 
 const steps: Step[] = [
-  {
-    num: 1,
-    title: 'Register Your Biodata',
-    desc: 'Sign in securely via Google OAuth. Complete our registration wizard with detailed information on your education, occupation, religious outlook, and family background details.',
-    img: '/images/hiw-1.png',
-    alt: 'Create Profile',
-  },
-  {
-    num: 2,
-    title: 'Telephone Verification Check',
-    desc: 'After saving your profile, it enters our admin verification queue. An administrator schedules a telephone call check to verify details, maintain high community integrity, and approve the profile.',
-    img: '/images/hiw-2.png',
-    alt: 'Verify Details',
-  },
-  {
-    num: 3,
-    title: 'Privacy Blur and Unlock Matches',
-    desc: 'Photos and phone numbers remain securely blurred to visitors. Activate the standard monthly membership to unblur photos, explore candidates, and access call details.',
-    img: '/images/hiw-3.png',
-    alt: 'Find Suitable Match',
-  },
-  {
-    num: 4,
-    title: 'Start Halal Introductions',
-    desc: 'Communicate respectfully. We suggest involving family members as early as possible. Schedule chaperone calls and begin your blessed Nikah preparations with complete trust.',
-    img: '/images/hiw-4.png',
-    alt: 'Family Discussion Nikah Journey',
-  },
+  { num: 1, titleKey: 'howItWorks.step1Title', descKey: 'howItWorks.step1Desc', altKey: 'howItWorks.step1Alt', img: '/images/hiw-1.png' },
+  { num: 2, titleKey: 'howItWorks.step2Title', descKey: 'howItWorks.step2Desc', altKey: 'howItWorks.step2Alt', img: '/images/hiw-2.png' },
+  { num: 3, titleKey: 'howItWorks.step3Title', descKey: 'howItWorks.step3Desc', altKey: 'howItWorks.step3Alt', img: '/images/hiw-3.png' },
+  { num: 4, titleKey: 'howItWorks.step4Title', descKey: 'howItWorks.step4Desc', altKey: 'howItWorks.step4Alt', img: '/images/hiw-4.png' },
 ];
 
 export default function HowItWorksClient() {
   const router = useRouter();
+  const { t } = useI18n();
 
   const handleNavigate = (view: string) => {
     router.push('/' + (view === 'home' ? '' : view));
@@ -58,9 +37,9 @@ export default function HowItWorksClient() {
       <main className="flex-grow">
         <div className="container font-sans" style={{ padding: '40px 0 80px 0' }}>
           <SectionHeading
-            title="How Asan Nikah Works"
-            subtitle="Discover how our platform ensures family safety, Shariah compatibility, and verified introductions."
-            scriptText="Step-by-Step Guide"
+            title={t('howItWorks.title')}
+            subtitle={t('howItWorks.subtitle')}
+            scriptText={t('howItWorks.script')}
             as="h1"
           />
 
@@ -80,7 +59,7 @@ export default function HowItWorksClient() {
                 {/* Full-cover background image */}
                 <Image
                   src={step.img}
-                  alt={step.alt}
+                  alt={t(step.altKey)}
                   fill
                   sizes="(max-width: 640px) 100vw, 900px"
                   style={{ objectFit: 'cover', objectPosition: 'center' }}
@@ -144,7 +123,7 @@ export default function HowItWorksClient() {
                       textShadow: '0 2px 10px rgba(0,0,0,0.35)',
                     }}
                   >
-                    {step.title}
+                    {t(step.titleKey)}
                   </h3>
                   <p
                     style={{
@@ -155,7 +134,7 @@ export default function HowItWorksClient() {
                       maxWidth: '620px',
                     }}
                   >
-                    {step.desc}
+                    {t(step.descKey)}
                   </p>
                 </div>
               </div>
@@ -165,10 +144,10 @@ export default function HowItWorksClient() {
           <div className="arch-container max-w-2xl mx-auto p-8 text-center gold-rim gold-glow" style={{ maxWidth: '600px', margin: '48px auto 0 auto', padding: '32px', textAlign: 'center' }}>
             <FloralCorner position="tl" />
             <FloralCorner position="br" />
-            <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', color: 'var(--deep-maroon)', marginBottom: '12px' }}>Frequently Asked Questions</h4>
+            <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', color: 'var(--deep-maroon)', marginBottom: '12px' }}>{t('howItWorks.faqTitle')}</h4>
             <div style={{ textAlign: 'left', display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '20px', fontSize: '13.5px' }}>
-              <p><strong>Q: Is there a fee to search matches?</strong><br />A: Registration is free. Viewing detailed candidate photos and phone numbers requires an active Standard Monthly Membership. Complete your profile to view current membership pricing.</p>
-              <p><strong>Q: How does manual verification work?</strong><br />A: Our support team calls each registered number to confirm biological identities, marital histories, and ensure serious intentions before approval.</p>
+              <p><strong>{t('howItWorks.faq1Q')}</strong><br />{t('howItWorks.faq1A')}</p>
+              <p><strong>{t('howItWorks.faq2Q')}</strong><br />{t('howItWorks.faq2A')}</p>
             </div>
           </div>
         </div>
