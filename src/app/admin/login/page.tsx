@@ -2,22 +2,52 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 
 export default function AdminLoginPage() {
-  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const [googleLoading, setGoogleLoading] = useState(false);
+  const [passwordLoading, setPasswordLoading] = useState(false);
   const [error, setError] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleGoogleLogin = async () => {
-    setLoading(true);
+    setGoogleLoading(true);
     setError('');
     try {
       await signIn('google', { callbackUrl: '/admin' });
     } catch {
       setError('Sign-in failed. Please try again.');
-      setLoading(false);
+      setGoogleLoading(false);
     }
   };
+
+  const handlePasswordLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPasswordLoading(true);
+    setError('');
+    try {
+      const result = await signIn('admin-credentials', {
+        email: email.trim(),
+        password,
+        redirect: false,
+      });
+      if (result?.error) {
+        setError('Invalid email or password, or this account does not have admin access.');
+        setPasswordLoading(false);
+        return;
+      }
+      router.push('/admin');
+      router.refresh();
+    } catch {
+      setError('Sign-in failed. Please try again.');
+      setPasswordLoading(false);
+    }
+  };
+
+  const busy = googleLoading || passwordLoading;
 
   return (
     <div
@@ -84,40 +114,99 @@ export default function AdminLoginPage() {
         >
           Admin Portal
         </h1>
-        <p style={{ color: 'var(--text-muted)', fontSize: '13.5px', marginBottom: '32px' }}>
+        <p style={{ color: 'var(--text-muted)', fontSize: '13.5px', marginBottom: '28px' }}>
           Secure access for Asan Nikah team members only.
         </p>
-
-        {/* Divider */}
-        <div
-          style={{
-            height: '1px',
-            background: 'linear-gradient(to right, transparent, var(--gold-accent), transparent)',
-            marginBottom: '28px',
-            opacity: 0.5,
-          }}
-        />
 
         {error && (
           <div
             style={{
-              background: 'rgba(4,120,87,0.08)',
-              border: '1px solid rgba(4,120,87,0.2)',
+              background: 'rgba(220,38,38,0.08)',
+              border: '1px solid rgba(220,38,38,0.25)',
               borderRadius: '8px',
               padding: '10px 14px',
               marginBottom: '20px',
-              color: 'var(--deep-maroon)',
+              color: '#b91c1c',
               fontSize: '13px',
+              textAlign: 'left',
             }}
           >
             ⚠️ {error}
           </div>
         )}
 
+        {/* Email & Password Sign-in */}
+        <form onSubmit={handlePasswordLogin} style={{ textAlign: 'left', marginBottom: '20px' }}>
+          <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--deep-maroon)', marginBottom: '5px' }}>
+            Email
+          </label>
+          <input
+            type="email"
+            required
+            autoComplete="username"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            disabled={busy}
+            style={{
+              width: '100%',
+              padding: '11px 14px',
+              borderRadius: '8px',
+              border: '1.5px solid #dadce0',
+              fontSize: '14px',
+              marginBottom: '14px',
+              boxSizing: 'border-box',
+            }}
+            placeholder="admin@example.com"
+          />
+          <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--deep-maroon)', marginBottom: '5px' }}>
+            Password
+          </label>
+          <input
+            type="password"
+            required
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            disabled={busy}
+            style={{
+              width: '100%',
+              padding: '11px 14px',
+              borderRadius: '8px',
+              border: '1.5px solid #dadce0',
+              fontSize: '14px',
+              marginBottom: '16px',
+              boxSizing: 'border-box',
+            }}
+            placeholder="••••••••"
+          />
+          <button
+            type="submit"
+            disabled={busy}
+            className="btn btn-gold"
+            style={{
+              width: '100%',
+              padding: '13px 20px',
+              fontSize: '14.5px',
+              fontWeight: 600,
+              cursor: busy ? 'not-allowed' : 'pointer',
+              opacity: busy ? 0.7 : 1,
+            }}
+          >
+            {passwordLoading ? 'Signing in…' : 'Sign in'}
+          </button>
+        </form>
+
+        {/* Divider */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '18px' }}>
+          <div style={{ flex: 1, height: '1px', background: 'rgba(184,146,74,0.35)' }} />
+          <span style={{ fontSize: '11.5px', color: 'var(--text-muted)' }}>OR</span>
+          <div style={{ flex: 1, height: '1px', background: 'rgba(184,146,74,0.35)' }} />
+        </div>
+
         {/* Google Sign-in */}
         <button
           onClick={handleGoogleLogin}
-          disabled={loading}
+          disabled={busy}
           style={{
             width: '100%',
             padding: '14px 20px',
@@ -127,13 +216,13 @@ export default function AdminLoginPage() {
             color: '#3c4043',
             fontSize: '15px',
             fontWeight: 600,
-            cursor: loading ? 'not-allowed' : 'pointer',
+            cursor: busy ? 'not-allowed' : 'pointer',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             gap: '12px',
             transition: 'all 0.2s',
-            opacity: loading ? 0.7 : 1,
+            opacity: busy ? 0.7 : 1,
             boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
           }}
         >
@@ -144,7 +233,7 @@ export default function AdminLoginPage() {
             <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
             <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
           </svg>
-          {loading ? 'Signing in...' : 'Sign in with Google'}
+          {googleLoading ? 'Signing in...' : 'Sign in with Google'}
         </button>
 
         {/* Footer note */}

@@ -13,6 +13,12 @@ import {
   isSuperAdminRole,
   permissionListAllows,
 } from './permissions';
+import { getRequestMeta } from './requestMeta';
+
+// Re-exported for backward compatibility — existing admin API routes import
+// getRequestMeta from here. The implementation lives in a neutral module with
+// no `@/auth` dependency so `auth.ts` can also use it without a circular import.
+export { getRequestMeta };
 
 export interface AdminSessionUser {
   id: string;
@@ -83,22 +89,4 @@ export async function requirePermission(permission: string): Promise<AuthResult>
 /** Turn a failed AuthResult into a JSON NextResponse with the right status. */
 export function authFail(result: Extract<AuthResult, { ok: false }>): NextResponse {
   return NextResponse.json({ error: result.message }, { status: result.status });
-}
-
-/**
- * Extract best-effort request metadata for audit logs. Never throws.
- * IP is derived from standard proxy headers; user-agent from the UA header.
- */
-export function getRequestMeta(req: Request): { ipAddress: string | null; userAgent: string | null } {
-  try {
-    const fwd = req.headers.get('x-forwarded-for');
-    const ipAddress =
-      (fwd ? fwd.split(',')[0].trim() : null) ||
-      req.headers.get('x-real-ip') ||
-      null;
-    const userAgent = req.headers.get('user-agent') || null;
-    return { ipAddress, userAgent };
-  } catch {
-    return { ipAddress: null, userAgent: null };
-  }
 }
