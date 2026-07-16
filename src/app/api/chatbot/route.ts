@@ -29,6 +29,9 @@ function checkRateLimit(ip: string): boolean {
 }
 
 export async function POST(req: NextRequest) {
+  // Hoisted so the outer catch can build a fallback reply without re-reading the
+  // request body (a request stream can only be consumed once).
+  let message = '';
   try {
     // 1. Get Client IP for Rate Limiting
     const ip = (req as any).ip || req.headers.get('x-forwarded-for') || 'anonymous';
@@ -41,7 +44,8 @@ export async function POST(req: NextRequest) {
 
     // 2. Parse and Validate Input
     const body = await req.json();
-    const { message, history } = body;
+    const { history } = body;
+    message = body.message;
 
     if (!message || typeof message !== 'string' || message.trim() === '') {
       return NextResponse.json(
@@ -175,14 +179,12 @@ export async function POST(req: NextRequest) {
 
   } catch (error) {
     // If the API call fails, log the error and fall back gracefully to the offline replies.
+    // We reuse the already-parsed `message` (the request body cannot be read twice).
     console.error('Chatbot route execution error, reverting to fallback mode:', error);
-    const body = await req.json().catch(() => ({}));
-    const message = body?.message || '';
-    const fallbackText = getFallbackResponse(message);
-    return NextResponse.json({ 
-      text: fallbackText, 
+    const fallbackText = getFallbackResponse(message || '');
+    return NextResponse.json({
+      text: fallbackText,
       isFallback: true,
-      errorDetails: error instanceof Error ? error.message : 'Unknown error'
     });
   }
 }

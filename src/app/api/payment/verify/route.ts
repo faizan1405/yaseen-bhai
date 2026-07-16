@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
-import { verifyPackagePurchase } from '@/lib/profileStore';
+import { verifyPackagePurchase, getProfileByUserId, getValidObjectId } from '@/lib/profileStore';
 import { prisma } from '@/lib/db';
 import { notifyMembership } from '@/lib/notifications';
+import { safeCreateNotification } from '@/lib/dashboard/notificationService';
 import crypto from 'crypto';
 
 export async function POST(req: NextRequest) {
@@ -23,7 +24,17 @@ export async function POST(req: NextRequest) {
     const existingPurchase = await prisma.packagePurchase.findFirst({
       where: { razorpayOrderId: orderId }
     });
-    
+
+    // Ownership check: the order being verified must belong to the signed-in
+    // user's own profile. This stops a logged-in user from activating a package
+    // against someone else's pending order.
+    if (existingPurchase) {
+      const viewerProfile = await getProfileByUserId(activeUserId);
+      if (!viewerProfile || getValidObjectId(viewerProfile.id) !== existingPurchase.profileId) {
+        return NextResponse.json({ error: 'This payment does not belong to your account.' }, { status: 403 });
+      }
+    }
+
     if (existingPurchase && existingPurchase.paymentStatus === 'PAID') {
       return NextResponse.json({
         success: true,
@@ -59,6 +70,19 @@ export async function POST(req: NextRequest) {
         if (dbPurchase && dbPurchase.profile) {
           const userEmail = dbPurchase.profile.user?.email || null;
           notifyMembership(userEmail, dbPurchase.profile.phoneNumber, dbPurchase.profile.fullName, dbPurchase.packageType);
+
+          if (dbPurchase.profile.userId) {
+            await safeCreateNotification({
+              userId: dbPurchase.profile.userId,
+              type: 'MEMBERSHIP_ACTIVATED',
+              title: 'Membership activated',
+              message: `Your ${dbPurchase.packageType.replace(/_/g, ' ')} package is now active.`,
+              actionUrl: '/my-account',
+              relatedType: 'PackagePurchase',
+              relatedId: dbPurchase.id,
+              dedupeKey: `payment_success_${dbPurchase.id}`,
+            });
+          }
         }
       }
     } catch (e) {

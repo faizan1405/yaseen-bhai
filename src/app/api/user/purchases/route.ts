@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import { getProfileByUserId, getUserPurchases } from '@/lib/profileStore';
+import { checkAndNotifyExpiringMemberships } from '@/lib/dashboard/membershipExpiry';
 
 export async function GET(req: NextRequest) {
   try {
@@ -25,6 +26,10 @@ export async function GET(req: NextRequest) {
         (!p.expiryDate || new Date(p.expiryDate) > now)
       )
       .map(p => p.packageType);
+
+    // Best-effort, fire-and-forget: never let an expiry-notification hiccup
+    // slow down or fail this read-only endpoint.
+    checkAndNotifyExpiringMemberships(activeUserId, purchases).catch(() => {});
 
     return NextResponse.json({
       packages: [...new Set(activePackageTypes)],

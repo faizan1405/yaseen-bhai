@@ -52,7 +52,7 @@ export default function HowItWorksClient() {
                   position: 'relative',
                   borderRadius: 'var(--border-radius-lg)',
                   overflow: 'hidden',
-                  boxShadow: '0 20px 60px -12px rgba(111, 29, 53, 0.25)',
+                  boxShadow: '0 20px 60px -12px rgba(4, 120, 87, 0.25)',
                   border: '1px solid rgba(184, 146, 74, 0.35)',
                 }}
               >
@@ -72,7 +72,7 @@ export default function HowItWorksClient() {
                     position: 'absolute',
                     inset: 0,
                     background:
-                      'linear-gradient(to top, rgba(111,29,53,0.93) 0%, rgba(111,29,53,0.55) 42%, rgba(0,0,0,0.06) 100%)',
+                      'linear-gradient(to top, rgba(4,120,87,0.93) 0%, rgba(4,120,87,0.55) 42%, rgba(0,0,0,0.06) 100%)',
                     pointerEvents: 'none',
                   }}
                 />
@@ -127,7 +127,7 @@ export default function HowItWorksClient() {
                   </h3>
                   <p
                     style={{
-                      color: 'rgba(255, 255, 255, 0.88)',
+                      color: 'var(--on-dark-soft)',
                       fontSize: '14.5px',
                       lineHeight: '1.65',
                       textShadow: '0 1px 4px rgba(0,0,0,0.45)',

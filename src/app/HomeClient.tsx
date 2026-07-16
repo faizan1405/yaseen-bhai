@@ -210,7 +210,7 @@ export default function HomeClient() {
               </div>
 
               {registrationError && (
-                <div style={{ backgroundColor: 'rgba(111, 29, 53, 0.08)', color: 'var(--deep-maroon)', padding: '12px 16px', borderRadius: '8px', marginBottom: '20px', fontSize: '13px', border: '1px solid rgba(111,29,53,0.15)' }}>
+                <div style={{ backgroundColor: 'rgba(4, 120, 87, 0.08)', color: 'var(--deep-maroon)', padding: '12px 16px', borderRadius: '8px', marginBottom: '20px', fontSize: '13px', border: '1px solid rgba(4,120,87,0.15)' }}>
                   ⚠️ {registrationError}
                 </div>
               )}

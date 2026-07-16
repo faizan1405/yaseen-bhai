@@ -213,7 +213,14 @@ const globalStore = globalThis as unknown as {
   inMemoryCuratedLeads: typeof MOCK_CURATED_LEADS | undefined;
   inMemoryLeads: any[] | undefined;
   isDbConnected: boolean | undefined;
+  dbCheckedAt: number | undefined;
 };
+
+// How long a connection probe result is trusted before we re-check. Short when
+// the DB is known-down so we auto-recover quickly once it returns; longer when
+// it is healthy to avoid probing on every request.
+const DB_OK_TTL_MS = 60 * 1000;
+const DB_DOWN_TTL_MS = 15 * 1000;
 
 if (!globalStore.inMemoryProfiles) globalStore.inMemoryProfiles = [...MOCK_PROFILES_DB];
 if (!globalStore.inMemoryRequests) globalStore.inMemoryRequests = [...MOCK_VERIFICATION_REQUESTS];
@@ -273,24 +280,39 @@ export function isFallbackAllowed(): boolean {
   return true;
 }
 
-// Check if MongoDB DB is reachable, caching result
+// Check if MongoDB is reachable. The result is cached with a short TTL so that:
+//  - a healthy DB isn't probed on every request, and
+//  - once the DB comes back after an outage we automatically switch back to it
+//    (previously the first failure was cached forever).
 export async function testDbConnection() {
-  if (globalStore.isDbConnected !== undefined) {
-    return globalStore.isDbConnected;
+  const now = Date.now();
+  const cached = globalStore.isDbConnected;
+  const checkedAt = globalStore.dbCheckedAt ?? 0;
+  const ttl = cached ? DB_OK_TTL_MS : DB_DOWN_TTL_MS;
+
+  if (cached !== undefined && now - checkedAt < ttl) {
+    return cached;
   }
+
   try {
     // Attempt a lightweight query
     await prisma.user.findFirst({ select: { id: true } });
+    if (cached === false) {
+      console.log('MongoDB connection restored — switching back to the live database.');
+    } else if (cached === undefined) {
+      console.log('MongoDB connection active.');
+    }
     globalStore.isDbConnected = true;
-    console.log('MongoDB connection active.');
   } catch (error) {
     globalStore.isDbConnected = false;
     const errorMsg = error instanceof Error ? error.message : String(error);
     console.warn('Database connection check failed:', sanitizeErrorMessage(errorMsg));
     if (!isFallbackAllowed()) {
+      globalStore.dbCheckedAt = now;
       throw new Error(`Database connection failed: ${sanitizeErrorMessage(errorMsg)}`);
     }
   }
+  globalStore.dbCheckedAt = now;
   return globalStore.isDbConnected;
 }
 
@@ -358,9 +380,12 @@ export async function getAllProfiles() {
       });
       // If the database is reachable but has no profiles yet (e.g. this
       // environment was never seeded), serve the bundled sample profiles so the
-      // public directory and featured section are never empty. Once real
-      // profiles exist this branch never runs, so nothing is duplicated.
-      if (dbProfiles.length === 0) {
+      // public directory and featured section are never empty — BUT only where
+      // fallback is allowed (development, or production with ALLOW_DB_FALLBACK).
+      // In normal production we return the real (empty) result rather than
+      // silently presenting fake profiles. Once real profiles exist this branch
+      // never runs, so nothing is duplicated.
+      if (dbProfiles.length === 0 && isFallbackAllowed()) {
         return MOCK_PROFILES_DB;
       }
       return dbProfiles;
@@ -716,11 +741,13 @@ export async function createPackagePurchase(data: {
   billingType: string;
   successFeeAmount: number;
   razorpayOrderId: string;
+  internalNotes?: string;
 }) {
   const isDb = await testDbConnection();
   const dbProfileId = getValidObjectId(data.profileId);
+  const { internalNotes, ...rest } = data;
   const purchaseData = {
-    ...data,
+    ...rest,
     profileId: dbProfileId,
     paymentStatus: 'PENDING' as PaymentStatus,
     accessStatus: 'ACTIVE',
@@ -729,7 +756,7 @@ export async function createPackagePurchase(data: {
     successFeePaymentStatus: 'PENDING' as PaymentStatus,
     razorpayPaymentId: null,
     expiryDate: null,
-    internalNotes: '',
+    internalNotes: internalNotes || '',
   };
 
   if (isDb) {

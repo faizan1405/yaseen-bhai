@@ -357,7 +357,7 @@ export default function AdminLeadsPage() {
             </h3>
 
             {actionError && (
-              <div style={{ backgroundColor: 'rgba(111, 29, 53, 0.08)', color: 'var(--deep-maroon)', padding: '10px 14px', borderRadius: '8px', fontSize: '12px', marginBottom: '16px' }}>
+              <div style={{ backgroundColor: 'rgba(4, 120, 87, 0.08)', color: 'var(--deep-maroon)', padding: '10px 14px', borderRadius: '8px', fontSize: '12px', marginBottom: '16px' }}>
                 ⚠️ {actionError}
               </div>
             )}

@@ -42,7 +42,7 @@ export const ProfileGrid: React.FC<ProfileGridProps> = ({ filteredProfiles, isFi
           background: 'var(--white)',
           borderRadius: '20px',
           border: '1px solid rgba(184,146,74,0.15)',
-          boxShadow: '0 4px 24px rgba(111,29,53,0.06)',
+          boxShadow: '0 4px 24px rgba(4,120,87,0.06)',
         }}>
           <div style={{ fontSize: '48px', marginBottom: '16px' }}>🌙</div>
           <h3 style={{
@@ -62,14 +62,14 @@ export const ProfileGrid: React.FC<ProfileGridProps> = ({ filteredProfiles, isFi
               href="/register"
               style={{
                 padding: '11px 24px',
-                background: 'linear-gradient(135deg,var(--deep-maroon),#8b2252)',
+                background: 'linear-gradient(135deg,var(--deep-maroon),var(--color-primary-dark))',
                 color: '#fff',
                 borderRadius: '10px',
                 fontSize: '13.5px',
                 fontWeight: 700,
                 textDecoration: 'none',
                 fontFamily: 'var(--font-sans)',
-                boxShadow: '0 4px 14px rgba(111,29,53,0.22)',
+                boxShadow: '0 4px 14px rgba(4,120,87,0.22)',
               }}
             >
               {t('profileGrid.registerFree')}
@@ -89,7 +89,7 @@ export const ProfileGrid: React.FC<ProfileGridProps> = ({ filteredProfiles, isFi
         background: 'var(--white)',
         borderRadius: '20px',
         border: '1px solid rgba(184,146,74,0.15)',
-        boxShadow: '0 4px 24px rgba(111,29,53,0.06)',
+        boxShadow: '0 4px 24px rgba(4,120,87,0.06)',
       }}>
         <div style={{ fontSize: '48px', marginBottom: '16px' }}>🌙</div>
         <h3 style={{
@@ -109,14 +109,14 @@ export const ProfileGrid: React.FC<ProfileGridProps> = ({ filteredProfiles, isFi
             href="/search"
             style={{
               padding: '11px 24px',
-              background: 'linear-gradient(135deg,var(--deep-maroon),#8b2252)',
+              background: 'linear-gradient(135deg,var(--deep-maroon),var(--color-primary-dark))',
               color: '#fff',
               borderRadius: '10px',
               fontSize: '13.5px',
               fontWeight: 700,
               textDecoration: 'none',
               fontFamily: 'var(--font-sans)',
-              boxShadow: '0 4px 14px rgba(111,29,53,0.22)',
+              boxShadow: '0 4px 14px rgba(4,120,87,0.22)',
             }}
           >
             {t('profileGrid.clearAllFilters')}
@@ -132,7 +132,7 @@ export const ProfileGrid: React.FC<ProfileGridProps> = ({ filteredProfiles, isFi
               fontWeight: 700,
               textDecoration: 'none',
               fontFamily: 'var(--font-sans)',
-              border: '1.5px solid rgba(111,29,53,0.3)',
+              border: '1.5px solid rgba(4,120,87,0.3)',
             }}
           >
             {t('profileGrid.registerFree')}

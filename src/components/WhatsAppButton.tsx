@@ -1,13 +1,29 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { getSupportWhatsAppLink } from '../lib/whatsapp';
+import { getSupportWhatsAppLink, getWhatsAppLink } from '../lib/whatsapp';
 import { useI18n } from '../i18n/I18nProvider';
 
 export default function WhatsAppButton() {
   const pathname = usePathname();
   const { t } = useI18n();
+
+  // The support WhatsApp number comes from central website settings
+  // (business-location API). We keep the bundled default as a fallback so the
+  // button always works even before settings are configured or if the DB is down.
+  const [whatsappNumber, setWhatsappNumber] = useState<string | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    fetch('/api/business-location')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (active && data?.whatsappNumber) setWhatsappNumber(String(data.whatsappNumber));
+      })
+      .catch(() => { /* keep default */ });
+    return () => { active = false; };
+  }, []);
 
   // Hide the WhatsApp button on admin pages
   if (pathname?.startsWith('/admin')) {
@@ -15,7 +31,7 @@ export default function WhatsAppButton() {
   }
 
   const message = t('floatingButtons.whatsappGenericMsg');
-  const link = getSupportWhatsAppLink(message);
+  const link = whatsappNumber ? getWhatsAppLink(whatsappNumber, message) : getSupportWhatsAppLink(message);
 
   return (
     <div className="whatsapp-button-container font-sans">

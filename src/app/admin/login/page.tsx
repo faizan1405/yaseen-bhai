@@ -26,7 +26,7 @@ export default function AdminLoginPage() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'linear-gradient(135deg, #6F1D35 0%, #3a0e1c 60%, #1a0008 100%)',
+        background: 'linear-gradient(135deg, #047857 0%, #043d2c 60%, #01160f 100%)',
         padding: '20px',
         fontFamily: 'var(--font-sans)',
       }}
@@ -101,8 +101,8 @@ export default function AdminLoginPage() {
         {error && (
           <div
             style={{
-              background: 'rgba(111,29,53,0.08)',
-              border: '1px solid rgba(111,29,53,0.2)',
+              background: 'rgba(4,120,87,0.08)',
+              border: '1px solid rgba(4,120,87,0.2)',
               borderRadius: '8px',
               padding: '10px 14px',
               marginBottom: '20px',

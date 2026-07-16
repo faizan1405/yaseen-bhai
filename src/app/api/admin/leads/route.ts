@@ -1,19 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@/auth';
+import { requirePermission, authFail } from '@/lib/adminAuth';
 import { getAllLeads } from '@/lib/profileStore';
 import { resolveLeadPackageLabels } from '@/lib/packages';
 
-async function isAdmin(req: NextRequest) {
-  const session = await auth();
-  return session?.user?.role === 'ADMIN';
-}
-
 export async function GET(req: NextRequest) {
-  try {
-    if (!(await isAdmin(req))) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
-    }
+  const gate = await requirePermission('leads:view');
+  if (!gate.ok) return authFail(gate);
 
+  try {
     // 2. Parse URL parameters
     const { searchParams } = new URL(req.url);
     const search = searchParams.get('search')?.toLowerCase() || '';

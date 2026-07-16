@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
-import { getAllProfiles, getProfileByUserId, getUserPurchases, getSampleProfiles } from '@/lib/profileStore';
+import { getAllProfiles, getProfileByUserId, getUserPurchases, getSampleProfiles, isFallbackAllowed } from '@/lib/profileStore';
 import { redactProfile } from '@/lib/profilePrivacy';
 
 // Get all verified profiles
@@ -60,7 +60,9 @@ export async function GET(req: NextRequest) {
     // Sample profiles are de-duplicated by id to avoid showing the same card
     // twice when they have also been seeded into the live database.
     // Privacy redaction below still applies, so photos/contact stay protected.
-    if (!isAdmin && visibleProfiles.length < 12) {
+    // Gated behind isFallbackAllowed() so a real production site never mixes
+    // fake profiles into a genuine (but small) live directory.
+    if (!isAdmin && visibleProfiles.length < 12 && isFallbackAllowed()) {
       const approvedSamples = getSampleProfiles().filter(p => p.verificationStatus === 'APPROVED');
       const existingIds = new Set(visibleProfiles.map(p => p.id));
       const missingSamples = approvedSamples.filter(p => !existingIds.has(p.id));

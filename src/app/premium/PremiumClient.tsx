@@ -49,7 +49,7 @@ export default function PremiumClient() {
       <main className="flex-grow">
         {pendingProfileId && (
           <div className="font-sans" style={{
-            background: 'linear-gradient(135deg, rgba(111,29,53,0.08) 0%, rgba(184,146,74,0.08) 100%)',
+            background: 'linear-gradient(135deg, rgba(4,120,87,0.08) 0%, rgba(184,146,74,0.08) 100%)',
             borderBottom: '2px solid var(--gold-accent)',
             padding: '14px 24px',
             textAlign: 'center',
@@ -78,14 +78,14 @@ export default function PremiumClient() {
             <div style={{
               position: 'absolute',
               top: 0, left: 0, right: 0, bottom: 0,
-              background: 'linear-gradient(to right, rgba(111, 29, 53, 0.7), rgba(111, 29, 53, 0.1))',
+              background: 'linear-gradient(to right, rgba(4, 120, 87, 0.7), rgba(4, 120, 87, 0.1))',
               display: 'flex',
                alignItems: 'center',
               padding: '0 40px'
             }}>
               <div style={{ color: 'white', maxWidth: '500px' }}>
                 <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '28px', marginBottom: '12px' }}>{t('premium.commitmentTitle')}</h3>
-                <p style={{ fontSize: '15px', lineHeight: '1.6', opacity: 0.9 }}>
+                <p style={{ fontSize: '15px', lineHeight: '1.6', color: 'var(--on-dark-soft)' }}>
                   {t('premium.commitmentBody')}
                 </p>
               </div>

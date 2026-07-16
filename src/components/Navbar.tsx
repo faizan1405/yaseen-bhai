@@ -8,6 +8,7 @@ import { useApp } from '../context/AppContext';
 import { useI18n } from '../i18n/I18nProvider';
 import { LanguageToggle } from './LanguageToggle';
 import { siteConfig } from '../config/site';
+import { NotificationBell } from './dashboard/NotificationBell';
 
 export const Navbar: React.FC = () => {
   const pathname = usePathname();
@@ -239,6 +240,7 @@ export const Navbar: React.FC = () => {
           <div className="nav-row-2 nav-menu-desktop">
             <div className="nav-actions-wrapper">
               <LanguageToggle variant="nav" />
+              {isLoggedIn && <NotificationBell />}
               {isLoggedIn && (
                   <Link
                     href="/my-account"
@@ -341,6 +343,12 @@ export const Navbar: React.FC = () => {
               <button className="modal-close-btn" onClick={() => setIsMobileMenuOpen(false)}>×</button>
             </div>
             <hr style={{ borderColor: 'var(--border-color)' }} />
+            {isLoggedIn && (
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-dark)' }}>Notifications</span>
+                <NotificationBell />
+              </div>
+            )}
             <LanguageToggle variant="block" />
             <Link
               href="/"

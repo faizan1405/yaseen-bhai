@@ -152,12 +152,12 @@ export const LeadForm: React.FC<LeadFormProps> = ({
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {errorMsg && (
             <div style={{
-              backgroundColor: 'rgba(111, 29, 53, 0.08)',
+              backgroundColor: 'rgba(4, 120, 87, 0.08)',
               color: 'var(--deep-maroon)',
               padding: '12px 16px',
               borderRadius: '8px',
               fontSize: '13px',
-              border: '1px solid rgba(111,29,53,0.15)'
+              border: '1px solid rgba(4,120,87,0.15)'
             }}>
               ⚠️ {errorMsg}
             </div>

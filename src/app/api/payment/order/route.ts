@@ -29,16 +29,40 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Please complete your matrimonial profile form before purchasing a package.' }, { status: 400 });
     }
 
-    const baseAmount = pkgDef.basePrice;
-    const gstAmount = baseAmount * pkgDef.gstRate;
-    const totalAmount = baseAmount + gstAmount;
-    const totalAmountPaise = Math.round(totalAmount * 100);
+    // The amount is ALWAYS derived from the trusted server-side catalogue
+    // (PREMIUM_PACKAGES) — never from anything the browser sends.
+    const catalogueBase = pkgDef.basePrice;
+    const catalogueTotal = catalogueBase + catalogueBase * pkgDef.gstRate;
+
+    // Explicit test mode lets you charge a nominal ₹1 to exercise the live
+    // Razorpay flow without moving real money. It must be opted into via
+    // RAZORPAY_TEST_MODE=true, and is a DEVELOPMENT-only affordance: it is
+    // force-disabled in production so a stray RAZORPAY_TEST_MODE=true can never
+    // accidentally charge real customers ₹1 instead of the true package price.
+    const testModeRequested = process.env.RAZORPAY_TEST_MODE === 'true';
+    const isProduction = process.env.NODE_ENV === 'production';
+    if (testModeRequested && isProduction) {
+      console.warn('[Razorpay] RAZORPAY_TEST_MODE=true was IGNORED in production — charging the real package price. Unset RAZORPAY_TEST_MODE to silence this warning.');
+    }
+    const testMode = testModeRequested && !isProduction;
+
+    const chargedBase = testMode ? 1 : catalogueBase;
+    const chargedGstRate = testMode ? 0 : pkgDef.gstRate;
+    const chargedTotal = testMode ? 1 : catalogueTotal;
+    const chargedSuccessFee = testMode ? 0 : pkgDef.successFeeAmount;
+    const totalAmountPaise = Math.round(chargedTotal * 100);
 
     const keyId = process.env.RAZORPAY_KEY_ID;
     const keySecret = process.env.RAZORPAY_KEY_SECRET;
 
     if (!keyId || !keySecret || keyId.includes('dummy') || keySecret.includes('dummy')) {
       return NextResponse.json({ error: 'Payment gateway is not configured. Please contact support.' }, { status: 503 });
+    }
+
+    // Safety guard: never process live checkout with Razorpay TEST keys in
+    // production — that would silently run sandbox / ₹1 test-mode charges.
+    if (process.env.NODE_ENV === 'production' && keyId.startsWith('rzp_test_')) {
+      return NextResponse.json({ error: 'Payment gateway is misconfigured (test mode in production). Please contact support.' }, { status: 503 });
     }
 
     const razorpayInstance = new Razorpay({
@@ -50,18 +74,21 @@ export async function POST(req: NextRequest) {
       amount: totalAmountPaise,
       currency: 'INR',
       receipt: `receipt_sub_${profile.id}_${Date.now()}`,
+      notes: { packageType: packageTypeInput, testMode: String(testMode) },
     });
 
-    // Create pending purchase record in DB
+    // Create pending purchase record in DB. The stored amounts reflect what is
+    // actually being charged (real price, or ₹1 in test mode) so records are truthful.
     await createPackagePurchase({
       profileId: profile.id,
       packageType: packageTypeInput,
-      basePrice: baseAmount,
-      gstRate: pkgDef.gstRate,
-      totalAmount: totalAmount,
+      basePrice: chargedBase,
+      gstRate: chargedGstRate,
+      totalAmount: chargedTotal,
       billingType: pkgDef.billingType,
-      successFeeAmount: pkgDef.successFeeAmount,
+      successFeeAmount: chargedSuccessFee,
       razorpayOrderId: order.id,
+      internalNotes: testMode ? `TEST_MODE ₹1 charge for ${pkgDef.name} (catalogue ₹${catalogueTotal})` : '',
     });
 
     return NextResponse.json({

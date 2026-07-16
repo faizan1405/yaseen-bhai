@@ -22,18 +22,36 @@ export const ProfileDetails: React.FC = () => {
     setShowLoginModal,
     userProfile,
     handleViewProfile,
+    savedProfiles,
+    toggleSaveProfile,
   } = useApp();
   const { t } = useI18n();
 
   const router = useRouter();
   const [showInterestForm, setShowInterestForm] = useState(false);
+  const [interestRequestState, setInterestRequestState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const [interestRequestError, setInterestRequestError] = useState('');
 
   // Reset form when modal closes
   React.useEffect(() => {
     if (!selectedProfileForDetails) {
       setShowInterestForm(false);
+      setInterestRequestState('idle');
+      setInterestRequestError('');
     }
   }, [selectedProfileForDetails]);
+
+  // Record a profile view once per open, for the "viewed profiles" dashboard.
+  // Self-views and unauthenticated visitors are silently ignored server-side.
+  React.useEffect(() => {
+    if (!selectedProfileForDetails || !isLoggedIn) return;
+    if (userProfile && selectedProfileForDetails.userId === userProfile.userId) return;
+
+    fetch(`/api/profiles/${selectedProfileForDetails.id}/view`, { method: 'POST' }).catch(() => {
+      // Best-effort — a failed view record never blocks browsing.
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedProfileForDetails?.id, isLoggedIn]);
 
   if (!selectedProfileForDetails) return null;
 
@@ -98,6 +116,29 @@ export const ProfileDetails: React.FC = () => {
     } else {
       setSelectedProfileForDetails(null);
       router.push('/premium');
+    }
+  };
+
+  const isOwnProfile = Boolean(userProfile && selectedProfileForDetails.userId === userProfile.userId);
+  const isShortlisted = savedProfiles.includes(selectedProfileForDetails.id);
+
+  const handleSendInterestRequest = async () => {
+    setInterestRequestState('sending');
+    setInterestRequestError('');
+    try {
+      const res = await fetch('/api/interests', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ profileId: selectedProfileForDetails.id }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to send interest request.');
+      }
+      setInterestRequestState('sent');
+    } catch (err: any) {
+      setInterestRequestState('error');
+      setInterestRequestError(err.message || 'Failed to send interest request.');
     }
   };
 
@@ -282,6 +323,29 @@ export const ProfileDetails: React.FC = () => {
             >
               {t('profileDetails.expressInterest')}
             </button>
+            {!isOwnProfile && (
+              <button
+                onClick={() => toggleSaveProfile(selectedProfileForDetails.id)}
+                className="btn btn-secondary"
+                style={{ padding: '8px 20px', fontSize: '13px' }}
+              >
+                {isShortlisted ? '❤️ Shortlisted' : '🤍 Shortlist'}
+              </button>
+            )}
+            {!isOwnProfile && !modalBlur && (
+              <button
+                onClick={handleSendInterestRequest}
+                disabled={interestRequestState === 'sending' || interestRequestState === 'sent'}
+                className="btn btn-secondary"
+                style={{ padding: '8px 20px', fontSize: '13px', border: '1px solid var(--gold-accent)' }}
+                title={interestRequestState === 'error' ? interestRequestError : undefined}
+              >
+                {interestRequestState === 'sending' && 'Sending…'}
+                {interestRequestState === 'sent' && '✓ Interest Sent'}
+                {interestRequestState === 'error' && 'Try Again'}
+                {interestRequestState === 'idle' && '💌 Send Interest Request'}
+              </button>
+            )}
             {modalBlur && (
               <button
                 onClick={handleUnlockClick}
@@ -341,6 +405,9 @@ export const ProfileDetails: React.FC = () => {
             <button className="btn btn-secondary" onClick={() => setSelectedProfileForDetails(null)} style={{ padding: '8px 20px', fontSize: '13px' }}>
               {t('profileDetails.close')}
             </button>
+            {interestRequestState === 'error' && (
+              <p style={{ width: '100%', color: 'red', fontSize: '12.5px', margin: 0 }}>{interestRequestError}</p>
+            )}
           </div>
         )}
 

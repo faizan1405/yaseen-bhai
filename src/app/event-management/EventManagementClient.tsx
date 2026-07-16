@@ -280,7 +280,7 @@ export default function EventManagementClient() {
         {/* ── Hero ──────────────────────────────────────────────────────── */}
         <section
           style={{
-            background: 'linear-gradient(135deg, var(--deep-maroon) 0%, #8c1d3c 60%, #501223 100%)',
+            background: 'linear-gradient(135deg, var(--deep-maroon) 0%, #05684c 60%, #033a2b 100%)',
             padding: '100px 0 80px',
             position: 'relative',
             overflow: 'hidden',
@@ -313,7 +313,7 @@ export default function EventManagementClient() {
             <p
               style={{
                 fontSize: 'clamp(14px, 2.5vw, 17px)',
-                color: 'rgba(248,241,231,0.85)',
+                color: 'var(--on-dark-soft)',
                 maxWidth: '640px',
                 margin: '0 auto 36px',
                 lineHeight: 1.7,
@@ -766,13 +766,13 @@ export default function EventManagementClient() {
                   {errorMsg && (
                     <div
                       style={{
-                        backgroundColor: 'rgba(111,29,53,0.08)',
+                        backgroundColor: 'rgba(4,120,87,0.08)',
                         color: 'var(--deep-maroon)',
                         padding: '12px 16px',
                         borderRadius: '8px',
                         marginBottom: '16px',
                         fontSize: '13px',
-                        border: '1px solid rgba(111,29,53,0.15)',
+                        border: '1px solid rgba(4,120,87,0.15)',
                       }}
                     >
                       ⚠️ {errorMsg}

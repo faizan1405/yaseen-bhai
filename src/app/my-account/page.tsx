@@ -267,6 +267,34 @@ export default function MyAccountPage() {
                 </Link>
               </div>
             </div>
+
+            {/* My Activity */}
+            <div style={{
+              backgroundColor: 'white',
+              borderRadius: '16px',
+              padding: '24px',
+              boxShadow: 'var(--shadow-card)',
+              border: '1px solid var(--border-color)',
+            }}>
+              <h3 style={{ fontSize: '20px', color: 'var(--primary-dark)', marginBottom: '16px' }}>My Activity</h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <Link href="/dashboard/viewed-profiles" className="btn btn-secondary" style={{ textAlign: 'center', backgroundColor: 'var(--cream-bg)', border: 'none' }}>
+                  👁️ Viewed Profiles
+                </Link>
+                <Link href="/dashboard/shortlisted-profiles" className="btn btn-secondary" style={{ textAlign: 'center', backgroundColor: 'var(--cream-bg)', border: 'none' }}>
+                  ❤️ Shortlisted Profiles
+                </Link>
+                <Link href="/dashboard/interests/received" className="btn btn-secondary" style={{ textAlign: 'center', backgroundColor: 'var(--cream-bg)', border: 'none' }}>
+                  📥 Interests Received
+                </Link>
+                <Link href="/dashboard/interests/sent" className="btn btn-secondary" style={{ textAlign: 'center', backgroundColor: 'var(--cream-bg)', border: 'none' }}>
+                  📤 Interests Sent
+                </Link>
+                <Link href="/dashboard/notifications" className="btn btn-secondary" style={{ textAlign: 'center', backgroundColor: 'var(--cream-bg)', border: 'none' }}>
+                  🔔 Notifications
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </main>

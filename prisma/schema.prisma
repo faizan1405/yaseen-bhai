@@ -12,6 +12,20 @@ enum Role {
   ADMIN
 }
 
+// Granular admin role. This is ADDITIVE and independent of `Role`: an admin is
+// still any User with `role = ADMIN`. `adminRole` refines *which* admin they are.
+// An ADMIN whose adminRole is null is treated as SUPER_ADMIN for backward
+// compatibility (existing admins had full access before this feature existed).
+enum AdminRole {
+  SUPER_ADMIN
+  PROFILE_MANAGER
+  VERIFICATION_MANAGER
+  LEAD_MANAGER
+  PAYMENT_MANAGER
+  CONTENT_MANAGER
+  SUPPORT_MANAGER
+}
+
 enum AccountStatus {
   ACTIVE
   SUSPENDED
@@ -37,11 +51,38 @@ model User {
   image            String?
   role             Role                 @default(USER)
   accountStatus    AccountStatus        @default(ACTIVE)
+
+  // --- Admin role & permission system (all fields OPTIONAL so existing User
+  // documents that predate this feature keep reading/writing without migration).
+  adminRole         AdminRole?          // null + role=ADMIN  => treated as SUPER_ADMIN
+  adminPermissions  String[]            // custom permission overrides; empty => role defaults
+  adminActive       Boolean?            // null/true => active, false => admin access revoked
+  adminCreatedById  String?  @db.ObjectId // who promoted/created this admin (not a FK relation)
+  adminUpdatedById  String?  @db.ObjectId // who last modified this admin's access
+  adminCreatedAt    DateTime?           // when admin access was first granted
+  adminUpdatedAt    DateTime?           // when admin access was last changed
+  lastLoginAt       DateTime?           // updated on each successful sign-in
+
+  // Optional password login for ADMIN accounts only (bcrypt hash — never the
+  // plaintext password). Regular site users still authenticate via Google only;
+  // this field is unused/null for them. Never selected into API responses.
+  passwordHash      String?
+
   accounts         Account[]
   sessions         Session[]
   profile          MatrimonialProfile?
   auditLogs        AuditLog[]           @relation("ActorUser")
   assignedRequests VerificationRequest[] @relation("AdminRequests")
+
+  // User-dashboard features (additive)
+  profileViewsMade     ProfileView[]     @relation("ProfileViewsMade")
+  profileViewsReceived ProfileView[]     @relation("ProfileViewsReceived")
+  shortlistsMade       Shortlist[]       @relation("ShortlistsMade")
+  shortlistedBy        Shortlist[]       @relation("ShortlistedBy")
+  interestsSent        InterestRequest[] @relation("InterestsSent")
+  interestsReceived    InterestRequest[] @relation("InterestsReceived")
+  notifications        Notification[]    @relation("UserNotifications")
+
   createdAt        DateTime             @default(now())
   updatedAt        DateTime             @updatedAt
 }
@@ -239,14 +280,19 @@ model VerificationRequest {
 }
 
 model AuditLog {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  actorUserId String?  @db.ObjectId
-  actorUser   User?    @relation("ActorUser", fields: [actorUserId], references: [id], onDelete: SetNull)
-  action      String   // e.g. "VERIFICATION_STATUS_CHANGE"
-  targetType  String   // e.g. "MatrimonialProfile"
-  targetId    String?
-  metadata    String?  // Safe stringified JSON metadata
-  createdAt   DateTime @default(now())
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  actorUserId   String?  @db.ObjectId
+  actorUser     User?    @relation("ActorUser", fields: [actorUserId], references: [id], onDelete: SetNull)
+  action        String   // e.g. "VERIFICATION_STATUS_CHANGE"
+  targetType    String   // e.g. "MatrimonialProfile"
+  targetId      String?
+  metadata      String?  // Safe stringified JSON metadata
+  // Extended audit fields (all optional — never store secrets/passwords/signatures/IDs docs).
+  previousValue String?  // Safe stringified previous state (redacted)
+  newValue      String?  // Safe stringified new state (redacted)
+  ipAddress     String?  // Request IP where available
+  userAgent     String?  // Request user-agent where available
+  createdAt     DateTime @default(now())
 }
 
 model NotificationLog {
@@ -263,6 +309,10 @@ model GlobalSettings {
   id                  String   @id @default(auto()) @map("_id") @db.ObjectId
   adminEmail          String?
   adminPhone          String?
+  // Public-facing contact details (single source of truth for the whole site).
+  whatsappNumber      String?  // Digits only, e.g. "919170975535"
+  publicPhone         String?  // Displayed call button number, e.g. "+91 91709 75535"
+  publicEmail         String?  // Displayed support email
   emailAlertsEnabled  Boolean  @default(true)
   smsAlertsEnabled    Boolean  @default(false)
   officeAddress       String?
@@ -272,7 +322,26 @@ model GlobalSettings {
   linkedinUrl         String?
   twitterUrl          String?
   defaultPreviewImage String?
+  // Referral commission (persisted so it survives refresh, restart and deploys).
+  referralCommissionPercent Float  @default(21)
+  referralUpdatedById       String? @db.ObjectId
+  referralUpdatedAt         DateTime?
   updatedAt           DateTime @updatedAt
+}
+
+model SuccessStory {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  coupleNames   String    // e.g. "Ahmed & Fatima"
+  location      String?   // e.g. "Mumbai, Maharashtra"
+  story         String    // Testimonial / story content
+  imageUrl      String?   // Optional couple photo (Vercel Blob URL)
+  marriageDate  DateTime?
+  displayOrder  Int       @default(0)   // Lower = shown first
+  isFeatured    Boolean   @default(false)
+  isPublished   Boolean   @default(true) // Only published stories appear publicly
+  createdById   String?   @db.ObjectId
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 }
 
 model Lead {
@@ -291,5 +360,114 @@ model Lead {
   adminNotes          String?
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
+}
+
+// ============================================================================
+// USER DASHBOARD FEATURES (all ADDITIVE)
+//
+// These four models power the member dashboard: viewed-profile history,
+// shortlist/favourites, peer-to-peer interest requests and in-app
+// notifications. Everything is keyed on User ObjectIds (never profile ids
+// supplied by the browser) so ownership and self-action checks are trivial and
+// the records cascade-delete with the owning User. MongoDB does not enforce
+// referential integrity, so a relation whose counterpart no longer exists is
+// simply skipped at read time (surfaced as a safe "unavailable" state in the UI).
+// ============================================================================
+
+// Interest-request lifecycle. A request lives as exactly one row per ordered
+// (sender, receiver) pair; re-sending after a WITHDRAWN/REJECTED outcome reuses
+// the same row (reset back to PENDING) so the unique constraint still holds.
+enum InterestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  WITHDRAWN
+}
+
+enum NotificationType {
+  INTEREST_RECEIVED
+  INTEREST_ACCEPTED
+  INTEREST_REJECTED
+  INTEREST_WITHDRAWN
+  PROFILE_APPROVED
+  PROFILE_REJECTED
+  PHOTO_APPROVED
+  PHOTO_REJECTED
+  MEMBERSHIP_ACTIVATED
+  MEMBERSHIP_EXPIRING
+  PAYMENT_SUCCESSFUL
+  PAYMENT_FAILED
+  ADMIN_MESSAGE
+}
+
+// One row per (viewer, viewed) pair. Repeated views UPDATE the same row
+// (bump viewCount + lastViewedAt) rather than inserting duplicates.
+model ProfileView {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  viewerId      String   @db.ObjectId
+  viewer        User     @relation("ProfileViewsMade", fields: [viewerId], references: [id], onDelete: Cascade)
+  viewedUserId  String   @db.ObjectId
+  viewedUser    User     @relation("ProfileViewsReceived", fields: [viewedUserId], references: [id], onDelete: Cascade)
+  viewCount     Int      @default(1)
+  firstViewedAt DateTime @default(now())
+  lastViewedAt  DateTime @default(now())
+
+  @@unique([viewerId, viewedUserId])
+  @@index([viewerId, lastViewedAt])
+  @@index([viewedUserId])
+}
+
+// One row per (owner, target) pair — the unique constraint blocks duplicates.
+model Shortlist {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId      String   @db.ObjectId
+  owner        User     @relation("ShortlistsMade", fields: [ownerId], references: [id], onDelete: Cascade)
+  targetUserId String   @db.ObjectId
+  targetUser   User     @relation("ShortlistedBy", fields: [targetUserId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+
+  @@unique([ownerId, targetUserId])
+  @@index([ownerId, createdAt])
+  @@index([targetUserId])
+}
+
+model InterestRequest {
+  id          String         @id @default(auto()) @map("_id") @db.ObjectId
+  senderId    String         @db.ObjectId
+  sender      User           @relation("InterestsSent", fields: [senderId], references: [id], onDelete: Cascade)
+  receiverId  String         @db.ObjectId
+  receiver    User           @relation("InterestsReceived", fields: [receiverId], references: [id], onDelete: Cascade)
+  status      InterestStatus @default(PENDING)
+  message     String?        // optional short note from sender
+  sentAt      DateTime       @default(now())
+  respondedAt DateTime?      // set when receiver accepts/rejects
+  withdrawnAt DateTime?      // set when sender withdraws
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@unique([senderId, receiverId])
+  @@index([receiverId, status])
+  @@index([senderId, status])
+}
+
+model Notification {
+  id          String           @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String           @db.ObjectId
+  user        User             @relation("UserNotifications", fields: [userId], references: [id], onDelete: Cascade)
+  type        NotificationType
+  title       String
+  message     String
+  actionUrl   String?          // validated same-origin relative path only
+  relatedType String?          // e.g. "InterestRequest", "PackagePurchase"
+  relatedId   String?
+  dedupeKey   String?          // idempotency key; deduped at the application layer
+  isRead      Boolean          @default(false)
+  createdAt   DateTime         @default(now())
+  readAt      DateTime?
+  expiresAt   DateTime?
+
+  @@index([userId, isRead])
+  @@index([userId, createdAt])
+  @@index([dedupeKey])
 }
 

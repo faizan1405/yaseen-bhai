@@ -1,15 +1,49 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Navbar from '../../components/Navbar';
 import { SectionHeading, SuccessStoryCard, PremiumFooter } from '../../components/NikahComponents';
 import { useI18n } from '../../i18n/I18nProvider';
 
+interface PublicStory {
+  id: string;
+  coupleNames: string;
+  location: string | null;
+  story: string;
+  imageUrl: string | null;
+  marriageDate: string | null;
+  displayOrder: number;
+  isFeatured: boolean;
+}
+
+function formatDate(value: string | null): string | undefined {
+  if (!value) return undefined;
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return undefined;
+  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+}
+
 export default function SuccessStoriesClient() {
   const router = useRouter();
   const { t } = useI18n();
+  const [stories, setStories] = useState<PublicStory[] | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    fetch('/api/success-stories')
+      .then((res) => res.json())
+      .then((data) => {
+        if (active) setStories(Array.isArray(data.stories) ? data.stories : []);
+      })
+      .catch(() => {
+        if (active) setStories([]);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const handleNavigate = (view: string) => {
     router.push('/' + (view === 'home' ? '' : view));
@@ -42,29 +76,29 @@ export default function SuccessStoriesClient() {
             as="h1"
           />
 
-          <div className="grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '32px' }}>
-            <SuccessStoryCard
-              names={t('stories.story1Names')}
-              location={t('stories.story1Location')}
-              story={t('stories.story1Story')}
-              weddingDate="May 12, 2025"
-              imageIndex={0}
-            />
-            <SuccessStoryCard
-              names={t('stories.story2Names')}
-              location={t('stories.story2Location')}
-              story={t('stories.story2Story')}
-              weddingDate="April 4, 2026"
-              imageIndex={1}
-            />
-            <SuccessStoryCard
-              names={t('stories.story3Names')}
-              location={t('stories.story3Location')}
-              story={t('stories.story3Story')}
-              weddingDate="Dec 15, 2024"
-              imageIndex={2}
-            />
-          </div>
+          {stories === null ? (
+            <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--text-muted)' }}>
+              Loading stories…
+            </div>
+          ) : stories.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '60px 20px', color: 'var(--text-muted)', maxWidth: '520px', margin: '0 auto' }}>
+              Success stories will be shared here soon, InshaAllah.
+            </div>
+          ) : (
+            <div className="grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '32px' }}>
+              {stories.map((s, idx) => (
+                <SuccessStoryCard
+                  key={s.id}
+                  names={s.coupleNames}
+                  location={s.location || ''}
+                  story={s.story}
+                  weddingDate={formatDate(s.marriageDate)}
+                  imageIndex={idx}
+                  imageUrl={s.imageUrl}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </main>
       <PremiumFooter onNavigate={handleNavigate} />

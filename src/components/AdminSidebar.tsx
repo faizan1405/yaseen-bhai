@@ -1,18 +1,75 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useApp } from '../context/AppContext';
+import { ADMIN_NAV_ITEMS, permissionListAllows } from '../lib/permissions';
+
+const SECTION_ORDER = ['Operations', 'Content', 'Logs & Settings', 'Administration'] as const;
 
 export const AdminSidebar: React.FC = () => {
   const pathname = usePathname();
-  const { referralRate, setReferralRate, isAdminMobileOpen, setIsAdminMobileOpen } = useApp();
+  const { referralRate, setReferralRate, isAdminMobileOpen, setIsAdminMobileOpen, getRequestHeaders } = useApp();
+  const [referralSaveState, setReferralSaveState] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+  const referralLoadedRef = useRef(false);
+
+  // This admin's effective permissions — drives which nav sections/links are
+  // shown. This is a UX convenience only; the real gate is server-side in
+  // admin/layout.tsx and each API route, so hiding a link here never
+  // substitutes for actual protection.
+  const [permissions, setPermissions] = useState<string[] | null>(null);
+
+  useEffect(() => {
+    fetch('/api/admin/me')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => setPermissions(data?.permissions ?? []))
+      .catch(() => setPermissions([]));
+  }, []);
+
+  const can = (perm: string) => permissions === null || permissionListAllows(permissions, perm);
+
+  // Load the persisted referral commission once, so the slider reflects the
+  // saved database value across refreshes, restarts and deployments.
+  useEffect(() => {
+    if (referralLoadedRef.current) return;
+    referralLoadedRef.current = true;
+    fetch('/api/admin/settings', { headers: getRequestHeaders() })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        const saved = data?.settings?.referralCommissionPercent;
+        if (typeof saved === 'number') setReferralRate(Math.round(saved));
+      })
+      .catch(() => { /* keep default until DB is reachable */ });
+  }, [getRequestHeaders, setReferralRate]);
+
+  // Persist the referral commission when the admin releases the slider.
+  const saveReferralRate = async (value: number) => {
+    setReferralSaveState('saving');
+    try {
+      const res = await fetch('/api/admin/settings', {
+        method: 'POST',
+        headers: getRequestHeaders(),
+        body: JSON.stringify({ referralCommissionPercent: value }),
+      });
+      setReferralSaveState(res.ok ? 'saved' : 'error');
+    } catch {
+      setReferralSaveState('error');
+    }
+    if (referralSaveState !== 'error') {
+      setTimeout(() => setReferralSaveState('idle'), 2500);
+    }
+  };
 
   const handleLinkClick = () => {
     setIsAdminMobileOpen(false);
   };
+
+  const visibleBySection = SECTION_ORDER.map((section) => ({
+    section,
+    items: ADMIN_NAV_ITEMS.filter((item) => item.section === section && can(item.perm)),
+  })).filter((group) => group.items.length > 0);
 
   return (
     <aside className={`admin-nav-list ${isAdminMobileOpen ? 'open' : ''}`}>
@@ -26,89 +83,47 @@ export const AdminSidebar: React.FC = () => {
         />
         <span style={{ fontFamily: 'var(--font-serif)', color: 'var(--gold-accent)', fontSize: '16px', fontWeight: 'bold' }}>Admin</span>
       </div>
-      
-      <div className="admin-nav-section-title">Operations</div>
-      <Link
-        href="/admin"
-        className={`admin-nav-link ${pathname === '/admin' ? 'active' : ''}`}
-        onClick={handleLinkClick}
-      >
-        📊 Overview
-      </Link>
-      <Link
-        href="/admin/profiles"
-        className={`admin-nav-link ${pathname === '/admin/profiles' ? 'active' : ''}`}
-        onClick={handleLinkClick}
-      >
-        🧑‍🤝‍🧑 Profiles
-      </Link>
-      <Link
-        href="/admin/verification"
-        className={`admin-nav-link ${pathname === '/admin/verification' ? 'active' : ''}`}
-        onClick={handleLinkClick}
-      >
-        👤 Verification Queue
-      </Link>
-      <Link
-        href="/admin/packages"
-        className={`admin-nav-link ${pathname === '/admin/packages' ? 'active' : ''}`}
-        onClick={handleLinkClick}
-      >
-        💎 Premium Packages
-      </Link>
-      <Link
-        href="/admin/leads"
-        className={`admin-nav-link ${pathname === '/admin/leads' ? 'active' : ''}`}
-        onClick={handleLinkClick}
-      >
-        📥 Leads & Inquiries
-      </Link>
-      <Link
-        href="/admin/events"
-        className={`admin-nav-link ${pathname === '/admin/events' ? 'active' : ''}`}
-        onClick={handleLinkClick}
-      >
-        🎊 Event Management
-      </Link>
-      <Link
-        href="/admin/master-data"
-        className={`admin-nav-link ${pathname === '/admin/master-data' ? 'active' : ''}`}
-        onClick={handleLinkClick}
-      >
-        🛠️ Master Data
-      </Link>
 
-      <div className="admin-nav-section-title">Logs & Settings</div>
-      <Link
-        href="/admin/logs"
-        className={`admin-nav-link ${pathname === '/admin/logs' ? 'active' : ''}`}
-        onClick={handleLinkClick}
-      >
-        📜 Activity Logs
-      </Link>
-      <Link
-        href="/admin/settings"
-        className={`admin-nav-link ${pathname === '/admin/settings' ? 'active' : ''}`}
-        onClick={handleLinkClick}
-      >
-        ⚙️ Settings
-      </Link>
+      {visibleBySection.map((group) => (
+        <React.Fragment key={group.section}>
+          <div className="admin-nav-section-title">{group.section}</div>
+          {group.items.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`admin-nav-link ${pathname === item.href ? 'active' : ''}`}
+              onClick={handleLinkClick}
+            >
+              {item.icon} {item.label}
+            </Link>
+          ))}
+        </React.Fragment>
+      ))}
 
-      <div style={{ marginTop: 'auto', borderTop: '1px solid rgba(212,163,89,0.3)', paddingTop: '20px', padding: '0 12px' }}>
-        <h4 style={{ color: 'var(--gold-accent)', fontSize: '13px', marginBottom: '8px' }}>Referral Rate Control</h4>
-        <input
-          type="range"
-          min="20"
-          max="23"
-          value={referralRate}
-          onChange={(e) => setReferralRate(parseInt(e.target.value))}
-          style={{ width: '100%', accentColor: 'var(--gold-accent)' }}
-        />
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', marginTop: '6px' }}>
-          <span>Commission:</span>
-          <strong>{referralRate}%</strong>
+      {can('referral:edit') && (
+        <div style={{ marginTop: 'auto', borderTop: '1px solid rgba(212,163,89,0.3)', paddingTop: '20px', padding: '0 12px' }}>
+          <h4 style={{ color: 'var(--gold-accent)', fontSize: '13px', marginBottom: '8px' }}>Referral Rate Control</h4>
+          <input
+            type="range"
+            min="20"
+            max="23"
+            value={referralRate}
+            onChange={(e) => setReferralRate(parseInt(e.target.value))}
+            onMouseUp={(e) => saveReferralRate(parseInt((e.target as HTMLInputElement).value))}
+            onTouchEnd={(e) => saveReferralRate(parseInt((e.target as HTMLInputElement).value))}
+            style={{ width: '100%', accentColor: 'var(--gold-accent)' }}
+          />
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', marginTop: '6px' }}>
+            <span>Commission:</span>
+            <strong>{referralRate}%</strong>
+          </div>
+          <div style={{ fontSize: '10.5px', marginTop: '4px', minHeight: '14px', color: referralSaveState === 'error' ? '#e57373' : 'var(--gold-accent)' }}>
+            {referralSaveState === 'saving' && 'Saving…'}
+            {referralSaveState === 'saved' && '✓ Saved to database'}
+            {referralSaveState === 'error' && 'Save failed — try again'}
+          </div>
         </div>
-      </div>
+      )}
     </aside>
   );
 };

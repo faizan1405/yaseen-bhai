@@ -436,7 +436,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
             <div style={{
               position: 'absolute',
               inset: 0,
-              background: 'linear-gradient(155deg, rgba(111,29,53,0.05) 0%, rgba(184,146,74,0.07) 100%)',
+              background: 'linear-gradient(155deg, rgba(4,120,87,0.05) 0%, rgba(184,146,74,0.07) 100%)',
             }} />
             <div style={{
               position: 'absolute',
@@ -456,7 +456,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontSize: '40px',
-                boxShadow: '0 4px 20px rgba(111,29,53,0.2)',
+                boxShadow: '0 4px 20px rgba(4,120,87,0.2)',
                 border: '3px solid rgba(255,255,255,0.85)',
               }}>
                 {profile.gender?.toLowerCase() === 'female' ? '👩' : '👨'}
@@ -537,13 +537,13 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
           )}
           {isSecMarriage && (
             <span style={{
-              background: 'linear-gradient(135deg,var(--deep-maroon),#8b2252)',
+              background: 'linear-gradient(135deg,var(--deep-maroon),var(--color-primary-dark))',
               color: '#fff',
               fontSize: '11px',
               fontWeight: 700,
               padding: '4px 10px',
               borderRadius: '20px',
-              boxShadow: '0 2px 8px rgba(111,29,53,0.3)',
+              boxShadow: '0 2px 8px rgba(4,120,87,0.3)',
               backdropFilter: 'blur(4px)',
             }}>
               ↺ {t('common.basicAccess')}
@@ -730,7 +730,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                 padding: '12px 18px',
                 background: isLoggedIn
                   ? 'linear-gradient(135deg,var(--antique-gold) 0%,#c8a052 100%)'
-                  : 'linear-gradient(135deg,var(--deep-maroon) 0%,#8b2252 100%)',
+                  : 'linear-gradient(135deg,var(--deep-maroon) 0%,var(--color-primary-dark) 100%)',
                 color: '#fff',
                 border: 'none',
                 borderRadius: '10px',
@@ -741,7 +741,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                 letterSpacing: '0.2px',
                 boxShadow: isLoggedIn
                   ? '0 4px 16px rgba(184,146,74,0.3)'
-                  : '0 4px 16px rgba(111,29,53,0.25)',
+                  : '0 4px 16px rgba(4,120,87,0.25)',
               }}
             >
               {isLoggedIn ? `🔓 ${unlockCta}` : `🔒 ${unlockCta}`}
@@ -788,7 +788,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               style={{
                 width: '100%',
                 padding: '12px 18px',
-                background: 'linear-gradient(135deg,var(--deep-maroon) 0%,#8b2252 100%)',
+                background: 'linear-gradient(135deg,var(--deep-maroon) 0%,var(--color-primary-dark) 100%)',
                 color: '#fff',
                 border: 'none',
                 borderRadius: '10px',
@@ -797,7 +797,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                 cursor: 'pointer',
                 fontFamily: 'var(--font-sans)',
                 letterSpacing: '0.2px',
-                boxShadow: '0 4px 16px rgba(111,29,53,0.25)',
+                boxShadow: '0 4px 16px rgba(4,120,87,0.25)',
               }}
             >
               {t('common.viewFullProfile')} →
@@ -940,7 +940,7 @@ export const PremiumPlanCard: React.FC<PremiumPlanCardProps> = ({
 
       {hidePrices ? (
         <div style={{
-          background: 'linear-gradient(135deg, rgba(111,29,53,0.06) 0%, rgba(184,146,74,0.06) 100%)',
+          background: 'linear-gradient(135deg, rgba(4,120,87,0.06) 0%, rgba(184,146,74,0.06) 100%)',
           border: '1.5px dashed var(--gold-accent)',
           borderRadius: '12px',
           padding: '20px 16px',
@@ -1083,6 +1083,9 @@ interface SuccessStoryCardProps {
   story: string;
   weddingDate?: string;
   imageIndex: number;
+  // Optional DB-managed couple photo. When provided it overrides the bundled
+  // showcase image so admins can supply real photos without changing layout.
+  imageUrl?: string | null;
 }
 
 export const SuccessStoryCard: React.FC<SuccessStoryCardProps> = ({
@@ -1090,7 +1093,8 @@ export const SuccessStoryCard: React.FC<SuccessStoryCardProps> = ({
   location,
   story,
   weddingDate,
-  imageIndex
+  imageIndex,
+  imageUrl
 }) => {
   const { t } = useI18n();
   const successImages = [
@@ -1105,8 +1109,8 @@ export const SuccessStoryCard: React.FC<SuccessStoryCardProps> = ({
     'Adnan and Yasmin success story'
   ];
 
-  const currentImage = successImages[imageIndex % 3];
-  const currentAltText = successAltTexts[imageIndex % 3];
+  const currentImage = imageUrl && imageUrl.trim() !== '' ? imageUrl : successImages[imageIndex % 3];
+  const currentAltText = imageUrl ? `${names} success story` : successAltTexts[imageIndex % 3];
 
   return (
     <div className="testimonial-card" style={{
@@ -1328,7 +1332,7 @@ export const PremiumFooter: React.FC<PremiumFooterProps> = ({ onNavigate }) => {
                 style={{ height: '60px', width: 'auto' }}
               />
             </div>
-            <p style={{ fontSize: '13.5px', color: 'rgba(248, 241, 231, 0.8)', lineHeight: '1.8', marginBottom: '16px' }}>
+            <p style={{ fontSize: '13.5px', color: 'var(--on-dark-soft)', lineHeight: '1.8', marginBottom: '16px' }}>
               {t('footer.about')}
             </p>
             {/* Social media icons grid inside footer */}
@@ -1371,7 +1375,7 @@ export const PremiumFooter: React.FC<PremiumFooterProps> = ({ onNavigate }) => {
                 )}
               </div>
             )}
-            <div style={{ fontSize: '13px', color: 'rgba(248, 241, 231, 0.9)', marginBottom: '18px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <div style={{ fontSize: '13px', color: 'var(--on-dark-soft)', marginBottom: '18px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
               <div>📍 {location ? location.address : 'Innov8 44 Regal Building, 2nd Floor, Connaught Place, New Delhi - 110001'}</div>
               <div>📞 {t('footer.callLabel')} <a href={`tel:${location ? location.phoneRaw : '+919170975535'}`} className="ltr-value" style={{ color: 'var(--gold-accent)', fontWeight: 'bold', textDecoration: 'underline' }}>{location ? location.phone : '+91 91709 75535'}</a></div>
             </div>
@@ -1383,11 +1387,11 @@ export const PremiumFooter: React.FC<PremiumFooterProps> = ({ onNavigate }) => {
           <div>
             <h4 style={{ color: 'var(--gold-accent)', fontSize: '14px', fontWeight: 'bold', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '0.8px' }}>{t('footer.exploreHeading')}</h4>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '13.5px', padding: 0 }}>
-              <li><button onClick={() => onNavigate('home')} style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', opacity: 0.8, padding: 0 }}>{t('footer.home')}</button></li>
-              <li><button onClick={() => onNavigate('browse')} style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', opacity: 0.8, padding: 0 }}>{t('footer.browse')}</button></li>
-              <li><button onClick={() => onNavigate('premium')} style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', opacity: 0.8, padding: 0 }}>{t('footer.pricing')}</button></li>
-              <li><button onClick={() => onNavigate('how-it-works')} style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', opacity: 0.8, padding: 0 }}>{t('footer.howItWorks')}</button></li>
-              <li><Link href="/event-management" className="footer-link" style={{ opacity: 0.8 }}>{t('footer.eventManagement')}</Link></li>
+              <li><button onClick={() => onNavigate('home')} style={{ background: 'none', border: 'none', color: 'var(--on-dark-soft)', cursor: 'pointer', padding: 0 }}>{t('footer.home')}</button></li>
+              <li><button onClick={() => onNavigate('browse')} style={{ background: 'none', border: 'none', color: 'var(--on-dark-soft)', cursor: 'pointer', padding: 0 }}>{t('footer.browse')}</button></li>
+              <li><button onClick={() => onNavigate('premium')} style={{ background: 'none', border: 'none', color: 'var(--on-dark-soft)', cursor: 'pointer', padding: 0 }}>{t('footer.pricing')}</button></li>
+              <li><button onClick={() => onNavigate('how-it-works')} style={{ background: 'none', border: 'none', color: 'var(--on-dark-soft)', cursor: 'pointer', padding: 0 }}>{t('footer.howItWorks')}</button></li>
+              <li><Link href="/event-management" className="footer-link">{t('footer.eventManagement')}</Link></li>
             </ul>
           </div>
           <div>
@@ -1400,7 +1404,7 @@ export const PremiumFooter: React.FC<PremiumFooterProps> = ({ onNavigate }) => {
             </ul>
           </div>
         </div>
-        <div className="footer-bottom" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: '30px', marginTop: '50px', fontSize: '13px', color: 'rgba(248, 241, 231, 0.6)', textAlign: 'center' }}>
+        <div className="footer-bottom" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.14)', paddingTop: '30px', marginTop: '50px', fontSize: '13px', color: 'var(--on-dark-muted)', textAlign: 'center' }}>
           {t('footer.rights')}
         </div>
       </div>

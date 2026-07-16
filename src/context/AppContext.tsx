@@ -298,6 +298,20 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             } catch {
               // ignore — purchases will just be empty if DB is down
             }
+
+            // Sync shortlist state from DB so the heart button shows the
+            // correct saved state after a reload (never stored client-only).
+            try {
+              const resShortlist = await fetch('/api/user/shortlist/ids', { headers: requestHeaders });
+              if (resShortlist.ok) {
+                const shortlistData = await resShortlist.json();
+                if (Array.isArray(shortlistData.profileIds)) {
+                  setSavedProfiles(shortlistData.profileIds);
+                }
+              }
+            } catch {
+              // ignore — shortlist heart state will just default to empty
+            }
           } else {
             setUserProfile(null);
             setIsRegistering(true);
@@ -435,10 +449,42 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setSelectedProfileForDetails(profile);
   }, [isLoggedIn, userProfile, hasPaid300, activePackages, router]);
 
+  // Optimistically updates the heart-button state, then persists to the
+  // server; on failure the previous (pre-toggle) state is restored so the UI
+  // never drifts from what's actually saved in the database.
   const toggleSaveProfile = (id: string) => {
+    if (!isLoggedIn) {
+      setShowLoginModal(true);
+      return;
+    }
+
+    const wasSaved = savedProfiles.includes(id);
     setSavedProfiles((prev) =>
-      prev.includes(id) ? prev.filter((pId) => pId !== id) : [...prev, id]
+      wasSaved ? prev.filter((pId) => pId !== id) : [...prev, id]
     );
+
+    const request = wasSaved
+      ? fetch('/api/user/shortlist', {
+          method: 'DELETE',
+          headers: getRequestHeaders(),
+          body: JSON.stringify({ profileId: id }),
+        })
+      : fetch('/api/user/shortlist', {
+          method: 'POST',
+          headers: getRequestHeaders(),
+          body: JSON.stringify({ profileId: id }),
+        });
+
+    request
+      .then((res) => {
+        if (!res.ok) throw new Error('Shortlist update failed');
+      })
+      .catch(() => {
+        // Roll back to the pre-toggle state.
+        setSavedProfiles((prev) =>
+          wasSaved ? (prev.includes(id) ? prev : [...prev, id]) : prev.filter((pId) => pId !== id)
+        );
+      });
   };
 
   const handleRegisterSubmit = async (e: React.FormEvent) => {
@@ -546,7 +592,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           contact: formData.phoneNumber || '+919999999999',
         },
         theme: {
-          color: '#6F1D35',
+          color: '#047857',
         },
       };
 

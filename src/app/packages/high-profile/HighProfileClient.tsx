@@ -99,7 +99,7 @@ export default function HighProfileClient() {
                   ₹21,000 <span style={{ fontSize: '14px', color: 'var(--text-muted)', fontFamily: 'var(--font-sans)', fontWeight: 'normal' }}>{t('nikah.gst')}</span>
                 </div>
               ) : (
-                <div style={{ background: 'linear-gradient(135deg,rgba(111,29,53,0.06),rgba(184,146,74,0.06))', border: '1.5px dashed var(--gold-accent)', borderRadius: '10px', padding: '14px', marginBottom: '8px', textAlign: 'center' }}>
+                <div style={{ background: 'linear-gradient(135deg,rgba(4,120,87,0.06),rgba(184,146,74,0.06))', border: '1.5px dashed var(--gold-accent)', borderRadius: '10px', padding: '14px', marginBottom: '8px', textAlign: 'center' }}>
                   <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '4px' }}>{t('nikah.pricingAfter')}</div>
                   <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--deep-maroon)' }}>{t('nikah.completeToView')}</div>
                 </div>

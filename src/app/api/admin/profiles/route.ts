@@ -1,18 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@/auth';
+import { requirePermission, authFail } from '@/lib/adminAuth';
 import { getAllProfiles } from '@/lib/profileStore';
 
-async function isAdmin(req: NextRequest) {
-  const session = await auth();
-  return session?.user?.role === 'ADMIN';
-}
-
 export async function GET(req: NextRequest) {
-  try {
-    if (!(await isAdmin(req))) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
-    }
+  const gate = await requirePermission('profiles:view');
+  if (!gate.ok) return authFail(gate);
 
+  try {
     const { searchParams } = new URL(req.url);
     const search = searchParams.get('search')?.toLowerCase() || '';
     const gender = searchParams.get('gender') || '';

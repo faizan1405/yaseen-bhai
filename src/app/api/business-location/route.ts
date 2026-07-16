@@ -9,10 +9,21 @@ export async function GET(req: NextRequest) {
     const settings = await prisma.globalSettings.findFirst();
     
     const address = settings?.officeAddress || defaultBusinessLocation.address;
-    const phone = settings?.adminPhone || defaultBusinessLocation.phone; // Fallback to default if not set
-    
+    // Public phone shown on the site. Prefer the dedicated publicPhone, then the
+    // admin/notification phone, then the bundled default.
+    const phone = settings?.publicPhone || settings?.adminPhone || defaultBusinessLocation.phone;
+
     // Format phoneRaw: remove spaces, plus sign is kept or custom formatted
     const phoneRaw = phone.replace(/[^+\d]/g, '');
+
+    // WhatsApp number (digits only). Prefer the dedicated setting, else derive
+    // from the public phone, else the bundled default.
+    const whatsappNumber =
+      (settings?.whatsappNumber && settings.whatsappNumber.replace(/\D/g, '')) ||
+      phoneRaw.replace(/\D/g, '') ||
+      defaultBusinessLocation.phoneRaw.replace(/\D/g, '');
+
+    const email = settings?.publicEmail || null;
 
     // Validate social URLs
     const facebookUrl = validateSocialUrl(settings?.facebookUrl) || defaultBusinessLocation.facebookUrl;
@@ -27,6 +38,8 @@ export async function GET(req: NextRequest) {
       address,
       phone,
       phoneRaw,
+      whatsappNumber,
+      email,
       facebookUrl,
       instagramUrl,
       youtubeUrl,

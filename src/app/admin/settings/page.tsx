@@ -9,6 +9,9 @@ export default function AdminSettingsPage() {
   const [settings, setSettings] = useState({
     adminEmail: '',
     adminPhone: '',
+    whatsappNumber: '',
+    publicPhone: '',
+    publicEmail: '',
     emailAlertsEnabled: true,
     smsAlertsEnabled: false,
     officeAddress: '',
@@ -32,6 +35,9 @@ export default function AdminSettingsPage() {
           setSettings({
             adminEmail: data.settings.adminEmail || '',
             adminPhone: data.settings.adminPhone || '',
+            whatsappNumber: data.settings.whatsappNumber || '',
+            publicPhone: data.settings.publicPhone || '',
+            publicEmail: data.settings.publicEmail || '',
             emailAlertsEnabled: data.settings.emailAlertsEnabled,
             smsAlertsEnabled: data.settings.smsAlertsEnabled,
             officeAddress: data.settings.officeAddress || '',
@@ -184,6 +190,42 @@ export default function AdminSettingsPage() {
                 placeholder="Innov8 44 Regal Building, 2nd Floor, Connaught Place, New Delhi - 110001"
               />
               <p style={hintStyle}>Physical address shown on the contact page and footer.</p>
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '20px', marginTop: '20px', paddingTop: '20px', borderTop: '1px solid var(--border-color)' }} className="grid-mobile-1">
+            <div>
+              <label style={labelStyle}>Public WhatsApp Number</label>
+              <input
+                type="tel"
+                style={inputStyle}
+                value={settings.whatsappNumber}
+                onChange={e => setSettings({ ...settings, whatsappNumber: e.target.value })}
+                placeholder="919170975535"
+              />
+              <p style={hintStyle}>Digits only (with country code). Powers the floating WhatsApp button.</p>
+            </div>
+            <div>
+              <label style={labelStyle}>Public Phone (Call Button)</label>
+              <input
+                type="tel"
+                style={inputStyle}
+                value={settings.publicPhone}
+                onChange={e => setSettings({ ...settings, publicPhone: e.target.value })}
+                placeholder="+91 91709 75535"
+              />
+              <p style={hintStyle}>Number shown on the contact page and call button.</p>
+            </div>
+            <div>
+              <label style={labelStyle}>Public Support Email</label>
+              <input
+                type="email"
+                style={inputStyle}
+                value={settings.publicEmail}
+                onChange={e => setSettings({ ...settings, publicEmail: e.target.value })}
+                placeholder="support@asannikah.com"
+              />
+              <p style={hintStyle}>Displayed publicly for customer support.</p>
             </div>
           </div>
 
