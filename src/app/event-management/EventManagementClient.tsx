@@ -28,7 +28,7 @@ function DecoIcon() {
             cx={x} cy={y} rx="3.5" ry="5.5"
             transform={`rotate(${deg + 90},${x},${y})`}
             fill="var(--rose-accent)"
-            opacity="0.8"
+            opacity="1"
           />
         );
       })}
@@ -281,7 +281,7 @@ export default function EventManagementClient() {
         <section
           style={{
             background: 'linear-gradient(135deg, var(--deep-maroon) 0%, #05684c 60%, #033a2b 100%)',
-            padding: '100px 0 80px',
+            padding: '48px 0 36px',
             position: 'relative',
             overflow: 'hidden',
           }}
@@ -354,7 +354,7 @@ export default function EventManagementClient() {
             </div>
 
             {/* Decorative gold divider */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginTop: '52px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginTop: '24px' }}>
               <div style={{ width: '60px', height: '1px', background: 'linear-gradient(90deg, transparent, var(--gold-accent))' }} />
               <span style={{ color: 'var(--gold-accent)', fontSize: '18px' }}>❀</span>
               <div style={{ width: '60px', height: '1px', background: 'linear-gradient(270deg, transparent, var(--gold-accent))' }} />
@@ -363,7 +363,7 @@ export default function EventManagementClient() {
         </section>
 
         {/* ── Services Grid ─────────────────────────────────────────────── */}
-        <section style={{ backgroundColor: 'var(--soft-cream)', padding: '80px 0' }}>
+        <section style={{ backgroundColor: 'var(--soft-cream)', padding: '48px 0' }}>
           <div className="container">
             <SectionHeading
               title={t('eventMgmt.servicesTitle')}
@@ -441,7 +441,7 @@ export default function EventManagementClient() {
         </section>
 
         {/* ── How It Works ──────────────────────────────────────────────── */}
-        <section style={{ backgroundColor: 'var(--warm-ivory)', padding: '80px 0' }}>
+        <section style={{ backgroundColor: 'var(--warm-ivory)', padding: '48px 0' }}>
           <div className="container">
             <SectionHeading
               title={t('eventMgmt.howTitle')}
@@ -509,7 +509,7 @@ export default function EventManagementClient() {
         </section>
 
         {/* ── Why Choose Us ─────────────────────────────────────────────── */}
-        <section style={{ backgroundColor: 'var(--soft-cream)', padding: '80px 0' }}>
+        <section style={{ backgroundColor: 'var(--soft-cream)', padding: '48px 0' }}>
           <div className="container">
             <SectionHeading
               title={t('eventMgmt.whyTitle')}
@@ -582,7 +582,7 @@ export default function EventManagementClient() {
         {/* ── Inquiry Form ──────────────────────────────────────────────── */}
         <section
           id="inquiry-form"
-          style={{ backgroundColor: 'var(--warm-ivory)', padding: '80px 0' }}
+          style={{ backgroundColor: 'var(--warm-ivory)', padding: '48px 0' }}
         >
           <div className="container">
             <SectionHeading

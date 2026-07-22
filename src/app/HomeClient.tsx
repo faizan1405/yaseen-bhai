@@ -177,7 +177,7 @@ export default function HomeClient() {
       <main className="flex-grow">
         {isRegistering ? (
           /* Multi-step onboarding/edit profile wizard */
-          <section style={{ padding: '60px 0' }} className="container font-sans">
+          <section style={{ padding: '40px 0' }} className="container font-sans">
             <div className="card-theme-wrapper reg-wizard-card">
               <FloralCorner position="tl" color="var(--gold-accent)" />
               <FloralCorner position="tr" color="var(--gold-accent)" />
@@ -636,8 +636,8 @@ export default function HomeClient() {
             <HeroSection />
 
             {/* Smart Search Quick Action Bar */}
-            <div className="container" style={{ position: 'relative', zIndex: '20', marginTop: '-30px' }}>
-              <div className="search-panel" style={{ backgroundColor: 'var(--white)', border: '1.5px solid var(--border-color)', borderRadius: 'var(--border-radius-lg)', padding: '24px 36px', boxShadow: 'var(--shadow-premium)' }}>
+            <div className="container" style={{ position: 'relative', zIndex: '20', marginTop: '-20px' }}>
+              <div className="search-panel" style={{ backgroundColor: 'var(--white)', border: '1.5px solid var(--border-color)', borderRadius: 'var(--border-radius-lg)', boxShadow: 'var(--shadow-premium)' }}>
                 <span className="script-accent" style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>{t('home.refinedSearch')}</span>
                 <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', color: 'var(--deep-maroon)', fontWeight: 'bold', marginBottom: '14px' }}>
                   {t('home.quickMatchSearch')}
@@ -776,7 +776,7 @@ export default function HomeClient() {
 
 
             {/* Featured Candidates Preview */}
-            <section style={{ backgroundColor: 'var(--soft-cream)', padding: '80px 0' }}>
+            <section style={{ backgroundColor: 'var(--soft-cream)', padding: '48px 0' }}>
               <div className="container">
                 <SectionHeading
                   title={t('home.featuredTitle')}
@@ -833,7 +833,7 @@ export default function HomeClient() {
             </section>
 
             {/* Timeline process */}
-            <section style={{ backgroundColor: 'var(--warm-ivory)', padding: '80px 0' }}>
+            <section style={{ backgroundColor: 'var(--warm-ivory)', padding: '48px 0' }}>
               <div className="container">
                 <SectionHeading
                   title={t('home.timelineTitle')}
@@ -865,7 +865,7 @@ export default function HomeClient() {
             </section>
 
             {/* Trust & Family Safety Preview */}
-            <section style={{ backgroundColor: 'var(--soft-cream)', padding: '80px 0' }}>
+            <section style={{ backgroundColor: 'var(--soft-cream)', padding: '48px 0' }}>
               <div className="container">
                 <SectionHeading
                   title={t('home.trustTitle')}
@@ -907,7 +907,7 @@ export default function HomeClient() {
             </section>
 
             {/* Premium Teaser Section */}
-            <section style={{ backgroundColor: 'var(--soft-cream)', padding: '80px 0' }}>
+            <section style={{ backgroundColor: 'var(--soft-cream)', padding: '48px 0' }}>
               <div className="container">
                 <SectionHeading
                   title={t('home.plansTitle')}
@@ -996,7 +996,7 @@ export default function HomeClient() {
             </section>
 
             {/* Wedding & Event Support Section */}
-            <section style={{ backgroundColor: 'var(--soft-cream)', padding: '80px 0' }}>
+            <section style={{ backgroundColor: 'var(--soft-cream)', padding: '48px 0' }}>
               <div className="container">
                 <SectionHeading
                   title={t('home.eventTitle')}

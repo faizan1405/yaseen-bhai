@@ -22,7 +22,7 @@ export const FloralCorner: React.FC<{ position: 'tl' | 'tr' | 'bl' | 'br'; color
   }[position];
 
   return (
-    <div className={`absolute p-0 pointer-events-none opacity-50 z-0 ${rotationClass}`} style={{
+    <div className={`absolute p-0 pointer-events-none z-0 ${rotationClass}`} style={{
       top: position.startsWith('t') ? '10px' : 'auto',
       bottom: position.startsWith('b') ? '10px' : 'auto',
       left: position.endsWith('l') ? '10px' : 'auto',
@@ -64,7 +64,7 @@ export const BismillahCalligraphy: React.FC = () => {
           <path d="M12 70 L20 62 L28 70 Z" fill="var(--gold-accent)" />
           <path d="M10 70 L30 70 L34 78 L6 78 Z" fill="var(--gold-accent)" />
           <path d="M6 78 L34 78 L28 112 L12 112 Z" fill="var(--warm-ivory)" stroke="var(--gold-accent)" strokeWidth="1.2" />
-          <circle cx="20" cy="95" r="7" fill="var(--gold-light)" opacity="0.6" style={{ filter: 'blur(2px)' }} />
+          <circle cx="20" cy="95" r="7" fill="var(--gold-light)" opacity="1" style={{ filter: 'blur(2px)' }} />
           <path d="M20 89 C19 93 20 98 20 98 C20 98 21 93 20 89 Z" fill="#EBC5C8" />
           <path d="M12 112 L28 112 L24 120 L16 120 Z" fill="var(--gold-accent)" />
           <circle cx="20" cy="124" r="2.5" stroke="var(--gold-accent)" strokeWidth="1.2" fill="none" />
@@ -146,7 +146,7 @@ export const BismillahCalligraphy: React.FC = () => {
           <path d="M12 70 L20 62 L28 70 Z" fill="var(--gold-accent)" />
           <path d="M10 70 L30 70 L34 78 L6 78 Z" fill="var(--gold-accent)" />
           <path d="M6 78 L34 78 L28 112 L12 112 Z" fill="var(--warm-ivory)" stroke="var(--gold-accent)" strokeWidth="1.2" />
-          <circle cx="20" cy="95" r="7" fill="var(--gold-light)" opacity="0.6" style={{ filter: 'blur(2px)' }} />
+          <circle cx="20" cy="95" r="7" fill="var(--gold-light)" opacity="1" style={{ filter: 'blur(2px)' }} />
           <path d="M20 89 C19 93 20 98 20 98 C20 98 21 93 20 89 Z" fill="#EBC5C8" />
           <path d="M12 112 L28 112 L24 120 L16 120 Z" fill="var(--gold-accent)" />
           <circle cx="20" cy="124" r="2.5" stroke="var(--gold-accent)" strokeWidth="1.2" fill="none" />
@@ -1253,19 +1253,15 @@ interface FinalCTAProps {
 export const FinalCTA: React.FC<FinalCTAProps> = ({ onRegister, onBrowse, isLoggedIn, hasProfile }) => {
   const { t } = useI18n();
   return (
-    <section style={{ backgroundColor: 'var(--soft-cream)', borderTop: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)', padding: '80px 0', position: 'relative' }}>
+    <section style={{ backgroundColor: 'var(--soft-cream)', borderTop: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)', padding: '48px 0', position: 'relative' }}>
       <div className="container" style={{ position: 'relative', zIndex: 5 }}>
-        <div className="arch-container max-w-4xl mx-auto text-center" style={{ maxWidth: '800px', margin: '0 auto', padding: '60px 40px', textAlign: 'center' }}>
-          
-          
-          
-          
+        <div className="arch-container max-w-4xl mx-auto text-center" style={{ maxWidth: '800px', margin: '0 auto', padding: '36px 24px', textAlign: 'center' }}>
 
           <span className="script-accent block mb-2" style={{ display: 'block', marginBottom: '12px' }}>{t('finalCta.script')}</span>
-          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '36px', color: 'var(--deep-maroon)', fontWeight: 'bold', marginBottom: '20px' }}>
+          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '36px', color: 'var(--deep-maroon)', fontWeight: 'bold', marginBottom: '16px' }}>
             {t('finalCta.heading')}
           </h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '15.5px', maxWidth: '600px', margin: '0 auto 30px auto', lineHeight: '1.6' }}>
+          <p style={{ color: 'var(--text-muted)', fontSize: '15.5px', maxWidth: '600px', margin: '0 auto 20px auto', lineHeight: '1.6' }}>
             {t('finalCta.body')}
           </p>
 
@@ -1316,12 +1312,12 @@ export const PremiumFooter: React.FC<PremiumFooterProps> = ({ onNavigate }) => {
     <footer className="footer" style={{
       backgroundColor: 'var(--deep-maroon)',
       color: 'var(--warm-ivory)',
-      padding: '80px 0 40px 0',
+      padding: '48px 0 32px 0',
       borderTop: '4px solid var(--gold-accent)',
       position: 'relative'
     }}>
       <div className="container">
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '40px', marginBottom: '40px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '28px', marginBottom: '28px' }}>
           <div>
             <div className="footer-logo" style={{ marginBottom: '18px', display: 'inline-block', background: 'var(--white)', padding: '12px 16px', borderRadius: '12px', boxShadow: '0 4px 14px rgba(0,0,0,0.25)' }}>
               <Image
