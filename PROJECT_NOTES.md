@@ -15,9 +15,9 @@ This file tracks the approved decisions, architecture, system design, business r
 | Package / Service | Cost (Excl. GST) | GST (18%) | Total Price | Billing Cycle / Milestones | Details |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Standard Monthly Membership** | ₹300 | ₹54 | ₹354 | Monthly | Mandatory to view unblurred photos & phone numbers, search, and access standard matches. |
-| **Curated Profiles** | ₹5,500 | ₹990 | ₹6,490 | One-time + Success fee | Selected premium profiles, leads provided until marriage. Success fee: **₹21,000** after marriage confirmation. |
-| **Second-Marriage Profiles** | ₹11,000 | ₹1,980 | ₹12,980 | One-time | Separate private category, leads provided until marriage. |
-| **High-Profile Matches** | ₹21,000 | ₹3,780 | ₹24,780 | One-time + Success fee | For doctors, engineers, business owners, or income > ₹10 LPA. Success fee: **₹25,000** after marriage confirmation. |
+| **Good Profiles Package** | ₹500 | ₹90 | ₹590 | Monthly | Access to curated profiles, valid for 1 year. |
+| **Second-Marriage Profiles** | ₹600 | ₹108 | ₹708 | Monthly | Separate private category, valid for 1 year. |
+| **High-Profile Matches** | ₹800 | ₹144 | ₹944 | Monthly | For doctors, engineers, business owners, or income > ₹10 LPA. Valid for 1 year. |
 
 ### Operational Rules
 * **GST Rate**: 18% (to be added dynamically to all transactions on Razorpay).

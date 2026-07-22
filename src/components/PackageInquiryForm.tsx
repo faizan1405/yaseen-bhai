@@ -11,7 +11,7 @@ interface PackageInquiryFormProps {
 }
 
 export const PackageInquiryForm: React.FC<PackageInquiryFormProps> = ({
-  defaultPackage = '₹5,500 Good Profiles Package',
+  defaultPackage = '₹500 Good Profiles Package',
   onSuccess,
   onCancel
 }) => {
@@ -223,9 +223,9 @@ export const PackageInquiryForm: React.FC<PackageInquiryFormProps> = ({
               disabled={isSubmitting}
             >
               <option value="₹300 Monthly Membership">{t('pkgInquiry.optMonthly')}</option>
-              <option value="₹5,500 Good Profiles Package">{t('pkgInquiry.optGood')}</option>
-              <option value="₹11,000 Second Marriage">{t('pkgInquiry.optSecond')}</option>
-              <option value="₹21,000 Premium Match Access">{t('pkgInquiry.optPremium')}</option>
+              <option value="₹500 Good Profiles Package">{t('pkgInquiry.optGood')}</option>
+              <option value="₹600 Second Marriage">{t('pkgInquiry.optSecond')}</option>
+              <option value="₹800 Premium Match Access">{t('pkgInquiry.optPremium')}</option>
             </select>
           </div>
 

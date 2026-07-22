@@ -197,9 +197,9 @@ export default function AdminLeadsPage() {
                   its current + legacy stored labels so old records still match. */}
               <option value="">All Packages</option>
               <option value="monthly_membership">₹300 Monthly Membership</option>
-              <option value="good_profile_package">₹5,500 Good Profiles</option>
-              <option value="second_marriage_package">₹11,000 Second Marriage</option>
-              <option value="high_profile_package">₹21,000 Premium Match Access</option>
+              <option value="good_profile_package">₹500 Good Profiles</option>
+              <option value="second_marriage_package">₹600 Second Marriage</option>
+              <option value="high_profile_package">₹800 Premium Match Access</option>
             </select>
           </div>
         </div>

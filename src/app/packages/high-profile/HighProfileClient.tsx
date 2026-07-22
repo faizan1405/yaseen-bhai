@@ -96,7 +96,7 @@ export default function HighProfileClient() {
               </h3>
               {isFormComplete ? (
                 <div className="ltr-value" style={{ fontSize: '36px', fontWeight: '800', color: 'var(--deep-maroon)', marginBottom: '8px', fontFamily: 'var(--font-serif)' }}>
-                  ₹21,000 <span style={{ fontSize: '14px', color: 'var(--text-muted)', fontFamily: 'var(--font-sans)', fontWeight: 'normal' }}>{t('nikah.gst')}</span>
+                  ₹800 <span style={{ fontSize: '14px', color: 'var(--text-muted)', fontFamily: 'var(--font-sans)', fontWeight: 'normal' }}>{t('nikah.gst')}</span>
                 </div>
               ) : (
                 <div style={{ background: 'linear-gradient(135deg,rgba(4,120,87,0.06),rgba(184,146,74,0.06))', border: '1.5px dashed var(--gold-accent)', borderRadius: '10px', padding: '14px', marginBottom: '8px', textAlign: 'center' }}>
@@ -118,7 +118,7 @@ export default function HighProfileClient() {
                 <button
                   className="btn btn-gold"
                   style={{ width: '100%', padding: '12px', fontSize: '15px' }}
-                  onClick={() => handleRazorpayCheckout('high_profile_package', 21000, 'Premium Match Access')}
+                  onClick={() => handleRazorpayCheckout('high_profile_package', 800, 'Premium Match Access')}
                   disabled={isPackageActive}
                 >
                   {isPackageActive ? t('pkgPages.packageActive') : t('premium.buyPremium')}
@@ -201,7 +201,7 @@ export default function HighProfileClient() {
               {t('premium.inquiryModalTitle')}
             </h3>
             <PackageInquiryForm
-              defaultPackage="₹21,000 Premium Match Access"
+              defaultPackage="₹800 Premium Match Access"
               onSuccess={() => setShowInquiry(false)}
               onCancel={() => setShowInquiry(false)}
             />

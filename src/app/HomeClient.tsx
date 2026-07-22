@@ -936,14 +936,14 @@ export default function HomeClient() {
                   />
                   <PremiumPlanCard
                     title={t('premium.goodTitle')}
-                    price={5500}
+                    price={500}
                     gstRate={0.18}
-                    billingText="one-time base"
+                    billingText="monthly"
                     features={tList('premium.goodFeatures')}
                     isActive={activePackages.includes('good_profile_package')}
                     ctaText={t('premium.buyGood')}
-                    onActivate={() => handleRazorpayCheckout('good_profile_package', 5500, 'Good Profile Package')}
-                    onInquire={() => setInquiryPackage('₹5,500 Good Profiles Package')}
+                    onActivate={() => handleRazorpayCheckout('good_profile_package', 500, 'Good Profile Package')}
+                    onInquire={() => setInquiryPackage('₹500 Good Profiles Package')}
                     whatsappMessage={t('premium.waGood')}
                     badgeText={t('premium.badgeStarter')}
                     planTier="basic"
@@ -955,14 +955,14 @@ export default function HomeClient() {
                   />
                   <PremiumPlanCard
                     title={t('premium.secondTitle')}
-                    price={11000}
+                    price={600}
                     gstRate={0.18}
-                    billingText="one-time fee"
+                    billingText="monthly"
                     features={tList('premium.secondFeatures')}
                     isActive={activePackages.includes('second_marriage_package')}
                     ctaText={t('premium.buySecond')}
-                    onActivate={() => handleRazorpayCheckout('second_marriage_package', 11000, 'Second Marriage')}
-                    onInquire={() => setInquiryPackage('₹11,000 Second Marriage')}
+                    onActivate={() => handleRazorpayCheckout('second_marriage_package', 600, 'Second Marriage')}
+                    onInquire={() => setInquiryPackage('₹600 Second Marriage')}
                     whatsappMessage={t('premium.waSecond')}
                     badgeText={t('premium.badgeSecond')}
                     planTier="silver"
@@ -974,14 +974,14 @@ export default function HomeClient() {
                   />
                   <PremiumPlanCard
                     title={t('premium.premiumTitle')}
-                    price={21000}
+                    price={800}
                     gstRate={0.18}
-                    billingText="one-time base"
+                    billingText="monthly"
                     features={tList('premium.premiumFeatures')}
                     isActive={activePackages.includes('high_profile_package')}
                     ctaText={t('premium.buyPremium')}
-                    onActivate={() => handleRazorpayCheckout('high_profile_package', 21000, 'Premium Match Access')}
-                    onInquire={() => setInquiryPackage('₹21,000 Premium Match Access')}
+                    onActivate={() => handleRazorpayCheckout('high_profile_package', 800, 'Premium Match Access')}
+                    onInquire={() => setInquiryPackage('₹800 Premium Match Access')}
                     whatsappMessage={t('premium.waPremium')}
                     badgeText={t('premium.badgePremium')}
                     planTier="gold"

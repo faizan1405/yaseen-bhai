@@ -52,11 +52,11 @@ export const PREMIUM_PACKAGES: Record<PackageType, PackageDefinition> = {
   good_profile_package: {
     type: 'good_profile_package',
     name: 'Good Profile Package',
-    basePrice: 5500,
+    basePrice: 500,
     gstRate: 0.18,
-    totalAmount: 6490,
-    billingType: 'ONE_TIME',
-    successFeeAmount: 21000,
+    totalAmount: 590,
+    billingType: 'MONTHLY',
+    successFeeAmount: 0,
     benefits: [
       'Verified profile suggestions',
       'Basic matchmaking support',
@@ -67,10 +67,10 @@ export const PREMIUM_PACKAGES: Record<PackageType, PackageDefinition> = {
   second_marriage_package: {
     type: 'second_marriage_package',
     name: 'Second Marriage',
-    basePrice: 11000,
+    basePrice: 600,
     gstRate: 0.18,
-    totalAmount: 12980,
-    billingType: 'ONE_TIME',
+    totalAmount: 708,
+    billingType: 'MONTHLY',
     successFeeAmount: 0,
     benefits: [
       'Everything in Basic Package',
@@ -86,11 +86,11 @@ export const PREMIUM_PACKAGES: Record<PackageType, PackageDefinition> = {
   high_profile_package: {
     type: 'high_profile_package',
     name: 'Premium Match Access',
-    basePrice: 21000,
+    basePrice: 800,
     gstRate: 0.18,
-    totalAmount: 24780,
-    billingType: 'ONE_TIME',
-    successFeeAmount: 25000,
+    totalAmount: 944,
+    billingType: 'MONTHLY',
+    successFeeAmount: 0,
     benefits: [
       'Everything in Second Marriage',
       'Premium verified profile suggestions',
@@ -115,9 +115,9 @@ export const PREMIUM_PACKAGES: Record<PackageType, PackageDefinition> = {
  */
 export const PACKAGE_LEAD_LABELS: Record<PackageType, string[]> = {
   monthly_membership: ['₹300 Monthly Membership'],
-  good_profile_package: ['₹5,500 Good Profiles Package', '₹5,500 Good Profiles'],
-  second_marriage_package: ['₹11,000 Second Marriage', '₹11,000 Basic Access'],
-  high_profile_package: ['₹21,000 Premium Match Access'],
+  good_profile_package: ['₹500 Good Profiles Package', '₹500 Good Profiles'],
+  second_marriage_package: ['₹600 Second Marriage', '₹600 Basic Access'],
+  high_profile_package: ['₹800 Premium Match Access'],
 };
 
 /**

@@ -237,7 +237,7 @@ if (!globalStore.inMemoryLeads) {
       city: "Mumbai",
       message: "Interested in premium match access, need details on success fee details.",
       inquiryType: "Package Inquiry",
-      interestedPackage: "₹21,000 Premium Match Access",
+      interestedPackage: "₹800 Premium Match Access",
       interestedProfileId: null,
       sourcePage: "/premium",
       status: "new",

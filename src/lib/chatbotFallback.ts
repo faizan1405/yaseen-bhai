@@ -57,9 +57,9 @@ export function getFallbackResponse(message: string): string {
   ) {
     return "Assalamu Alaikum! Asan Nikah offers 4 matrimonial packages (all prices + GST):\n\n" +
       "1. **Standard Monthly Membership**: ₹300 + GST/month. Allows searching matches, filtering, and unblurring photos/phone numbers on normal profiles.\n" +
-      "2. **Good Profiles Package**: ₹5,500 + GST. Access to curated profiles, valid for 1 year + ₹21,000 success fee after marriage confirmation.\n" +
-      "3. **Second Marriage**: ₹11,000 + GST. Private second-marriage directory for divorcee/widow/widower matches, valid for 1 year. No success fee.\n" +
-      "4. **Premium Match Access**: ₹21,000 + GST. For doctors, engineers, premium families, and candidates earning ₹10 Lakhs+ annually, valid for 1 year + ₹25,000 success fee after marriage.";
+      "2. **Good Profiles Package**: ₹500 + GST/month. Access to curated profiles, valid for 1 year.\n" +
+      "3. **Second Marriage**: ₹600 + GST/month. Private second-marriage directory for divorcee/widow/widower matches, valid for 1 year.\n" +
+      "4. **Premium Match Access**: ₹800 + GST/month. For doctors, engineers, premium families, and candidates earning ₹10 Lakhs+ annually, valid for 1 year.";
   }
 
   // 4. Verification check
@@ -119,7 +119,7 @@ export function getFallbackResponse(message: string): string {
   // 8. General greeting/unknown fallback response
   return "Assalamu Alaikum! I'm the Asan Nikah support assistant.\n\n" +
     "I can answer your questions about:\n" +
-    "• **Packages & Pricing** (₹300/₹5.5k/₹11k/₹21k)\n" +
+    "• **Packages & Pricing** (₹300/₹500/₹600/₹800)\n" +
     "• **Photo & Contact Privacy** (Blurring details)\n" +
     "• **Manual Verification** (Telephone review process)\n" +
     "• **Registration** & Onboarding\n" +

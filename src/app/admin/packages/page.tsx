@@ -59,9 +59,9 @@ export default function PremiumPackagesPage() {
               adminPurchases.map((purchase) => {
                 const getPriceDetails = (pkgType: string) => {
                   if (pkgType === 'monthly_membership') return { name: 'Monthly Membership', base: 300, gst: 54, total: 354 };
-                  if (pkgType === 'good_profile_package') return { name: 'Good Profile Package', base: 5500, gst: 990, total: 6490 };
-                  if (pkgType === 'second_marriage_package') return { name: 'Second Marriage', base: 11000, gst: 1980, total: 12980 };
-                  if (pkgType === 'high_profile_package') return { name: 'Premium Match Access', base: 21000, gst: 3780, total: 24780 };
+                  if (pkgType === 'good_profile_package') return { name: 'Good Profile Package', base: 500, gst: 90, total: 590 };
+                  if (pkgType === 'second_marriage_package') return { name: 'Second Marriage', base: 600, gst: 108, total: 708 };
+                  if (pkgType === 'high_profile_package') return { name: 'Premium Match Access', base: 800, gst: 144, total: 944 };
                   return { name: pkgType, base: 0, gst: 0, total: 0 };
                 };
                 const details = getPriceDetails(purchase.packageType);

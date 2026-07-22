@@ -50,11 +50,11 @@ export const ProfileInterestForm: React.FC<ProfileInterestFormProps> = ({
   // Set default package interest if profile has a category
   useEffect(() => {
     if (profileCategory === 'good_profile') {
-      setPackageInterest('₹5,500 Good Profiles Package');
+      setPackageInterest('₹500 Good Profiles Package');
     } else if (profileCategory === 'second_marriage') {
-      setPackageInterest('₹11,000 Second Marriage');
+      setPackageInterest('₹600 Second Marriage');
     } else if (profileCategory === 'high_profile') {
-      setPackageInterest('₹21,000 Premium Match Access');
+      setPackageInterest('₹800 Premium Match Access');
     }
   }, [profileCategory]);
 
@@ -227,9 +227,9 @@ export const ProfileInterestForm: React.FC<ProfileInterestFormProps> = ({
             >
               <option value="">{t('interestForm.optNone')}</option>
               <option value="₹300 Monthly Membership">{t('interestForm.optMonthly')}</option>
-              <option value="₹5,500 Good Profiles Package">{t('interestForm.optGood')}</option>
-              <option value="₹11,000 Second Marriage">{t('interestForm.optSecond')}</option>
-              <option value="₹21,000 Premium Match Access">{t('interestForm.optPremium')}</option>
+              <option value="₹500 Good Profiles Package">{t('interestForm.optGood')}</option>
+              <option value="₹600 Second Marriage">{t('interestForm.optSecond')}</option>
+              <option value="₹800 Premium Match Access">{t('interestForm.optPremium')}</option>
             </select>
           </div>
 

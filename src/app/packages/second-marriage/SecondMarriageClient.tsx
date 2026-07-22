@@ -87,7 +87,7 @@ export default function SecondMarriageClient() {
               </h3>
               {isFormComplete ? (
                 <div className="ltr-value" style={{ fontSize: '36px', fontWeight: '800', color: 'var(--deep-maroon)', marginBottom: '8px', fontFamily: 'var(--font-serif)' }}>
-                  ₹11,000 <span style={{ fontSize: '14px', color: 'var(--text-muted)', fontFamily: 'var(--font-sans)', fontWeight: 'normal' }}>{t('nikah.gst')}</span>
+                  ₹600 <span style={{ fontSize: '14px', color: 'var(--text-muted)', fontFamily: 'var(--font-sans)', fontWeight: 'normal' }}>{t('nikah.gst')}</span>
                 </div>
               ) : (
                 <div style={{ background: 'linear-gradient(135deg,rgba(4,120,87,0.06),rgba(184,146,74,0.06))', border: '1.5px dashed var(--gold-accent)', borderRadius: '10px', padding: '14px', marginBottom: '8px', textAlign: 'center' }}>
@@ -109,7 +109,7 @@ export default function SecondMarriageClient() {
                 <button
                   className="btn btn-gold"
                   style={{ width: '100%', padding: '12px', fontSize: '15px' }}
-                  onClick={() => handleRazorpayCheckout('second_marriage_package', 11000, 'Second Marriage')}
+                  onClick={() => handleRazorpayCheckout('second_marriage_package', 600, 'Second Marriage')}
                   disabled={isPackageActive}
                 >
                   {isPackageActive ? t('pkgPages.packageActive') : t('premium.buySecond')}
@@ -192,7 +192,7 @@ export default function SecondMarriageClient() {
               {t('premium.inquiryModalTitle')}
             </h3>
             <PackageInquiryForm
-              defaultPackage="₹11,000 Second Marriage"
+              defaultPackage="₹600 Second Marriage"
               onSuccess={() => setShowInquiry(false)}
               onCancel={() => setShowInquiry(false)}
             />
